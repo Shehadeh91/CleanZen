@@ -1,0 +1,211 @@
+import * as React from "react";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+} from "react-native";
+import { useEffect, useState } from "react"; // Import useEffect
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { collection, addDoc } from "firebase/firestore";
+import { ActivityIndicator, Button } from "react-native-paper";
+import { usePageIndex } from "../useAppStore";
+import { FIRESTORE_DB } from "../FirebaseConfig";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  useBottomNavigationVisible,
+  useUser,
+  useName,
+  usePhone,
+  useEmail,
+  usePassword,
+} from "../useAppStore";
+
+const SignupScreen = ({ navigation }) => {
+  //const [fullName, setFullName] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
+  const auth = FIREBASE_AUTH;
+
+  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
+  const [name, setName] = useName((state) => [state.name, state.setName]);
+  const [phone, setPhone] = usePhone((state) => [state.phone, state.setPhone]);
+  
+  const [email, setEmail] = useEmail((state) => [state.email, state.setEmail]);
+  const [password, setPassword] = useState("");
+
+  const [index, setIndex] = usePageIndex((state) => [
+    state.index,
+    state.setIndex,
+  ]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
+      setIndex(1);
+      return () => {
+        // Clean-up function when screen loses focus (optional)
+      };
+    }, [])
+  );
+
+  useEffect(() => {
+    // Check if user is already signed in
+    const unsubscribe = FIREBASE_AUTH.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        // User is logged in, navigate to the account page
+        navigation.navigate("account");
+      } else {
+        // User is not logged in, clear Zustand user-related states
+        setUser(null);
+        setName(null);
+        setPhone(null);
+        setEmail(null);
+        setPassword(null);
+      }
+    });
+
+    // Clean up the subscription
+    return unsubscribe;
+  }, []);
+
+  const handleSignup = async () => {
+    //Check if the password meets complexity requirements
+    if (/(?=.*\d)(?=.*[!@#$%^&*]).{7,}/.test(password)) {
+      alert(
+        "Password must be at least 7 characters long and include at least one number and one special character (!@#$%^&*). Example: MyPassw0rd!"
+      );
+      return; // Exit the function if password is invalid
+    }
+
+    // Check if the phone number is valid (10 digits)
+    if (!/^\d{10}$/.test(phone)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return; // Exit the function if phone number is invalid
+    }
+
+    setLoading(true);
+    try {
+      // Create the user with email and password
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const usersCollectionRef = collection(FIRESTORE_DB, "Users");
+
+      const userDocRef = doc(usersCollectionRef, user.email);
+      // Add a new document to the "Users" collection with auto-generated ID
+      // Set document data using setDoc
+      await setDoc(userDocRef, {
+        userId: user.uid, // Assuming you want to save the user's UID
+        Name: name,
+        Email: email,
+        Phone: phone,
+        Password: password,
+      });
+
+      // Update Zustand states with user's name and phone
+      setName(name);
+      setPhone(phone);
+
+      console.log("User created:", user);
+      alert("Check your emails!");
+    } catch (error) {
+      console.log(error);
+      alert("Sign up failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <KeyboardAvoidingView
+      behavior="padding"
+      style={styles.container}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500} // Adjust the offset as needed
+    >
+      <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Full Name"
+        value={name}
+        onChangeText={setName}
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Phone#"
+        keyboardType="numeric" // Set keyboardType to "numeric"
+        value={phone}
+        onChangeText={setPhone}
+        autoCapitalize="none"
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+        autoCapitalize="none"
+      />
+      {loading ? (
+        <ActivityIndicator size="large" color="blue" />
+      ) : (
+        <>
+          <Button style={styles.button} mode="contained" onPress={handleSignup}>
+            Sign Up
+          </Button>
+          {/* <Button style={styles.button} mode="contained" onPress={signIn}>
+            Sign In
+          </Button> */}
+        </>
+      )}
+    </KeyboardAvoidingView>
+  );
+};
+
+export default SignupScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+    height: "100%", // Set a fixed height for the container
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "black",
+  },
+  input: {
+    width: "80%",
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  button: {
+    marginTop: 20,
+    width: "80%",
+    paddingVertical: 10,
+  },
+});
