@@ -174,7 +174,7 @@ const CarWashOrderScreen = () => {
   const addCarWashOrder = async () => {
     try {
       const user = auth.currentUser;
-      if (!user) {
+      if (!user || !user.emailVerified) {
         console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
@@ -254,7 +254,7 @@ const CarWashOrderScreen = () => {
         <Appbar.Header style={{ height: 50, top: 5 }}>
           <Appbar.Content
             title= {'Total: $'+(bodyStyleCost+prefrenceCost+deliveryCost).toFixed(2)}
-            style={{ position: "absolute", left: 215 }}
+            style={{ position: "absolute", left: 200 }}
           />
         </Appbar.Header>
         <ScrollView style={styles.scrollView}>
@@ -486,10 +486,10 @@ const CarWashOrderScreen = () => {
             <Button
               style={{ marginBottom: 28, bottom: -10 }}
               mode="contained"
-              onPress={() =>
-                navigation.navigate("checkOut", {
+              onPress={() => { navigation.navigate("checkOut", {
                   addCarWashOrder: addCarWashOrder,
-                })
+                }); updateTotalCost(bodyStyleCost+prefrenceCost+deliveryCost)}
+               
               }
               labelStyle={{
                 fontSize: 20,

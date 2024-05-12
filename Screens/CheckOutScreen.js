@@ -154,11 +154,14 @@ const CheckOutScreen = () => {
           <Appbar.Content
             title={
               "Total: $" +
-              (bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)
+              (totalCost).toFixed(2)
+              
             }
+            
             style={{
               position: "absolute",
-              left: 215,
+              left: 200,
+              
               //backgroundColor: "lightgrey",
             }}
           />

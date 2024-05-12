@@ -72,7 +72,10 @@ const EditAccountScreen = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        if (!user) return;
+        if (!user || !user.emailVerified) {
+          // If user is not logged in or email is not verified, return early
+          return;
+        }
 
         const userDocRef = collection(FIRESTORE_DB, "Users");
         const querySnapshot = await getDocs(userDocRef);
@@ -150,7 +153,7 @@ const EditAccountScreen = () => {
     }
   };
 
-  if (!user) {
+  if (!user || !user.emailVerified) {
     return <LogInScreen />;
   }
 

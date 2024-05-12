@@ -33,7 +33,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
         onPress={handleSendEmail}
         style={styles.button}
       >
-        Send Reset Email
+        Send Reset Password
       </Button>
     </View>
   );

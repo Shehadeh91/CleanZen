@@ -170,7 +170,7 @@ const OrderScreen = () => {
     return unsubscribe;
   }, [auth]);
 
-  if (!user) {
+  if (!user || !user.emailVerified) {
     return <LogInScreen />;
   }
 

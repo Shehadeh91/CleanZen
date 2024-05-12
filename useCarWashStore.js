@@ -67,7 +67,7 @@ export const useBodyStyleCostStore = create((set) => ({
 }));
 
 export const useTotalCostStore = create((set) => ({
-  totalCost: 0, // Initial value for totalCost
+  totalCost: 25, // Initial value for totalCost
   updateTotalCost: (value) => set({ totalCost: value }),
 }));
 

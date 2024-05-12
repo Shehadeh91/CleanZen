@@ -15,7 +15,7 @@ import { usePageIndex } from "../useAppStore";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import {
   useBottomNavigationVisible,
   useUser,
@@ -53,13 +53,14 @@ const SignupScreen = ({ navigation }) => {
   );
 
   useEffect(() => {
-    // Check if user is already signed in
     const unsubscribe = FIREBASE_AUTH.onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        // User is logged in, navigate to the account page
-        navigation.navigate("account");
+        if (currentUser.emailVerified) { // Check if email is verified
+          navigation.navigate("login");
+        } else {
+          alert("Please verify your email to sign in.");
+        }
       } else {
-        // User is not logged in, clear Zustand user-related states
         setUser(null);
         setName(null);
         setPhone(null);
@@ -68,15 +69,16 @@ const SignupScreen = ({ navigation }) => {
       }
     });
 
-    // Clean up the subscription
     return unsubscribe;
   }, []);
 
   const handleSignup = async () => {
     //Check if the password meets complexity requirements
-    if (/(?=.*\d)(?=.*[!@#$%^&*]).{7,}/.test(password)) {
+    if (
+      !/(?=.*\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{7,}/.test(password)
+    ) {
       alert(
-        "Password must be at least 7 characters long and include at least one number and one special character (!@#$%^&*). Example: MyPassw0rd!"
+        "Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!"
       );
       return; // Exit the function if password is invalid
     }
@@ -95,7 +97,8 @@ const SignupScreen = ({ navigation }) => {
         email,
         password
       );
-
+// Send verification email
+await sendEmailVerification(auth.currentUser);
       const usersCollectionRef = collection(FIRESTORE_DB, "Users");
 
       const userDocRef = doc(usersCollectionRef, user.email);
@@ -120,6 +123,7 @@ const SignupScreen = ({ navigation }) => {
       alert("Sign up failed: " + error.message);
     } finally {
       setLoading(false);
+      navigation.navigate("login");
     }
   };
 

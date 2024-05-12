@@ -190,7 +190,7 @@ export default function App() {
             name="checkOut"
             component={CheckOutScreen}
             options={{
-              headerTitle: "Order Summary", // Hide header title
+              headerTitle: "Check Out", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

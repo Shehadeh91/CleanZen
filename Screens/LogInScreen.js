@@ -43,8 +43,21 @@ const LogInScreen = () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
-      navigation.navigate('account');
+      const user = response.user;
+      if (user && user.emailVerified) { // Check if email is verified
+        navigation.navigate('account');
+      } else {
+        Alert.alert(
+          "Email Verification Required",
+          "Please verify your email before logging in.",
+          [
+            {
+              text: "OK",
+              onPress: () => console.log("OK Pressed"),
+            },
+          ]
+        );
+      }
     } catch (error) {
       console.log(error);
       alert("Sign in failed: " + error.message);
