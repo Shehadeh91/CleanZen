@@ -34,7 +34,7 @@ export default function App() {
     <PaperProvider>
 
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home"  screenOptions={{gestureEnabled: true, ...TransitionPresets.FadeFromBottomAndroid}}>
+        <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
             name="home"
             component={HomeScreen}

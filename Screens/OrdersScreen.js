@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   FlatList,
+  BackHandler
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -42,6 +43,17 @@ const OrderScreen = () => {
     setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
   };
+
+
+  useEffect(() => {
+    //setVisible(true); // Call setVisible(false) when the component mounts
+    const backAction = () => true; // Prevent going back when on AccountScreen
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove(); // Clean up the event listener
+  }, []);
 
   useEffect(() => {
     let isMounted = true; // Flag to track component mount state
@@ -258,187 +270,23 @@ const OrderScreen = () => {
                     order.Total}{" "}
                 </Text>
 
-                <View style={{ flexDirection: "row" }}>
-                  {order.BodyType === "Sedan" && (
-                    <Icon
-                      source={require("../assets/Icons/Sedan.png")}
+                <View  style={{ flexDirection: "row", gap: 5}} >
+                {getIconSource("bodyType", order.BodyType) && (
+                    <Icon 
+                      source={getIconSource("bodyType", order.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
+                     
+                      
                     />
                   )}
-                  {order.BodyType === "Coupe" && (
+
+                  {getIconSource("carBrand", order.CarBrand) && (
                     <Icon
-                      source={require("../assets/Icons/Coupe.png")}
+                      source={getIconSource("carBrand", order.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
-                    />
-                  )}
-                  {order.BodyType === "Hatchback" && (
-                    <Icon
-                      source={require("../assets/Icons/Hatchback.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "PickupTruck" && (
-                    <Icon
-                      source={require("../assets/Icons/PickupTruck.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "SUV" && (
-                    <Icon
-                      source={require("../assets/Icons/SUV.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "MiniVan" && (
-                    <Icon
-                      source={require("../assets/Icons/MiniVan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mazda" && (
-                    <Icon
-                      source={require("../assets/Icons/mazda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mercedes" && (
-                    <Icon
-                      source={require("../assets/Icons/mercedes.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "BMW" && (
-                    <Icon
-                      source={require("../assets/Icons/bmw.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Honda" && (
-                    <Icon
-                      source={require("../assets/Icons/honda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Hyundai" && (
-                    <Icon
-                      source={require("../assets/Icons/hyundai.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Ford" && (
-                    <Icon
-                      source={require("../assets/Icons/ford.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chevrolet" && (
-                    <Icon
-                      source={require("../assets/Icons/chevrolet.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Toyota" && (
-                    <Icon
-                      source={require("../assets/Icons/toyota.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "GMC" && (
-                    <Icon
-                      source={require("../assets/Icons/gmc.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Dodge" && (
-                    <Icon
-                      source={require("../assets/Icons/dodge.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Jeep" && (
-                    <Icon
-                      source={require("../assets/Icons/jeep.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Nissan" && (
-                    <Icon
-                      source={require("../assets/Icons/nissan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "KIA" && (
-                    <Icon
-                      source={require("../assets/Icons/kia.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Subaru" && (
-                    <Icon
-                      source={require("../assets/Icons/subaru.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Volkswagen" && (
-                    <Icon
-                      source={require("../assets/Icons/volkswagen.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Audi" && (
-                    <Icon
-                      source={require("../assets/Icons/audi.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chrysler" && (
-                    <Icon
-                      source={require("../assets/Icons/chrysler.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Lexus" && (
-                    <Icon
-                      source={require("../assets/Icons/lexus.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Cadilac" && (
-                    <Icon
-                      source={require("../assets/Icons/cadilac.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Buick" && (
-                    <Icon
-                      source={require("../assets/Icons/buick.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
+                     
                     />
                   )}
                   <Icon source="format-paint" color={order.Color} size={35} />
@@ -494,187 +342,23 @@ const OrderScreen = () => {
                     order.Total}{" "}
                 </Text>
 
-                <View style={{ flexDirection: "row" }}>
-                  {order.BodyType === "Sedan" && (
-                    <Icon
-                      source={require("../assets/Icons/Sedan.png")}
+                <View  style={{ flexDirection: "row", gap: 5}} >
+                {getIconSource("bodyType", order.BodyType) && (
+                    <Icon 
+                      source={getIconSource("bodyType", order.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
+                     
+                      
                     />
                   )}
-                  {order.BodyType === "Coupe" && (
+
+                  {getIconSource("carBrand", order.CarBrand) && (
                     <Icon
-                      source={require("../assets/Icons/Coupe.png")}
+                      source={getIconSource("carBrand", order.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
-                    />
-                  )}
-                  {order.BodyType === "Hatchback" && (
-                    <Icon
-                      source={require("../assets/Icons/Hatchback.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "PickupTruck" && (
-                    <Icon
-                      source={require("../assets/Icons/PickupTruck.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "SUV" && (
-                    <Icon
-                      source={require("../assets/Icons/SUV.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "MiniVan" && (
-                    <Icon
-                      source={require("../assets/Icons/MiniVan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mazda" && (
-                    <Icon
-                      source={require("../assets/Icons/mazda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mercedes" && (
-                    <Icon
-                      source={require("../assets/Icons/mercedes.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "BMW" && (
-                    <Icon
-                      source={require("../assets/Icons/bmw.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Honda" && (
-                    <Icon
-                      source={require("../assets/Icons/honda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Hyundai" && (
-                    <Icon
-                      source={require("../assets/Icons/hyundai.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Ford" && (
-                    <Icon
-                      source={require("../assets/Icons/ford.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chevrolet" && (
-                    <Icon
-                      source={require("../assets/Icons/chevrolet.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Toyota" && (
-                    <Icon
-                      source={require("../assets/Icons/toyota.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "GMC" && (
-                    <Icon
-                      source={require("../assets/Icons/gmc.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Dodge" && (
-                    <Icon
-                      source={require("../assets/Icons/dodge.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Jeep" && (
-                    <Icon
-                      source={require("../assets/Icons/jeep.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Nissan" && (
-                    <Icon
-                      source={require("../assets/Icons/nissan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "KIA" && (
-                    <Icon
-                      source={require("../assets/Icons/kia.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Subaru" && (
-                    <Icon
-                      source={require("../assets/Icons/subaru.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Volkswagen" && (
-                    <Icon
-                      source={require("../assets/Icons/volkswagen.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Audi" && (
-                    <Icon
-                      source={require("../assets/Icons/audi.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chrysler" && (
-                    <Icon
-                      source={require("../assets/Icons/chrysler.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Lexus" && (
-                    <Icon
-                      source={require("../assets/Icons/lexus.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Cadilac" && (
-                    <Icon
-                      source={require("../assets/Icons/cadilac.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Buick" && (
-                    <Icon
-                      source={require("../assets/Icons/buick.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
+                     
                     />
                   )}
                   <Icon source="format-paint" color={order.Color} size={35} />
@@ -730,12 +414,14 @@ const OrderScreen = () => {
                     order.Total}{" "}
                 </Text>
 
-                <View style={{ flexDirection: "row" }}>
+                <View  style={{ flexDirection: "row", gap: 5}} >
                   {getIconSource("bodyType", order.BodyType) && (
-                    <Icon
+                    <Icon 
                       source={getIconSource("bodyType", order.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
+                     
+                      
                     />
                   )}
 
@@ -744,6 +430,7 @@ const OrderScreen = () => {
                       source={getIconSource("carBrand", order.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
+                     
                     />
                   )}
 
