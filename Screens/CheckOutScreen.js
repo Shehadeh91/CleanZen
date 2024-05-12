@@ -41,11 +41,15 @@ import {
   useDateStore,
 } from "../useCarWashStore";
 import { useAddress } from "../useAppStore";
+import LogInScreen from "./LogInScreen";
+import { useUser } from "../useAppStore";
+
 
 const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
+  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
   const [note, setNote] = useNoteStore((state) => [state.note, state.setNote]);
@@ -135,6 +139,13 @@ const CheckOutScreen = () => {
       setIsLoading(false); // Hide activity indicator
     }
   };
+  
+
+  if (!user) {
+    return <LogInScreen />;
+  }
+
+
 
   return (
     
@@ -173,7 +184,7 @@ const CheckOutScreen = () => {
                   <Avatar.Icon
                     {...props}
                     icon="map-marker"
-                    size={55}
+                    size={50}
                     left={-10}
                   />
                 )}
@@ -206,12 +217,14 @@ const CheckOutScreen = () => {
               <Card.Title
                 title={prefrenceOption + " " + "Car Wash"}
                 titleStyle={{ fontSize: 20 }}
+                
                 left={(props) => (
                   <Avatar.Icon
                     {...props}
                     icon="numeric-1-circle"
                     size={55}
                     left={-10}
+                    bottom={-15}
                   />
                 )}
               />
@@ -269,7 +282,7 @@ const CheckOutScreen = () => {
                 </Button>
                 <Button
                   style={styles.rectangularButton}
-                  icon="circle"
+                  icon="format-paint"
                   labelStyle={{ fontSize: 40, color: currentColor }}
                   mode="text"
                   contentStyle={{ left: 7 }}
@@ -300,7 +313,7 @@ const CheckOutScreen = () => {
                 // subtitle= "example"
 
                 left={(props) => (
-                  <Avatar.Icon {...props} icon="note" size={55} left={-10} />
+                  <Avatar.Icon {...props} icon="note" size={55} left={-10}  bottom={-5}/>
                 )}
               />
               <Card.Content
@@ -323,7 +336,7 @@ const CheckOutScreen = () => {
                 title="Payment"
                 titleStyle={{ fontSize: 20, marginTop: 10 }}
                 left={(props) => (
-                  <Avatar.Icon {...props} icon="cash" size={55} left={-10} />
+                  <Avatar.Icon {...props} icon="cash" size={55} left={-10} bottom={-15}/>
                 )}
               />
               <RadioButton.Group
@@ -349,7 +362,7 @@ const CheckOutScreen = () => {
             </Card>
             {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
             <Button
-              style={{ marginBottom: 28, bottom: -10 }}
+              style={{ marginBottom: 110, top:50 }}
               mode="contained"
               onPress={() => handleConfirmOrder()}
               labelStyle={{
@@ -374,20 +387,22 @@ const CheckOutScreen = () => {
 const styles = StyleSheet.create({
   scrollView: {
     flexDirection: 'column',
-      flex: 1
+      flex: 1,
+     // borderWidth: 1
   },
   container: {
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: "white",
     paddingTop: 15,
+   // borderWidth: 2
     
    
   },
   card: {
     marginBottom: 16,
     borderWidth: 3,
-    backgroundColor: "white",
+    backgroundColor: "#F3E9F9",
   },
   input: {
     marginLeft: 20,
@@ -412,7 +427,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: -15,
+marginTop: -15,
     marginHorizontal: 20,
   },
   rectangularButton: {

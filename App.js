@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
 import SignupScreen from "./Screens/SignUpScreen";
 import LogInScreen from "./Screens/LogInScreen";
@@ -20,7 +20,11 @@ import PrivacyControlScreen from "./Screens/PrivacyControlScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
-import { PaperProvider } from 'react-native-paper';
+import { PaperProvider, useTheme } from 'react-native-paper';
+
+
+
+
 
 
 const Stack = createStackNavigator();
@@ -30,10 +34,11 @@ export default function App() {
     <PaperProvider>
 
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Home"  screenOptions={{gestureEnabled: true, ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
             name="home"
             component={HomeScreen}
+            
             options={{ headerShown: false }} // Hide header for Home screen
           />
           <Stack.Screen

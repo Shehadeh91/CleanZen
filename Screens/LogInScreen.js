@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#fff",
     height: "100%",
+    paddingTop: 100
   },
   title: {
     fontSize: 24,

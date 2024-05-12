@@ -100,6 +100,9 @@ const LocationSearch = () => {
     textAlign: 'center',
     alignItems: "center",
     borderRadius: 15,
+    fontSize: 20,
+                textAlignVertical: "center",
+                letterSpacing: 5,
     color: 'white'}}>Confirm Location</Text>
         </TouchableOpacity>
       </View>
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     //bottom: -20,
     height: 100,
     width: "100%",
-    marginTop: 500, // This marginTop may need adjustment based on your layout
+    marginTop: 600, // This marginTop may need adjustment based on your layout
   },
  
   buttonText: {

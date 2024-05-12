@@ -287,24 +287,80 @@ const CarWashOrderScreen = () => {
               ></Button>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   width: 275,
-                  height: "auto", // Set height to 'auto' for multiline text
+                  height: 55, // Set height to 'auto' for multiline text
                   // borderColor: 'green',
                  // borderRadius: 15,
                 //  backgroundColor: "lightgrey",
                   // borderWidth: 1,
                   left: 10,
-                  bottom: 15,
+                  bottom: 3,
                   paddingHorizontal: 15,
                   position: "absolute",
+                  
                 }}
                 multiline={true}
               >
                 {address.replace(/([A-Z]{2,})/g, "$1\n")}
               </Text>
             </Card>
-
+            <Card style={styles.card}>
+              <Card.Title
+                title="Car Description"
+                titleStyle={{ fontSize: 20, marginTop: 10 }}
+                left={(props) => (
+                  <Avatar.Icon {...props} icon="car-cog" size={40} />
+                )}
+              />
+              {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
+              {/* <Text style={{fontSize: 15, left: 155, top: -10, color: 'green'}}> +$25</Text> */}
+              <View style={styles.buttonContainer}>
+                <Button
+                  style={styles.rectangularButton}
+                  icon={iconBrand}
+                  mode="contained"
+                  labelStyle={{ fontSize: 40 }}
+                  contentStyle={{ left: 7 }}
+                  onPress={showModalBrand}
+                >
+                                 </Button>
+                <Button
+                  style={styles.rectangularButton}
+                  //icon="camera"
+                  labelStyle={{ fontSize: 45 }}
+                  contentStyle={{ left: 7 }}
+                  icon={iconBodyStyle}
+                  mode="contained"
+                  onPress={showModalBodyStyle}
+                >
+                  {/* Style */}
+                </Button>
+                <Button
+                  style={styles.rectangularButton}
+                  icon="format-paint"
+                  labelStyle={{ fontSize: 35, color: currentColor }}
+                  mode="contained"
+                  contentStyle={{ left: 7 }}
+                  onPress={showModalColorWheel}
+                ></Button>
+              </View>
+              <TextInput
+                style={{
+                  width: 150,
+                  marginBottom: 10,
+                  alignSelf: "center",
+                  left: 15,
+                  borderRadius: 25,
+                }}
+                label="Car Plate"
+                value={carPlate}
+                mode="outlined"
+                autoCapitalize="characters"
+                maxLength={10}
+                onChangeText={(text) => setCarPlate(text)}
+              />
+            </Card>
             {/* Preference Card */}
             <Card style={styles.card}>
               <Card.Title
@@ -344,62 +400,8 @@ const CarWashOrderScreen = () => {
               </RadioButton.Group>
             </Card>
 
-            {/* Car Description Card */}
-            <Card style={styles.card}>
-              <Card.Title
-                title="Car Description"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="car-cog" size={40} />
-                )}
-              />
-              {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
-              {/* <Text style={{fontSize: 15, left: 155, top: -10, color: 'green'}}> +$25</Text> */}
-              <View style={styles.buttonContainer}>
-                <Button
-                  style={styles.rectangularButton}
-                  icon={iconBrand}
-                  mode="contained"
-                  labelStyle={{ fontSize: 40 }}
-                  contentStyle={{ left: 7 }}
-                  onPress={showModalBrand}
-                >
-                                 </Button>
-                <Button
-                  style={styles.rectangularButton}
-                  //icon="camera"
-                  labelStyle={{ fontSize: 40 }}
-                  contentStyle={{ left: 7 }}
-                  icon={iconBodyStyle}
-                  mode="contained"
-                  onPress={showModalBodyStyle}
-                >
-                  {/* Style */}
-                </Button>
-                <Button
-                  style={styles.rectangularButton}
-                  icon="circle"
-                  labelStyle={{ fontSize: 40, color: currentColor }}
-                  mode="contained"
-                  contentStyle={{ left: 7 }}
-                  onPress={showModalColorWheel}
-                ></Button>
-              </View>
-              <TextInput
-                style={{
-                  width: 150,
-                  marginBottom: 10,
-                  alignSelf: "center",
-                  borderRadius: 25,
-                }}
-                label="Car Plate"
-                value={carPlate}
-                mode="outlined"
-                autoCapitalize="characters"
-                maxLength={10}
-                onChangeText={(text) => setCarPlate(text)}
-              />
-            </Card>
+            
+           
             <Card style={styles.card}>
               <Card.Title
                 title="Delivery"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -30,6 +30,8 @@ const OrderScreen = () => {
   const [inProgressOrders, setInProgressOrders] = useState([]);
   const [canceledOrders, setCanceledOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
+
+  const swipeableRef = useRef(null);
 
   const filterOrders = (status) =>
     inProgressOrders.filter((order) => order.Status === status);
@@ -88,22 +90,54 @@ const OrderScreen = () => {
     };
   }, [user]);
 
-  //   firebase()
-  //   .collection('Car-Wash')
-  //   doc(user)
-  //   update({
-  //     status: "haha"
-  //   })
-  //   .then(() => {st
-  //     console.log("user updated");
-  //   });
+  const carBrandIcons = {
+    Mazda: require("../assets/Icons/mazda.png"),
+    Mercedes: require("../assets/Icons/mercedes.png"),
+    BMW: require("../assets/Icons/bmw.png"),
+    Honda: require("../assets/Icons/honda.png"),
+    Hyundai: require("../assets/Icons/hyundai.png"),
+    Ford: require("../assets/Icons/ford.png"),
+    Chevrolet: require("../assets/Icons/chevrolet.png"),
+    Toyota: require("../assets/Icons/toyota.png"),
+    GMC: require("../assets/Icons/gmc.png"),
+    Dodge: require("../assets/Icons/dodge.png"),
+    Jeep: require("../assets/Icons/jeep.png"),
+    Nissan: require("../assets/Icons/nissan.png"),
+    KIA: require("../assets/Icons/kia.png"),
+    Subaru: require("../assets/Icons/subaru.png"),
+    Volkswagen: require("../assets/Icons/volkswagen.png"),
+    Audi: require("../assets/Icons/audi.png"),
+    Chrysler: require("../assets/Icons/chrysler.png"),
+    Lexus: require("../assets/Icons/lexus.png"),
+    Cadilac: require("../assets/Icons/cadilac.png"),
+    Buick: require("../assets/Icons/buick.png"),
+  };
+
+  const bodyTypeIcons = {
+    Sedan: require("../assets/Icons/Sedan.png"),
+    Coupe: require("../assets/Icons/Coupe.png"),
+    Hatchback: require("../assets/Icons/Hatchback.png"),
+    PickupTruck: require("../assets/Icons/PickupTruck.png"),
+    SUV: require("../assets/Icons/SUV.png"),
+    MiniVan: require("../assets/Icons/MiniVan.png"),
+  };
+
+  const getIconSource = (type, value) => {
+    if (type === "carBrand") {
+      return carBrandIcons[value] || null;
+    } else if (type === "bodyType") {
+      return bodyTypeIcons[value] || null;
+    }
+  };
 
   const markOrderAsCanceled = async (orderId) => {
     try {
       const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
       await setDoc(orderRef, { Status: "Canceled" }, { merge: true });
       console.log("Order marked as Canceled.");
-
+      if (swipeableRef.current) {
+        swipeableRef.current.close(); // Close the Swipeable component
+      }
       // Update state after canceling the order
       setInProgressOrders((prevOrders) =>
         prevOrders.filter((order) => order.id !== orderId)
@@ -139,7 +173,7 @@ const OrderScreen = () => {
             highlightedButton === "InProgress" && styles.highlightedButton,
           ]}
           labelStyle={{
-            fontSize: 18,
+            fontSize: 15,
             width: "100%",
             height: "100%",
             textAlign: "center",
@@ -157,7 +191,7 @@ const OrderScreen = () => {
             highlightedButton === "Completed" && styles.highlightedButton,
           ]}
           labelStyle={{
-            fontSize: 18,
+            fontSize: 15,
             width: "100%",
             height: "100%",
             textAlign: "center",
@@ -175,7 +209,7 @@ const OrderScreen = () => {
             highlightedButton === "Canceled" && styles.highlightedButton,
           ]}
           labelStyle={{
-            fontSize: 18,
+            fontSize: 15,
             width: "100%",
             height: "100%",
             textAlign: "center",
@@ -190,21 +224,24 @@ const OrderScreen = () => {
         <ScrollView style={styles.ordersList}>
           {inProgressOrders.map((order) => (
             <Swipeable
-               
-               rightThreshold={100}
-            on
+             key={order.id} // Add key prop here
+              ref={swipeableRef}
+              rightThreshold={100}
+              on
               renderRightActions={() => (
                 <View
                   key={order.id}
-                  style={{  justifyContent: "center", width: 100}}
-                 
+                  style={{ justifyContent: "center", width: 100 }}
                 >
-                
                   <Button
-                    mode='contained'
+                    mode="contained"
                     onPress={() => markOrderAsCanceled(order.id)}
-                    style={{flex: 1,  justifyContent: "center", backgroundColor: '#C6373C', borderRadius: 0 }}
-                    
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      backgroundColor: "#C6373C",
+                      borderRadius: 0,
+                    }}
                   >
                     Cancel
                   </Button>
@@ -404,7 +441,7 @@ const OrderScreen = () => {
                       size={35}
                     />
                   )}
-                  <Icon source="brightness-1" color={order.Color} size={35} />
+                  <Icon source="format-paint" color={order.Color} size={35} />
                   <Text
                     style={{
                       fontSize: 20,
@@ -640,7 +677,7 @@ const OrderScreen = () => {
                       size={35}
                     />
                   )}
-                  <Icon source="brightness-1" color={order.Color} size={35} />
+                  <Icon source="format-paint" color={order.Color} size={35} />
                   <Text
                     style={{
                       fontSize: 20,
@@ -694,189 +731,23 @@ const OrderScreen = () => {
                 </Text>
 
                 <View style={{ flexDirection: "row" }}>
-                  {order.BodyType === "Sedan" && (
+                  {getIconSource("bodyType", order.BodyType) && (
                     <Icon
-                      source={require("../assets/Icons/Sedan.png")}
+                      source={getIconSource("bodyType", order.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
-                  {order.BodyType === "Coupe" && (
+
+                  {getIconSource("carBrand", order.CarBrand) && (
                     <Icon
-                      source={require("../assets/Icons/Coupe.png")}
+                      source={getIconSource("carBrand", order.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
-                  {order.BodyType === "Hatchback" && (
-                    <Icon
-                      source={require("../assets/Icons/Hatchback.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "PickupTruck" && (
-                    <Icon
-                      source={require("../assets/Icons/PickupTruck.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "SUV" && (
-                    <Icon
-                      source={require("../assets/Icons/SUV.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.BodyType === "MiniVan" && (
-                    <Icon
-                      source={require("../assets/Icons/MiniVan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mazda" && (
-                    <Icon
-                      source={require("../assets/Icons/mazda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Mercedes" && (
-                    <Icon
-                      source={require("../assets/Icons/mercedes.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "BMW" && (
-                    <Icon
-                      source={require("../assets/Icons/bmw.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Honda" && (
-                    <Icon
-                      source={require("../assets/Icons/honda.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Hyundai" && (
-                    <Icon
-                      source={require("../assets/Icons/hyundai.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Ford" && (
-                    <Icon
-                      source={require("../assets/Icons/ford.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chevrolet" && (
-                    <Icon
-                      source={require("../assets/Icons/chevrolet.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Toyota" && (
-                    <Icon
-                      source={require("../assets/Icons/toyota.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "GMC" && (
-                    <Icon
-                      source={require("../assets/Icons/gmc.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Dodge" && (
-                    <Icon
-                      source={require("../assets/Icons/dodge.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Jeep" && (
-                    <Icon
-                      source={require("../assets/Icons/jeep.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Nissan" && (
-                    <Icon
-                      source={require("../assets/Icons/nissan.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "KIA" && (
-                    <Icon
-                      source={require("../assets/Icons/kia.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Subaru" && (
-                    <Icon
-                      source={require("../assets/Icons/subaru.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Volkswagen" && (
-                    <Icon
-                      source={require("../assets/Icons/volkswagen.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Audi" && (
-                    <Icon
-                      source={require("../assets/Icons/audi.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Chrysler" && (
-                    <Icon
-                      source={require("../assets/Icons/chrysler.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Lexus" && (
-                    <Icon
-                      source={require("../assets/Icons/lexus.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Cadilac" && (
-                    <Icon
-                      source={require("../assets/Icons/cadilac.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  {order.CarBrand === "Buick" && (
-                    <Icon
-                      source={require("../assets/Icons/buick.png")}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  <Icon source="brightness-1" color={order.Color} size={35} />
+
+                  <Icon source="format-paint" color={order.Color} size={35} />
                   <Text
                     style={{
                       fontSize: 20,
@@ -907,14 +778,17 @@ const OrderScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    //padding: 10,
     alignItems: "center",
     paddingTop: 75,
+    paddingHorizontal: 10,
+    paddingBottom: 25,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 10,
+
     width: 350,
   },
   button: {
@@ -926,17 +800,18 @@ const styles = StyleSheet.create({
   },
   ordersList: {
     width: "100%",
-    height: "80%",
-    borderWidth: 1,
+    height: "70%",
+    // borderWidth: 2,
     borderColor: "black",
-    marginBottom: 10,
+    // marginBottom: 10,
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
-    padding: 10,
-    borderBottomWidth: 1,
+    //padding: 3,
+
+    borderBottomWidth: 3,
     borderBottomColor: "#DDDDDD",
-   backgroundColor: 'white'
+    backgroundColor: "#F3E9F9",
   },
 });
 
