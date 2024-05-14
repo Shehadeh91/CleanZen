@@ -187,7 +187,7 @@ const CarWashOrderScreen = () => {
         return;
       }
 
-      const counterDocRef = doc(FIRESTORE_DB, "orderCounters", userId);
+      const counterDocRef = doc(FIRESTORE_DB, "OrderCounters", userId);
       const counterDocSnap = await getDoc(counterDocRef);
 
       let orderNumber = 1;
@@ -219,6 +219,7 @@ const CarWashOrderScreen = () => {
         Delivery: deliveryOption,
         Total: totalCost,
         Status: "InProgress",
+        Assigned: "No One"
       });
 
       await setDoc(
@@ -253,8 +254,8 @@ const CarWashOrderScreen = () => {
       
         <Appbar.Header style={{ height: 50, top: 5 }}>
           <Appbar.Content
-            title= {'Total: $'+(bodyStyleCost+prefrenceCost+deliveryCost).toFixed(2)}
-            style={{ position: "absolute", left: 200 }}
+            title= {'Subtotal: $'+(bodyStyleCost+prefrenceCost+deliveryCost).toFixed(2)}
+            style={{ position: "absolute", left: 150 }}
           />
         </Appbar.Header>
         <ScrollView style={styles.scrollView}>

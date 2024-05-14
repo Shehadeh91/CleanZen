@@ -10,8 +10,9 @@ import {
 import { ActivityIndicator, Button } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { signInWithEmailAndPassword } from "firebase/auth"; // Corrected import
-import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { signInWithEmailAndPassword, getAuth} from "firebase/auth"; // Corrected import
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { useBottomNavigationVisible, usePageIndex, useEmail, usePassword, useUser} from "../useAppStore";
 
 
@@ -24,7 +25,7 @@ const LogInScreen = () => {
   const navigation = useNavigation(); // Added navigation
 
  
-
+  
 
 
   const [visible  , setVisible ] = useBottomNavigationVisible(state => [state.visible, state.setVisible]);
@@ -32,7 +33,7 @@ const LogInScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
-      setIndex(1);
+      //setIndex(1);
       return () => {
         // Clean-up function when screen loses focus (optional)
       };
@@ -44,8 +45,35 @@ const LogInScreen = () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       const user = response.user;
-      if (user && user.emailVerified) { // Check if email is verified
-        navigation.navigate('account');
+      if (user && user.emailVerified) {
+        // Check if the user's role is "Client"
+        const userDocRef = doc(FIRESTORE_DB, "Users", user.email);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          if (userData && userData.Role === "Client") {
+            navigation.navigate('account');
+            setIndex(1);
+            setVisible(true)
+          } 
+          else  if (userData && userData.Role === "Admin") {
+            navigation.navigate('admin');
+            setVisible(false)
+          } 
+          
+          else {
+            Alert.alert(
+              "Access Denied",
+              "You do not have permission to access this account.",
+              [
+                {
+                  text: "OK",
+                  onPress: () => console.log("OK Pressed"),
+                },
+              ]
+            );
+          }
+        }
       } else {
         Alert.alert(
           "Email Verification Required",
@@ -63,6 +91,8 @@ const LogInScreen = () => {
       alert("Sign in failed: " + error.message);
     } finally {
       setLoading(false);
+      //navigation.navigate('account');
+       // setIndex(1);
     }
   };
 

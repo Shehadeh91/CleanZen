@@ -16,6 +16,9 @@ import LocationSearchScreen from "./Screens/LocationSearchScreen";
 import EditAccountScreen from "./Screens/EditAccountScreen";
 import TermsOfServiceScreen from "./Screens/TermsOfServiceScreen";
 import PrivacyControlScreen from "./Screens/PrivacyControlScreen";
+import AdminScreen from "./Screens/AdminScreen";
+import UsersScreen from "./Screens/UsersScreen";
+import AdminOrdersScreen from "./Screens/AdminOrdersScreen";
 // import NotificationSettingsScreen from "./Screens/NotificationSettingsScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
@@ -50,6 +53,39 @@ export default function App() {
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color
               headerLeft: null, // Remove the back button
+            }}
+          />
+            <Stack.Screen
+            name="admin"
+            component={AdminScreen}
+            options={{
+              headerTitle: "Admin", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+              headerLeft: null, // Remove the back button
+            }}
+          />
+               <Stack.Screen
+            name="users"
+            component={UsersScreen}
+            options={{
+              headerTitle: "Users", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+             // headerLeft: null, // Remove the back button
+            }}
+          />
+                  <Stack.Screen
+            name="adminOrders"
+            component={AdminOrdersScreen}
+            options={{
+              headerTitle: "All Orders", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+             // headerLeft: null, // Remove the back button
             }}
           />
            <Stack.Screen
@@ -168,7 +204,7 @@ export default function App() {
             name="carWash"
             component={CarWashOrderScreen}
             options={{
-              headerTitle: "Order Page", // Hide header title
+              headerTitle: "Order", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

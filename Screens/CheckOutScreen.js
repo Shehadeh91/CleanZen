@@ -40,10 +40,9 @@ import {
   useTotalCostStore,
   useDateStore,
 } from "../useCarWashStore";
-import { useAddress } from "../useAppStore";
+import { useAddress, usePageIndex } from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 import { useUser } from "../useAppStore";
-
 
 const CheckOutScreen = () => {
   const navigation = useNavigation();
@@ -107,11 +106,11 @@ const CheckOutScreen = () => {
     state.address,
     state.setAddress,
   ]);
-
+  const [index  , setIndex ] = usePageIndex(state => [state.index, state.setIndex]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 100);
+    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5);
   }, []); // Empty dependency array to run the effect once on mount
 
   const handleConfirmOrder = async () => {
@@ -139,104 +138,269 @@ const CheckOutScreen = () => {
       setIsLoading(false); // Hide activity indicator
     }
   };
-  
 
-  if (!user) {
-    return <LogInScreen />;
-  }
+  const goToLogIn = () => {
+    navigation.navigate('login');
+    
+    setIndex(1);
+  };
 
 
+  useEffect(() => {
+    if (!user) {
+      goToLogIn();
+    }
+  }, [user]); 
 
   return (
-    
-      <View style={{ flex: 1 }}>
-        <Appbar.Header style={{ height: 50, top: 5 }}>
-          <Appbar.Content
-            title={
-              "Total: $" +
-              (totalCost).toFixed(2)
-              
-            }
-            
-            style={{
-              position: "absolute",
-              left: 200,
-              
-              //backgroundColor: "lightgrey",
-            }}
-          />
-        </Appbar.Header>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.container}>
-            {/* Car Location Card */}
+    <View style={{ flex: 1 }}>
+      <Appbar.Header style={{ height: 50, top: 5 }}>
+        <Appbar.Content
+          title={"Total: $" + totalCost.toFixed(2)}
+          style={{
+            position: "absolute",
+            left: 200,
 
-            <Card style={styles.card}>
-              <Card.Title
-                title={address}
-                titleStyle={{
-                  fontSize: 20,
-                  flexWrap: "wrap",
-                  // textAlign: "center",
-                  maxWidth: "100%",
-                  height: 60,
-                  padding: 10,
-                  left: -10,
-                  textAlignVertical: "center",
-                }}
-                left={(props) => (
-                  <Avatar.Icon
-                    {...props}
-                    icon="map-marker"
-                    size={50}
-                    left={-10}
-                  />
-                )}
-                multiline={2}
-              />
-            </Card>
-            <Card style={styles.card}>
-              <Card.Title
-                title={deliveryOption}
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                subtitle={date}
-                left={(props) => (
-                  <Avatar.Icon
-                    {...props}
-                    icon="calendar-clock-outline"
-                    size={55}
-                    left={-10}
-                  />
-                )}
-              />
-              {/* <Text
+            //backgroundColor: "lightgrey",
+          }}
+        />
+      </Appbar.Header>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          {/* Car Location Card */}
+
+          <Card style={styles.card}>
+            <Card.Title
+              title={address}
+              titleStyle={{
+                fontSize: 20,
+                flexWrap: "wrap",
+                // textAlign: "center",
+                maxWidth: "100%",
+                height: 60,
+                padding: 10,
+                left: -10,
+                textAlignVertical: "center",
+              }}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="map-marker"
+                  size={50}
+                  left={-10}
+                />
+              )}
+              multiline={2}
+            />
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title
+              title={deliveryOption}
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              subtitle={date}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="calendar-clock-outline"
+                  size={55}
+                  left={-10}
+                />
+              )}
+            />
+            {/* <Text
                 style={{ fontSize: 20, left: 200, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
               >
                 {deliveryCost}
                
               </Text> */}
-            </Card>
+          </Card>
 
-            <Card style={styles.card}>
-              <Card.Title
-                title={prefrenceOption + " " + "Car Wash"}
-                titleStyle={{ fontSize: 20 }}
-                
-                left={(props) => (
-                  <Avatar.Icon
-                    {...props}
-                    icon="numeric-1-circle"
-                    size={55}
-                    left={-10}
-                    bottom={-15}
-                  />
-                )}
-              />
-              {/* <Text
+          <Card style={styles.card}>
+            <Card.Title
+              title={prefrenceOption + " " + "Car Wash"}
+              titleStyle={{ fontSize: 20 }}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="numeric-1-circle"
+                  size={55}
+                  left={-10}
+                  bottom={-15}
+                />
+              )}
+            />
+            {/* <Text
                  style={{ fontSize: 20, left: 250, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
               >
                 $+ {prefrenceCost + bodyStyleCost} 
               </Text> */}
 
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                marginTop: -30,
+                marginHorizontal: 50,
+                
+                //gap: 1,
+                left: 5
+              }}
+            >
+              <Button
+                style={{
+                  width: 90,
+                  height: 40,
+                  //borderRadius: 15,
+                  //justifyContent: "center",
+                  // alignItems: "center",
+                  //backgroundColor: "#007bff",
+                  top: 5,
+                  marginLeft: 30,
+                }}
+                icon={iconBrand}
+                mode="text"
+                labelStyle={{ fontSize: 50 }}
+                //contentStyle={{ left: 0 }}
+              >
+                {/* Brand */}
+              </Button>
+              <Button
+                style={{
+                  width: 90,
+                  height: 40,
+                  borderRadius: 15,
+                  //justifyContent: "center",
+                  // alignItems: "center",
+                  //backgroundColor: "#007bff",
+
+                  marginLeft: 30,
+                }}
+                //icon="camera"
+                labelStyle={{ fontSize: 60 }}
+                contentStyle={{ left: 7 }}
+                icon={iconBodyStyle}
+                mode="text"
+              >
+                {/* Style */}
+              </Button>
+              <Button
+                style={styles.rectangularButton}
+                icon="format-paint"
+                labelStyle={{ fontSize: 40, color: currentColor }}
+                mode="text"
+                contentStyle={{ left: 7 }}
+              ></Button>
+              <Button
+                style={{
+                  width: 125,
+                  //  height: 40,
+                  left: 25,
+                  borderWidth: 2,
+                  marginVertical: 10,
+                  //marginLeft: 30,
+                }}
+                //contentStyle={{borderWidth: 1, width: 130,}}
+                labelStyle={{ fontSize: 20, textAlign: "center" }}
+                mode="text"
+              >
+                {" "}
+                <Text>{carPlate}</Text>
+              </Button>
+            </View>
+          </Card>
+
+          <Card style={styles.card}>
+            <Card.Title
+              // title="Note"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              // subtitle= "example"
+
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="note"
+                  size={55}
+                  left={-10}
+                  bottom={-5}
+                />
+              )}
+            />
+            <Card.Content
+              style={{ marginHorizontal: 50, marginTop: -60, width: 275 }}
+            >
+              <TextInput
+                //label="Address"
+                value={note}
+                mode="outlined"
+                borderColor="red"
+                // borderWidth = {2}
+                onChangeText={(text) => setNote(text)}
+                // width={200}
+              />
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title
+              // title="Note"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              // subtitle= "example"
+
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="human-dolly"
+                  size={55}
+                  left={-10}
+                  bottom={-5}
+                />
+              )}
+            />
+            <Card.Content
+              style={{ marginHorizontal: 50, marginTop: -60, width: 275 }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  paddingHorizontal: 20,
+                 // marginTop: 20,
+                  
+                }}
+              >
+                <View style={{ alignItems: "flex-start" }}>
+                  <Text>Subtotal</Text>
+                  <Text>Service Fee</Text>
+                  <Text>Taxes & Other Fees</Text>
+                </View>
+                <View style={{ alignItems: "flex-start", left: 10}}>
+                  <Text> ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}</Text>
+                  <Text> $4.00</Text>
+                  <Text> $1.50</Text>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title
+              title="Payment"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="cash"
+                  size={55}
+                  left={-10}
+                  bottom={-15}
+                />
+              )}
+            />
+            <RadioButton.Group
+              onValueChange={(newValue) => {
+                setPaymentOption(newValue);
+                //   updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 100)
+              }}
+              value={paymentOption}
+            >
               <View
                 style={{
                   flexDirection: "row",
@@ -246,161 +410,46 @@ const CheckOutScreen = () => {
                   borderColor: "red",
                 }}
               >
-                <Button
-                  style={{
-                    width: 90,
-                    height: 40,
-                    //borderRadius: 15,
-                    //justifyContent: "center",
-                    // alignItems: "center",
-                    //backgroundColor: "#007bff",
-                    top: 5,
-                    marginLeft: 30,
-                  }}
-                  icon={iconBrand}
-                  mode="text"
-                  labelStyle={{ fontSize: 50 }}
-                  //contentStyle={{ left: 0 }}
-                >
-                  {/* Brand */}
-                </Button>
-                <Button
-                  style={{
-                    width: 90,
-                    height: 40,
-                    borderRadius: 15,
-                    //justifyContent: "center",
-                    // alignItems: "center",
-                    //backgroundColor: "#007bff",
-
-                    marginLeft: 30,
-                  }}
-                  //icon="camera"
-                  labelStyle={{ fontSize: 60 }}
-                  contentStyle={{ left: 7 }}
-                  icon={iconBodyStyle}
-                  mode="text"
-                >
-                  {/* Style */}
-                </Button>
-                <Button
-                  style={styles.rectangularButton}
-                  icon="format-paint"
-                  labelStyle={{ fontSize: 40, color: currentColor }}
-                  mode="text"
-                  contentStyle={{ left: 7 }}
-                ></Button>
-                <Button
-                  style={{
-                    width: 125,
-                    //  height: 40,
-                    left: 25,
-                    borderWidth: 2,
-                    marginVertical: 10,
-                    //marginLeft: 30,
-                  }}
-                  //contentStyle={{borderWidth: 1, width: 130,}}
-                  labelStyle={{ fontSize: 20, textAlign: "center" }}
-                  mode="text"
-                >
-                  {" "}
-                  <Text>{carPlate}</Text>
-                </Button>
+                <RadioButton.Item label="Cash" value="Cash" />
+                <RadioButton.Item label="Card" value="Card" disabled />
               </View>
-            </Card>
+            </RadioButton.Group>
+          </Card>
+          {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+          <Button
+            style={{ marginBottom: 50, top: 10, borderWidth: 1 }}
+            mode="contained"
+            onPress={() => handleConfirmOrder()}
+            labelStyle={{
+              fontSize: 20,
+              textAlignVertical: "center",
+              letterSpacing: 10,
+            }}
+          >
+            Confirm
+          </Button>
+          {/* Other cards */}
+          {/* Delivery, Additional Note, Payment Options, etc. */}
+        </View>
+      </ScrollView>
 
-            <Card style={styles.card}>
-              <Card.Title
-                // title="Note"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                // subtitle= "example"
-
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="note" size={55} left={-10}  bottom={-5}/>
-                )}
-              />
-              <Card.Content
-                style={{ marginHorizontal: 50, marginTop: -60, width: 275 }}
-              >
-                <TextInput
-                  //label="Address"
-                  value={note}
-                  mode="outlined"
-                  borderColor="red"
-                  // borderWidth = {2}
-                  onChangeText={(text) => setNote(text)}
-                  // width={200}
-                />
-              </Card.Content>
-            </Card>
-
-            <Card style={styles.card}>
-              <Card.Title
-                title="Payment"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="cash" size={55} left={-10} bottom={-15}/>
-                )}
-              />
-              <RadioButton.Group
-                onValueChange={(newValue) => {
-                  setPaymentOption(newValue);
-                  //   updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 100)
-                }}
-                value={paymentOption}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    marginTop: -30,
-                    marginHorizontal: 50,
-                    borderColor: "red",
-                  }}
-                >
-                  <RadioButton.Item label="Cash" value="Cash" />
-                  <RadioButton.Item label="Card" value="Card" disabled />
-                </View>
-              </RadioButton.Group>
-            </Card>
-            {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
-            <Button
-              style={{ marginBottom: 110, top:50 }}
-              mode="contained"
-              onPress={() => handleConfirmOrder()}
-              labelStyle={{
-                fontSize: 20,
-                textAlignVertical: "center",
-                letterSpacing: 10,
-              }}
-            >
-              Confirm
-            </Button>
-            {/* Other cards */}
-            {/* Delivery, Additional Note, Payment Options, etc. */}
-          </View>
-        </ScrollView>
-
-        {/* Modal */}
-      </View>
-   
+      {/* Modal */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   scrollView: {
-    flexDirection: 'column',
-      flex: 1,
-     // borderWidth: 1
+    flexDirection: "column",
+    flex: 1,
+    // borderWidth: 1
   },
   container: {
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: "white",
     paddingTop: 15,
-   // borderWidth: 2
-    
-   
+    // borderWidth: 2
   },
   card: {
     marginBottom: 16,
@@ -430,7 +479,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-marginTop: -15,
+    marginTop: -15,
     marginHorizontal: 20,
   },
   rectangularButton: {

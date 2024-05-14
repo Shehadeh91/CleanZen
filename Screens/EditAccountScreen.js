@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, BackHandler, ScrollView, Alert } from "react-native";
+import { View, StyleSheet, BackHandler, ScrollView, Alert, Text } from "react-native";
 import { List, Divider, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
@@ -78,6 +78,7 @@ const EditAccountScreen = () => {
         }
 
         const userDocRef = collection(FIRESTORE_DB, "Users");
+        
         const querySnapshot = await getDocs(userDocRef);
         const userData = querySnapshot.docs
           .map((doc) => ({
@@ -192,6 +193,7 @@ const EditAccountScreen = () => {
                 description={currentPassword}
                 left={() => <List.Icon icon="phone" />}
               />
+              
               {/* <TextInput  secureTextEntry
         placeholder="New Password"
         value={newPassword}
@@ -223,6 +225,7 @@ const EditAccountScreen = () => {
 
               <Divider />
             </List.Section>
+            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "90%"}}>Please allow some time for updated information to appear on your account.</Text>
             <Button
               labelStyle={{
                 fontSize: 20,

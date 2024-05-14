@@ -23,6 +23,7 @@ import {
   usePhone,
   useEmail,
   usePassword,
+  
 } from "../useAppStore";
 
 const SignupScreen = ({ navigation }) => {
@@ -37,6 +38,7 @@ const SignupScreen = ({ navigation }) => {
   
   const [email, setEmail] = useEmail((state) => [state.email, state.setEmail]);
   const [password, setPassword] = useState("");
+  
 
   const [index, setIndex] = usePageIndex((state) => [
     state.index,
@@ -96,6 +98,7 @@ const SignupScreen = ({ navigation }) => {
         auth,
         email,
         password
+        
       );
 // Send verification email
 await sendEmailVerification(auth.currentUser);
@@ -110,6 +113,7 @@ await sendEmailVerification(auth.currentUser);
         Email: email,
         Phone: phone,
         Password: password,
+        Role: "Client"
       });
 
       // Update Zustand states with user's name and phone
@@ -123,7 +127,8 @@ await sendEmailVerification(auth.currentUser);
       alert("Sign up failed: " + error.message);
     } finally {
       setLoading(false);
-      navigation.navigate("login");
+      navigation.navigate("home");
+      setIndex(0);
     }
   };
 
@@ -157,7 +162,7 @@ await sendEmailVerification(auth.currentUser);
         onChangeText={setPhone}
         autoCapitalize="none"
       />
-
+<Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "80%"}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
       <TextInput
         style={styles.input}
         placeholder="Password"

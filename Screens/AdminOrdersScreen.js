@@ -19,7 +19,7 @@ import { Swipeable } from "react-native-gesture-handler";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-const OrderScreen = () => {
+const AdminOrdersScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
@@ -73,20 +73,18 @@ const OrderScreen = () => {
         }));
 
         // Filter orders by user's email
-        const userOrders = data.filter((order) => order.Email === user.email);
+        //const userOrders = data.filter((order) => order.Email === user.email);
 
         if (isMounted) {
           // Update state by reversing the order of new orders
           setInProgressOrders(
-            userOrders
-              .filter((order) => order.Status === "InProgress")
-              .reverse()
+            data.filter((order) => order.Status === "InProgress").reverse()
           );
           setCanceledOrders(
-            userOrders.filter((order) => order.Status === "Canceled").reverse()
+            data.filter((order) => order.Status === "Canceled").reverse()
           );
           setCompletedOrders(
-            userOrders.filter((order) => order.Status === "Completed").reverse()
+            data.filter((order) => order.Status === "Completed").reverse()
           );
         }
       } catch (error) {
@@ -149,14 +147,11 @@ const OrderScreen = () => {
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
+
+      // Update state after canceling the users
+      setInProgressOrders((prevOrders) => [...prevOrders, ...canceledOrders]);
+      setCanceledOrders([]); // Clear the client array after moving all users to agent
       // Update state after canceling the order
-      setInProgressOrders((prevOrders) =>
-        prevOrders.filter((order) => order.id !== orderId)
-      );
-      setCanceledOrders((prevOrders) => [
-        ...prevOrders,
-        inProgressOrders.find((order) => order.id === orderId),
-      ]);
     } catch (error) {
       console.error("Error marking order as Canceled:", error);
     }
@@ -437,7 +432,7 @@ const styles = StyleSheet.create({
     width: 110,
     textAlign: "center",
     borderRadius: 0,
-   
+    
   },
   highlightedButton: {
     backgroundColor: "black",
@@ -459,4 +454,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderScreen;
+export default AdminOrdersScreen;

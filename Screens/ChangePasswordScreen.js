@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Alert } from "react-native";
+import { View, StyleSheet, ScrollView, Alert, Text } from "react-native";
 import { List, Divider, Button, TextInput } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { updatePassword, reauthenticateWithCredential, getAuth, EmailAuthProvider } from "firebase/auth";
@@ -52,8 +52,10 @@ const ChangePasswordScreen = ({  }) => {
             <Divider />
             <List.Item
               title="New Password"
+              
               left={() => <List.Icon icon="lock" />}
             />
+            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
             <TextInput
               secureTextEntry
               placeholder="New Password"
