@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   BackHandler,
+  Linking
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -24,22 +25,25 @@ const AdminOrdersScreen = () => {
   const auth = FIREBASE_AUTH;
   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
   const [orders, setOrders] = useState([]);
-  const [showInProgress, setShowInProgress] = useState(true);
+  const [showAvailable, setShowAvailable] = useState(true);
   const [showCompleted, setShowCompleted] = useState(false);
+  const [showAssigned, setShowAssigned] = useState(false);
   const [showCanceled, setShowCanceled] = useState(false);
-  const [highlightedButton, setHighlightedButton] = useState("InProgress");
-  const [inProgressOrders, setInProgressOrders] = useState([]);
+  const [highlightedButton, setHighlightedButton] = useState("Available");
+  const [availableOrders, setAvailableOrders] = useState([]);
+  const [assignedOrders, setAssignedOrders] = useState([]);
   const [canceledOrders, setCanceledOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
 
   const swipeableRef = useRef(null);
 
   const filterOrders = (status) =>
-    inProgressOrders.filter((order) => order.Status === status);
+    availableOrders.filter((order) => order.Status === status);
 
   const handleButtonPress = (status) => {
-    setShowInProgress(status === "InProgress");
+    setShowAvailable(status === "Available");
     setShowCompleted(status === "Completed");
+    setShowAssigned(status === "Assigned");
     setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
   };
@@ -77,14 +81,17 @@ const AdminOrdersScreen = () => {
 
         if (isMounted) {
           // Update state by reversing the order of new orders
-          setInProgressOrders(
-            data.filter((order) => order.Status === "InProgress").reverse()
+          setAvailableOrders(
+            data.filter((order) => order.Assigned === "No One").reverse()
           );
-          setCanceledOrders(
-            data.filter((order) => order.Status === "Canceled").reverse()
+          setAssignedOrders(
+            data.filter((order) => order.Assigned !== "No One").reverse()
           );
           setCompletedOrders(
             data.filter((order) => order.Status === "Completed").reverse()
+          );
+          setCanceledOrders(
+            data.filter((order) => order.Status === "Canceled").reverse()
           );
         }
       } catch (error) {
@@ -139,23 +146,30 @@ const AdminOrdersScreen = () => {
     }
   };
 
-  const markOrderAsCanceled = async (orderId) => {
-    try {
-      const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
-      await setDoc(orderRef, { Status: "Canceled" }, { merge: true });
-      console.log("Order marked as Canceled.");
-      if (swipeableRef.current) {
-        swipeableRef.current.close(); // Close the Swipeable component
-      }
+  //   const markOrderAsAssigned = async (orderId) => {
+  //     try {
+  //       const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
+  //       await setDoc(orderRef, { Assigned: "Assigned" }, { merge: true });
+  //       console.log("Order marked as Assigned.");
+  //       if (swipeableRef.current) {
+  //         swipeableRef.current.close(); // Close the Swipeable component
+  //       }
 
-      // Update state after canceling the users
-      setInProgressOrders((prevOrders) => [...prevOrders, ...canceledOrders]);
-      setCanceledOrders([]); // Clear the client array after moving all users to agent
-      // Update state after canceling the order
-    } catch (error) {
-      console.error("Error marking order as Canceled:", error);
-    }
+  //       // Update state after canceling the users
+  //       setAvailableOrders((prevOrders) => [...prevOrders, ...assignedOrders]);
+  //       setAssignedOrders([]); // Clear the client array after moving all users to agent
+  //       // Update state after canceling the order
+  //     } catch (error) {
+  //       console.error("Error marking order as Assigned:", error);
+  //     }
+  //   };
+  // Define handleOpenMaps function
+  const handleOpenMaps = (address) => {
+    const formattedAddress = encodeURIComponent(address);
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
+    Linking.openURL(mapUrl);
   };
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -173,10 +187,10 @@ const AdminOrdersScreen = () => {
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
-          onPress={() => handleButtonPress("InProgress")}
+          onPress={() => handleButtonPress("Available")}
           style={[
             styles.button,
-            highlightedButton === "InProgress" && styles.highlightedButton,
+            highlightedButton === "Available" && styles.highlightedButton,
           ]}
           labelStyle={{
             fontSize: 13,
@@ -185,10 +199,30 @@ const AdminOrdersScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
-          InProgress
+          Available
+        </Button>
+
+        <Button
+          mode="text"
+          onPress={() => handleButtonPress("Assigned")}
+          style={[
+            styles.button,
+            highlightedButton === "Assigned" && styles.highlightedButton,
+          ]}
+          labelStyle={{
+            fontSize: 13,
+            width: "100%",
+            height: "100%",
+            textAlign: "center",
+            alignSelf: "center",
+            verticalAlign: "middle",
+            letterSpacing: 1,
+          }}
+        >
+          Assigned
         </Button>
         <Button
           mode="text"
@@ -204,7 +238,7 @@ const AdminOrdersScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
           Completed
@@ -223,46 +257,43 @@ const AdminOrdersScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
           Canceled
         </Button>
       </View>
-      {showInProgress && (
+      {showAvailable && (
         <ScrollView style={styles.ordersList}>
-          {inProgressOrders.map((order) => (
-            <Swipeable
+          {availableOrders.map((order) => (
+            <View
               key={order.id} // Add key prop here
-              ref={swipeableRef}
-              rightThreshold={100}
-              on
-              renderRightActions={() => (
-                <View
-                  key={order.id}
-                  style={{ justifyContent: "center", width: 100 }}
-                >
-                  <Button
-                    mode="contained"
-                    onPress={() => markOrderAsCanceled(order.id)}
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      backgroundColor: "#C6373C",
-                      borderRadius: 0,
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </View>
-              )}
+              // ref={swipeableRef}
+              //rightThreshold={100}
+              //on
+              //   renderRightActions={() => (
+              //     <View
+              //       key={order.id}
+              //       style={{ justifyContent: "center", width: 100 }}
+              //     >
+              //       <Button
+              //         mode="contained"
+              //         onPress={() => markOrderAsAssigned(order.id)}
+              //         style={{
+              //           flex: 1,
+              //           justifyContent: "center",
+              //           backgroundColor: "#C6373C",
+              //           borderRadius: 0,
+              //         }}
+              //       >
+              //         Cancel
+              //       </Button>
+              //     </View>
+              //   )}
             >
               <View style={styles.orderItem}>
                 <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference +
-                    " Car Wash ".padEnd(12) +
-                    "$" +
-                    order.Total}
+                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
@@ -295,9 +326,14 @@ const AdminOrdersScreen = () => {
                   </Text>
                 </View>
 
-                {/* Add other fields as needed */}
+                <Text style={{ fontSize: 13,  fontStyle: 'italic' }}>
+                  {order.Note}
+                </Text>
+                <Text style={{ fontSize: 13,  color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
               </View>
-            </Swipeable>
+            </View>
           ))}
         </ScrollView>
       )}
@@ -306,11 +342,8 @@ const AdminOrdersScreen = () => {
           {completedOrders.map((order) => (
             <View key={order.id}>
               <View style={styles.orderItem}>
-                <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference +
-                    " Car Wash ".padEnd(12) +
-                    "$" +
-                    order.Total}
+              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
@@ -347,7 +380,14 @@ const AdminOrdersScreen = () => {
                   </Text> */}
                 </View>
 
-                {/* Add other fields as needed */}
+                <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+                
+                
+                <Text style={{ fontSize: 13, color: 'red'  }}>
+                  {order.Assigned}
+                </Text>
               </View>
             </View>
           ))}
@@ -358,11 +398,64 @@ const AdminOrdersScreen = () => {
           {canceledOrders.map((order) => (
             <View key={order.id}>
               <View style={styles.orderItem}>
-                <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference +
-                    " Car Wash ".padEnd(12) +
-                    "$" +
-                    order.Total}
+              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
+                </Text>
+
+                <View style={{ flexDirection: "row", gap: 5 }}>
+                  {getIconSource("bodyType", order.BodyType) && (
+                    <Icon
+                      source={getIconSource("bodyType", order.BodyType)}
+                      // color={MD3Colors.error50}
+                      size={35}
+                    />
+                  )}
+
+                  {getIconSource("carBrand", order.CarBrand) && (
+                    <Icon
+                      source={getIconSource("carBrand", order.CarBrand)}
+                      // color={MD3Colors.error50}
+                      size={35}
+                    />
+                  )}
+                  <Icon source="format-paint" color={order.Color} size={35} />
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      alignSelf: "center",
+                      borderWidth: 1,
+                      left: 5,
+                    }}
+                  >
+                    {" "}
+                    {order.PlateNumber}{" "}
+                  </Text>
+                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
+                    {" "}
+                    {order.Delivery}{" "}
+                  </Text> */}
+                </View>
+
+                <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+                
+                
+                <Text style={{ fontSize: 13, color: 'red'  }}>
+                  {order.Assigned}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+      )}
+      {showAssigned && (
+        <ScrollView style={styles.ordersList}>
+          {assignedOrders.map((order) => (
+            <View key={order.id}>
+              <View style={styles.orderItem}>
+              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
@@ -394,13 +487,19 @@ const AdminOrdersScreen = () => {
                     {" "}
                     {order.PlateNumber}{" "}
                   </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                 {" "}
-                 {order.Delivery}{" "}
-               </Text> */}
                 </View>
 
-                {/* Add other fields as needed */}
+                <Text style={{ fontSize: 13, fontStyle: 'italic' }}>
+                  {order.Note}
+                </Text>
+                  <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+               
+                
+                <Text style={{ fontSize: 13, color: 'red'  }}>
+                  {order.Assigned}
+                </Text>
               </View>
             </View>
           ))}
@@ -424,15 +523,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginBottom: 10,
 
-    width: 375,
-    
+    width: 350,
+
     gap: 25,
   },
   button: {
-    width: 110,
+    width: 90,
     textAlign: "center",
     borderRadius: 0,
-    
   },
   highlightedButton: {
     backgroundColor: "black",

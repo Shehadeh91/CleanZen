@@ -19,6 +19,8 @@ import PrivacyControlScreen from "./Screens/PrivacyControlScreen";
 import AdminScreen from "./Screens/AdminScreen";
 import UsersScreen from "./Screens/UsersScreen";
 import AdminOrdersScreen from "./Screens/AdminOrdersScreen";
+import AgentOrdersScreen from "./Screens/AgentOrdersScreen";
+import AgentScreen from "./Screens/AgentScreen";
 // import NotificationSettingsScreen from "./Screens/NotificationSettingsScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
@@ -82,6 +84,28 @@ export default function App() {
             component={AdminOrdersScreen}
             options={{
               headerTitle: "All Orders", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+             // headerLeft: null, // Remove the back button
+            }}
+          />
+              <Stack.Screen
+            name="agent"
+            component={AgentScreen}
+            options={{
+              headerTitle: "Agent", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+             // headerLeft: null, // Remove the back button
+            }}
+          />
+            <Stack.Screen
+            name="agentOrders"
+            component={AgentOrdersScreen}
+            options={{
+              headerTitle: "Orders", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

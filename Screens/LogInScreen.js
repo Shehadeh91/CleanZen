@@ -60,7 +60,10 @@ const LogInScreen = () => {
             navigation.navigate('admin');
             setVisible(false)
           } 
-          
+          else  if (userData && userData.Role === "Agent") {
+            navigation.navigate('agent');
+            setVisible(false)
+          }
           else {
             Alert.alert(
               "Access Denied",

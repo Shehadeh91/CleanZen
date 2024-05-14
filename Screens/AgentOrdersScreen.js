@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   BackHandler,
-  
+  Linking
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -20,28 +20,31 @@ import { Swipeable } from "react-native-gesture-handler";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-const OrderScreen = () => {
+const AgentOrdersScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
   const [user, setUser] = useUser((state) => [state.user, state.setUser]);
   const [orders, setOrders] = useState([]);
-  const [showInProgress, setShowInProgress] = useState(true);
+  const [showAvailable, setShowAvailable] = useState(true);
   const [showCompleted, setShowCompleted] = useState(false);
-  const [showCanceled, setShowCanceled] = useState(false);
-  const [highlightedButton, setHighlightedButton] = useState("InProgress");
-  const [inProgressOrders, setInProgressOrders] = useState([]);
-  const [canceledOrders, setCanceledOrders] = useState([]);
+  const [showMyOrders, setShowMyOrders] = useState(false);
+  // const [showCanceled, setShowCanceled] = useState(false);
+  const [highlightedButton, setHighlightedButton] = useState("Available");
+  const [availableOrders, setAvailableOrders] = useState([]);
+  const [myOrders, setMyOrders] = useState([]);
+  // const [canceledOrders, setCanceledOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
 
   const swipeableRef = useRef(null);
 
   const filterOrders = (status) =>
-    inProgressOrders.filter((order) => order.Status === status);
+    availableOrders.filter((order) => order.Status === status);
 
   const handleButtonPress = (status) => {
-    setShowInProgress(status === "InProgress");
+    setShowAvailable(status === "Available");
     setShowCompleted(status === "Completed");
-    setShowCanceled(status === "Canceled");
+    setShowMyOrders(status === "MyOrders");
+    // setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
   };
 
@@ -74,21 +77,27 @@ const OrderScreen = () => {
         }));
 
         // Filter orders by user's email
-        const userOrders = data.filter((order) => order.Email === user.email);
+        //const userOrders = data.filter((order) => order.Email === user.email);
 
         if (isMounted) {
           // Update state by reversing the order of new orders
-          setInProgressOrders(
-            userOrders
-              .filter((order) => order.Status === "InProgress")
-              
+          setAvailableOrders(
+            data.filter((order) => order.Assigned === "No One" && order.Status === "InProgress")
           );
-          setCanceledOrders(
-            userOrders.filter((order) => order.Status === "Canceled")
+          setMyOrders(
+            data.filter((order) => order.Assigned === user.email && order.Status === "InProgress")
           );
           setCompletedOrders(
-            userOrders.filter((order) => order.Status === "Completed")
+            data
+              .filter(
+                (order) =>
+                  order.Status === "Completed" && order.Assigned === user.email
+              )
+              
           );
+          //   setCanceledOrders(
+          //     data.filter((order) => order.Status === "Canceled").reverse()
+          //   );
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -101,6 +110,9 @@ const OrderScreen = () => {
       isMounted = false; // Cleanup function to set isMounted to false on unmount
     };
   }, [user]);
+
+  
+
 
   const carBrandIcons = {
     Mazda: require("../assets/Icons/mazda.png"),
@@ -142,21 +154,45 @@ const OrderScreen = () => {
     }
   };
 
-  const markOrderAsCanceled = async (orderId) => {
+  const claimOrder = async (orderId) => {
     try {
       const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
-      await setDoc(orderRef, { Status: "Canceled" }, { merge: true });
-      console.log("Order marked as Canceled.");
+      await setDoc(orderRef, { Assigned: user.email }, { merge: true });
+      console.log("Order marked as MyOrders.");
+      if (swipeableRef.current) {
+        swipeableRef.current.close(); // Close the Swipeable component
+      }
+
+      // Update state after canceling the users
+      // Remove the order from available orders and add it to MyOrders
+      setAvailableOrders((prevOrders) =>
+        prevOrders.filter((order) => order.id !== orderId)
+      );
+      setMyOrders((prevOrders) => [
+        // Place the claimed order at the top of MyOrders
+        { id: orderId, ...availableOrders.find((order) => order.id === orderId) },
+        ...prevOrders.filter((order) => order.id !== orderId), // Filter out the old order if it exists
+      ]);
+     
+    } catch (error) {
+      console.error("Error marking order as MyOrders:", error);
+    }
+  };
+  const markOrderAsComplete = async (orderId) => {
+    try {
+      const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
+      await setDoc(orderRef, { Status: "Completed" }, { merge: true });
+      console.log("Order marked as Completed.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
       // Update state after canceling the order
-      setInProgressOrders((prevOrders) =>
+      setMyOrders((prevOrders) =>
         prevOrders.filter((order) => order.id !== orderId)
       );
-      setCanceledOrders((prevOrders) => [
+      setCompletedOrders((prevOrders) => [
         // Place the claimed order at the top of MyOrders
-        { id: orderId, ...inProgressOrders.find((order) => order.id === orderId) },
+        { id: orderId, ...myOrders.find((order) => order.id === orderId) },
         ...prevOrders.filter((order) => order.id !== orderId), // Filter out the old order if it exists
       ]);
     } catch (error) {
@@ -175,15 +211,22 @@ const OrderScreen = () => {
     return <LogInScreen />;
   }
 
+  // Define handleOpenMaps function
+const handleOpenMaps = (address) => {
+    const formattedAddress = encodeURIComponent(address);
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
+    Linking.openURL(mapUrl);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
-          onPress={() => handleButtonPress("InProgress")}
+          onPress={() => handleButtonPress("Available")}
           style={[
             styles.button,
-            highlightedButton === "InProgress" && styles.highlightedButton,
+            highlightedButton === "Available" && styles.highlightedButton,
           ]}
           labelStyle={{
             fontSize: 13,
@@ -192,10 +235,30 @@ const OrderScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
-          InProgress
+          Available
+        </Button>
+
+        <Button
+          mode="text"
+          onPress={() => handleButtonPress("MyOrders")}
+          style={[
+            styles.button,
+            highlightedButton === "MyOrders" && styles.highlightedButton,
+          ]}
+          labelStyle={{
+            fontSize: 13,
+            width: "100%",
+            height: "100%",
+            textAlign: "center",
+            alignSelf: "center",
+            verticalAlign: "middle",
+            letterSpacing: 1,
+          }}
+        >
+          My Orders
         </Button>
         <Button
           mode="text"
@@ -211,12 +274,12 @@ const OrderScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
           Completed
         </Button>
-        <Button
+        {/* <Button
           mode="text"
           onPress={() => handleButtonPress("Canceled")}
           style={[
@@ -230,15 +293,15 @@ const OrderScreen = () => {
             textAlign: "center",
             alignSelf: "center",
             verticalAlign: "middle",
-            letterSpacing: 3,
+            letterSpacing: 1,
           }}
         >
           Canceled
-        </Button>
+        </Button> */}
       </View>
-      {showInProgress && (
+      {showAvailable && (
         <ScrollView style={styles.ordersList}>
-          {inProgressOrders.map((order) => (
+          {availableOrders.map((order) => (
             <Swipeable
               key={order.id} // Add key prop here
               ref={swipeableRef}
@@ -251,7 +314,7 @@ const OrderScreen = () => {
                 >
                   <Button
                     mode="contained"
-                    onPress={() => markOrderAsCanceled(order.id)}
+                    onPress={() => claimOrder(order.id)}
                     style={{
                       flex: 1,
                       justifyContent: "center",
@@ -259,13 +322,13 @@ const OrderScreen = () => {
                       borderRadius: 0,
                     }}
                   >
-                    Cancel
+                    Claim
                   </Button>
                 </View>
               )}
             >
               <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                   {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
                 </Text>
 
@@ -298,8 +361,13 @@ const OrderScreen = () => {
                     {order.PlateNumber}{" "}
                   </Text>
                 </View>
-
-                {/* Add other fields as needed */}
+                <Text style={{ fontSize: 13,  fontStyle: 'italic' }}>
+                  {order.Note}
+                </Text>
+                <Text style={{ fontSize: 13,  color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+              
               </View>
             </Swipeable>
           ))}
@@ -310,7 +378,7 @@ const OrderScreen = () => {
           {completedOrders.map((order) => (
             <View key={order.id}>
               <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                   {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
                 </Text>
 
@@ -348,59 +416,98 @@ const OrderScreen = () => {
                   </Text> */}
                 </View>
 
-                {/* Add other fields as needed */}
+                <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+                
+                
+                <Text style={{ fontSize: 13, color: 'red'  }}>
+                  {order.Assigned}
+                </Text>
               </View>
             </View>
           ))}
         </ScrollView>
       )}
-      {showCanceled && (
+
+      {showMyOrders && (
         <ScrollView style={styles.ordersList}>
-          {canceledOrders.map((order) => (
-            <View key={order.id}>
-              <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
-
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
-                    <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-
-                  <Icon source="format-paint" color={order.Color} size={35} />
-                  <Text
+          {myOrders.map((order) => (
+            <Swipeable
+              key={order.id} // Add key prop here
+              ref={swipeableRef}
+              rightThreshold={100}
+              on
+              renderRightActions={() => (
+                <View
+                  key={order.id}
+                  style={{ justifyContent: "center", width: 100 }}
+                >
+                  <Button
+                    mode="contained"
+                    onPress={() => markOrderAsComplete(order.id)}
                     style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
+                      flex: 1,
+                      justifyContent: "center",
+                      backgroundColor: "#C6373C",
+                      borderRadius: 0,
                     }}
                   >
-                    {" "}
-                    {order.PlateNumber}{" "}
-                  </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                 {" "}
-                 {order.Delivery}{" "}
-               </Text> */}
+                    Done
+                  </Button>
                 </View>
+              )}
+            >
+              <View key={order.id}>
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
+                  </Text>
 
-                {/* Add other fields as needed */}
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    {getIconSource("bodyType", order.BodyType) && (
+                      <Icon
+                        source={getIconSource("bodyType", order.BodyType)}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+
+                    {getIconSource("carBrand", order.CarBrand) && (
+                      <Icon
+                        source={getIconSource("carBrand", order.CarBrand)}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+
+                    <Icon source="format-paint" color={order.Color} size={35} />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {order.PlateNumber}{" "}
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 13, fontStyle: 'italic' }}>
+                  {order.Note}
+                </Text>
+                  <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
+                  { order.Address}
+                </Text>
+               
+                
+                <Text style={{ fontSize: 13, color: 'red'  }}>
+                  {order.Assigned}
+                </Text>
+                </View>
               </View>
-            </View>
+            </Swipeable>
           ))}
         </ScrollView>
       )}
@@ -422,15 +529,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginBottom: 10,
 
-    width: 375,
-    
+    width: 350,
+
     gap: 25,
   },
   button: {
-    width: 110,
+    width: 90,
     textAlign: "center",
     borderRadius: 0,
-   
   },
   highlightedButton: {
     backgroundColor: "black",
@@ -452,4 +558,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderScreen;
+export default AgentOrdersScreen;

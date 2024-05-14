@@ -211,9 +211,9 @@ const UsersScreen = () => {
               )}
             >
               <View style={styles.orderItem}>
-                <Text style={{ fontSize: 15 }}>Email: {users.Email}</Text>
-                <Text style={{ fontSize: 15 }}>Name: {users.Name}</Text>
-                <Text style={{ fontSize: 15 }}>Number: {users.Phone}</Text>
+                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+                <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
+                <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
             </Swipeable>
           ))}
@@ -225,9 +225,9 @@ const UsersScreen = () => {
             <View key={users.id}>
               <View style={styles.orderItem}>
                 
-                <Text style={{ fontSize: 15 }}>Email: {users.Email}</Text>
-                <Text style={{ fontSize: 15 }}>Name: {users.Name}</Text>
-                <Text style={{ fontSize: 15 }}>Number: {users.Phone}</Text>
+                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+                <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
+                <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
             </View>
           ))}
@@ -238,9 +238,9 @@ const UsersScreen = () => {
           {admin.map((users) => (
             <View key={users.id}>
               <View style={styles.orderItem}>
-                <Text style={{ fontSize: 15 }}>Email: {users.Email}</Text>
-                <Text style={{ fontSize: 15 }}>Name: {users.Name}</Text>
-                <Text style={{ fontSize: 15 }}>Number: {users.Phone}</Text>
+                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+                <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
+                <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
             </View>
           ))}
