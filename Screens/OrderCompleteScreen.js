@@ -2,14 +2,12 @@ import React, { useEffect } from 'react';
 import { View, Text, BackHandler } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; // Added import
-import { useBottomNavigationVisible, usePageIndex } from "../useAppStore";
+import useAppStore from '../useAppStore';
 
 const OrderCompleteScreen = () => {
   const navigation = useNavigation();
 
-  const [visible  , setVisible ] = useBottomNavigationVisible(state => [state.visible, state.setVisible]);
-  const [index  , setIndex ] = usePageIndex(state => [state.index, state.setIndex]);
- 
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore(); 
 
   useEffect(() => {
     const backAction = () => {
@@ -29,13 +27,13 @@ const OrderCompleteScreen = () => {
   const goToHome = () => {
     navigation.navigate('home');
     setVisible(true);
-    setIndex(0);
+    setIndexBottom(0);
   };
 
   const goToOrders = () => {
     navigation.navigate('orders');
     setVisible(true);
-    setIndex(2);
+    setIndexBottom(2);
   };
 
   return (

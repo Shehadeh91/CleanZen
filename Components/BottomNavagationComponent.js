@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BottomNavigation } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'; // Import useNavigation and useFocusEffect hooks
-import { useBottomNavigationVisible, usePageIndex } from "../useAppStore";
+import useAppStore from "../useAppStore";
 
 
 const HomeRoute = () => null;
@@ -11,14 +11,13 @@ const OrdersRoute = () => null;
 const BottomNavagationComponent = ({ onIndexChange }) => {
   const navigation = useNavigation();
 
-  const [index, setIndex] = usePageIndex(state => [state.index, state.setIndex]);
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
 
-  const [visible  , setVisible ] = useBottomNavigationVisible(state => [state.visible, state.setVisible]);
 
   const [routes] = React.useState([
     { key: 'home', title: 'Home', focusedIcon: 'home', unfocusedIcon: 'home-outline' },
-    { key: 'account', title: 'Account', focusedIcon: 'account', unfocusedIcon: 'account-outline'},
-    { key: 'orders', title: 'Orders', focusedIcon: 'receipt'},
+    { key: 'account', title: 'Account', focusedIcon: 'account', unfocusedIcon: 'account-outline' },
+    { key: 'orders', title: 'Orders', focusedIcon: 'receipt' },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
@@ -31,7 +30,7 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
   useFocusEffect(
     React.useCallback(() => {
       // Set the index to 0 (Home) when the HomeScreen is focused
-      setIndex(0);
+      setIndexBottom(0);
     }, [])
   );
 
@@ -39,12 +38,12 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
 
   React.useEffect(() => {
     if (typeof onIndexChange === 'function') {
-      onIndexChange(index); // Call onIndexChange with the current index value
+      onIndexChange(indexBottom); // Call onIndexChange with the current index value
     }
-  }, [index, onIndexChange]);
+  }, [indexBottom, onIndexChange]);
 
   const handleNavigation = (newIndex) => {
-    setIndex(newIndex);
+    setIndexBottom(newIndex);
     const routeKey = routes[newIndex].key;
     navigation.navigate(routeKey); // Navigate to the selected route
   };
@@ -53,7 +52,7 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
   }
   return (
     <BottomNavigation
-      navigationState={{ index, routes }}
+      navigationState={{ index: indexBottom, routes }}
       onIndexChange={handleNavigation}
       renderScene={renderScene}
       activeColor='purple'

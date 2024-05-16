@@ -1,0 +1,113 @@
+[
+    {
+      "id": 1,
+      "title": "Blanket Queen/King",
+      "price": "36.65"
+    },
+    {
+      "id": 2,
+      "title": "Blanket Wool Queen/King",
+      "price": "47.95"
+    },
+    {
+      "id": 3,
+      "title": "Blouse Hand Press",
+      "price": "12.09"
+    },
+    {
+      "id": 4,
+      "title": "Blouse Dry Clean",
+      "price": "15.80"
+    },
+    {
+      "id": 5,
+      "title": "Blouse Silk",
+      "price": "19.32"
+    },
+    {
+      "id": 6,
+      "title": "Comforter Queen/King",
+      "price": "56.91"
+    },
+    {
+      "id": 7,
+      "title": "Comforter Down Queen/King",
+      "price": "64.66"
+    },
+    {
+      "id": 8,
+      "title": "Dress",
+      "price": "31.71"
+    },
+    {
+      "id": 9,
+      "title": "Jacket/Blazer",
+      "price": "18.98"
+    },
+    {
+      "id": 10,
+      "title": "Jacket Silk",
+      "price": "22.64"
+    },
+    {
+      "id": 11,
+      "title": "Pants/Skirt/Jeans",
+      "price": "16.56"
+    },
+    {
+      "id": 12,
+      "title": "Pants/Skirt Silk",
+      "price": "20.00"
+    },
+    {
+      "id": 13,
+      "title": "Pillows Down (Any Size Clean & Recover)",
+      "price": "47.67"
+    },
+    {
+      "id": 14,
+      "title": "Shirt Laundered Hangers",
+      "price": "5.74"
+    },
+    {
+      "id": 15,
+      "title": "*French Cuffs Extra",
+      "price": "0.79"
+    },
+    {
+      "id": 16,
+      "title": "Shirt Laundered Folded",
+      "price": "8.24"
+    },
+    {
+      "id": 17,
+      "title": "T-Shirt/Golf Shirt",
+      "price": "9.34"
+    },
+    {
+      "id": 18,
+      "title": "Shirt Hand Press",
+      "price": "12.09"
+    },
+    {
+      "id": 19,
+      "title": "Shirt Dry Clean",
+      "price": "15.80"
+    },
+    {
+      "id": 20,
+      "title": "Shirt Silk",
+      "price": "19.32"
+    },
+    {
+      "id": 21,
+      "title": "Sweater",
+      "price": "18.66"
+    },
+    {
+      "id": 22,
+      "title": "Sweater Silk/Cashmere",
+      "price": "100"
+    }
+  ]
+  

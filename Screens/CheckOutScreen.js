@@ -23,90 +23,27 @@ import {
   Portal,
   PaperProvider,
 } from "react-native-paper";
-import {
-  useCarPlateStore,
-  useNoteStore,
-  useBodyStyleStore,
-  useIconBodyStyleStore,
-  useCarBrandStore,
-  useIconCarBrandStore,
-  useCarColorStore,
-  usePaymentOptionStore,
-  useDeliveryOptionStore,
-  usePrefrenceOptionStore,
-  useDeliveryCostStore,
-  usePrefrenceCostStore,
-  useBodyStyleCostStore,
-  useTotalCostStore,
-  useDateStore,
-} from "../useCarWashStore";
-import { useAddress, usePageIndex } from "../useAppStore";
+import useCarWashStore from "../useCarWashStore";
+import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
-import { useUser } from "../useAppStore";
+
 
 const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
-  const [note, setNote] = useNoteStore((state) => [state.note, state.setNote]);
-  const [iconBrand, setIconBrand] = useIconCarBrandStore((state) => [
-    state.iconBrand,
-    state.setIconBrand,
-  ]);
-  const [carPlate, setCarPlate] = useCarPlateStore((state) => [
-    state.carPlate,
-    state.setCarPlate,
-  ]);
+  const {date, setDate, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
+    iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
+     carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
+     bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
+     deliveryOption, setDeliveryOption, prefrenceOption, setPrefrenceOption,
+     paymentOption, setPaymentOption} = useCarWashStore ();
 
-  const [date, setDate, getFormattedDate] = useDateStore((state) => [
-    state.date,
-    state.setDate,
-    state.getFormattedDate,
-  ]);
-
-  const [iconBodyStyle, setIconBodyStyle] = useIconBodyStyleStore((state) => [
-    state.iconBodyStyle,
-    state.setIconBodyStyle,
-  ]);
-  const [currentColor, setCurrentColor] = useCarColorStore((state) => [
-    state.currentColor,
-    state.setCurrentColor,
-  ]);
-  const [paymentOption, setPaymentOption] = usePaymentOptionStore((state) => [
-    state.paymentOption,
-    state.setPaymentOption,
-  ]);
-  const [deliveryOption, setDeliveryOption] = useDeliveryOptionStore(
-    (state) => [state.deliveryOption, state.setDeliveryOption]
-  );
-  const [prefrenceOption, setPrefrenceOption] = usePrefrenceOptionStore(
-    (state) => [state.prefrenceOption, state.setPrefrenceOption]
-  );
-  const [deliveryCost, setDeliveryCost] = useDeliveryCostStore((state) => [
-    state.deliveryCost,
-    state.setDeliveryCost,
-  ]);
-  const [prefrenceCost, setPrefrenceCost] = usePrefrenceCostStore((state) => [
-    state.prefrenceCost,
-    state.setPrefrenceCost,
-  ]);
-  const [bodyStyleCost, setBodyStyleCost] = useBodyStyleCostStore((state) => [
-    state.bodyStyleCost,
-    state.setBodyStyleCost,
-  ]);
-
-  const [totalCost, updateTotalCost] = useTotalCostStore((state) => [
-    state.totalCost,
-    state.updateTotalCost,
-  ]);
-  const [address, setAddress] = useAddress((state) => [
-    state.address,
-    state.setAddress,
-  ]);
-  const [index  , setIndex ] = usePageIndex(state => [state.index, state.setIndex]);
+  
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -142,7 +79,7 @@ const CheckOutScreen = () => {
   const goToLogIn = () => {
     navigation.navigate('login');
     
-    setIndex(1);
+    setIndexBottom(1);
   };
 
 
@@ -157,12 +94,8 @@ const CheckOutScreen = () => {
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Total: $" + totalCost.toFixed(2)}
-          style={{
-            position: "absolute",
-            left: 200,
-
-            //backgroundColor: "lightgrey",
-          }}
+          style={{ position: "absolute", left: 220 }}
+            titleStyle={{fontSize: 20}}
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>

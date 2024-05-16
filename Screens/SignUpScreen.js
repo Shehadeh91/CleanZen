@@ -11,20 +11,12 @@ import { useEffect, useState } from "react"; // Import useEffect
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { collection, addDoc } from "firebase/firestore";
 import { ActivityIndicator, Button } from "react-native-paper";
-import { usePageIndex } from "../useAppStore";
+
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import {
-  useBottomNavigationVisible,
-  useUser,
-  useName,
-  usePhone,
-  useEmail,
-  usePassword,
-  
-} from "../useAppStore";
+import useAppStore from "../useAppStore";
 
 const SignupScreen = ({ navigation }) => {
   //const [fullName, setFullName] = React.useState("");
@@ -32,22 +24,14 @@ const SignupScreen = ({ navigation }) => {
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
 
-  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
-  const [name, setName] = useName((state) => [state.name, state.setName]);
-  const [phone, setPhone] = usePhone((state) => [state.phone, state.setPhone]);
-  
-  const [email, setEmail] = useEmail((state) => [state.email, state.setEmail]);
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore(); 
   const [password, setPassword] = useState("");
   
 
-  const [index, setIndex] = usePageIndex((state) => [
-    state.index,
-    state.setIndex,
-  ]);
   useFocusEffect(
     React.useCallback(() => {
       // setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
-      setIndex(1);
+      setIndexBottom(1);
       return () => {
         // Clean-up function when screen loses focus (optional)
       };
@@ -128,7 +112,7 @@ await sendEmailVerification(auth.currentUser);
     } finally {
       setLoading(false);
       navigation.navigate("home");
-      setIndex(0);
+      setIndexBottom(0);
     }
   };
 

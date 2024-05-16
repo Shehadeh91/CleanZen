@@ -20,33 +20,9 @@ import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
-import {
-  useCarPlateStore,
-  useNoteStore,
-  useBodyStyleStore,
-  useIconBodyStyleStore,
-  useCarBrandStore,
-  useIconCarBrandStore,
-  useCarColorStore,
-  usePaymentOptionStore,
-  useDeliveryOptionStore,
-  usePrefrenceOptionStore,
-  useDeliveryCostStore,
-  usePrefrenceCostStore,
-  useBodyStyleCostStore,
-  useTotalCostStore,
-  useDateStore
-} from "../useCarWashStore";
+import useCarWashStore from "../useCarWashStore";
 
-import {
-  useBottomNavigationVisible,
-  useUser,
-  useEmail,
-  usePassword,
-  useName,
-  usePhone,
-  useAddress,
-} from "../useAppStore";
+import useAppStore from "../useAppStore";
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -55,60 +31,14 @@ const CarWashOrderScreen = () => {
   const [visibleBodyStyle, setVisibleBodyStyle] = useState(false);
   const [visibleColorWheel, setVisibleColorWheel] = useState(false);
 
-  const [date, setDate, getFormattedDate] = useDateStore((state) => [
-    state.date,
-    state.setDate,
-    state.getFormattedDate,
-  ]);
-
-  const [carBrand, setCarBrand] = useCarBrandStore((state) => [
-    state.carBrand,
-    state.setCarBrand,
-  ]);
-  const [bodyStyle, setBodyStyle] = useBodyStyleStore((state) => [
-    state.bodyStyle,
-    state.setBodyStyle,
-  ]);
-
-  const [iconBrand, setIconBrand] = useIconCarBrandStore((state) => [
-    state.iconBrand,
-    state.setIconBrand,
-  ]);
-  const [iconBodyStyle, setIconBodyStyle] = useIconBodyStyleStore((state) => [
-    state.iconBodyStyle,
-    state.setIconBodyStyle,
-  ]);
-
-  const [currentColor, setCurrentColor] = useCarColorStore((state) => [
-    state.currentColor,
-    state.setCurrentColor,
-  ]);
-  const [carPlate, setCarPlate] = useCarPlateStore((state) => [
-    state.carPlate,
-    state.setCarPlate,
-  ]);
-
-  const [deliveryCost, setDeliveryCost] = useDeliveryCostStore((state) => [
-    state.deliveryCost,
-    state.setDeliveryCost,
-  ]);
-
-  const [prefrenceCost, setPrefrenceCost] = usePrefrenceCostStore((state) => [
-    state.prefrenceCost,
-    state.setPrefrenceCost,
-  ]);
-
-  const [bodyStyleCost, setBodyStyleCost] = useBodyStyleCostStore((state) => [
-    state.bodyStyleCost,
-    state.setBodyStyleCost,
-  ]);
-
-  const [totalCost, updateTotalCost] = useTotalCostStore((state) => [
-    state.totalCost,
-    state.updateTotalCost,
-  ]);
-
-  const [note, setNote] = useNoteStore((state) => [state.note, state.setNote]);
+  const {date, setDate, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
+     iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
+      carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
+      bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
+      deliveryOption, setDeliveryOption, prefrenceOption, setPrefrenceOption,
+      paymentOption, setPaymentOption} = useCarWashStore ();
+  
+      const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
 
   const showModalBrand = () => setVisibleBrand(true);
 
@@ -123,54 +53,9 @@ const CarWashOrderScreen = () => {
 
   const auth = FIREBASE_AUTH;
 
-  const [name, setName] = useName((state) => [state.name, state.setName]);
-
-  //const [name, setName] = useState("");
-  const [phone, setPhone] = usePhone((state) => [state.phone, state.setPhone]);
-  const [address, setAddress] = useAddress((state) => [
-    state.address,
-    state.setAddress,
-  ]);
-  const [deliveryOption, setDeliveryOption] = useDeliveryOptionStore(
-    (state) => [state.deliveryOption, state.setDeliveryOption]
-  );
-  // const [deliveryOptions, setDeliveryOptions] = useState({
-  //   type: 'Standard', //Default Option
-  //   scheduleDateTime: null,
-  // });
-  const [prefrenceOption, setPrefrenceOption] = usePrefrenceOptionStore(
-    (state) => [state.prefrenceOption, state.setPrefrenceOption]
-  );
-  // const [PreferenceOptions, setPrefrenceyOptions] = useState({
-  //   type: 'Exterior',
-  //  // price: 0,
-  // });
-  const [paymentOption, setPaymentOption] = usePaymentOptionStore((state) => [
-    state.paymentOption,
-    state.setPaymentOption,
-  ]);
-  // const [PaymentOptions, setPaymentOptions] = useState({
-  //   type: 'Cash',
-  //  // price: 0,
-  // });
-  // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-  //     setUser(currentUser);
-  //     if (currentUser) {
-  //       console.log("User logged in:", currentUser.email);
-  //     } else {
-  //       console.log("User logged out");
-  //     }
-  //   });
-  //   return unsubscribe;
-  // }, [auth]);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigation.navigate('signup');
-  //   }
-  // }, [navigation, user]);
-
+ 
+ 
+  
   const addCarWashOrder = async () => {
     try {
       const user = auth.currentUser;
@@ -255,7 +140,8 @@ const CarWashOrderScreen = () => {
         <Appbar.Header style={{ height: 50, top: 5 }}>
           <Appbar.Content
             title= {'Subtotal: $'+(bodyStyleCost+prefrenceCost+deliveryCost).toFixed(2)}
-            style={{ position: "absolute", left: 150 }}
+            style={{ position: "absolute", left: 225 }}
+            titleStyle={{fontSize: 15}}
           />
         </Appbar.Header>
         <ScrollView style={styles.scrollView}>
@@ -269,42 +155,20 @@ const CarWashOrderScreen = () => {
                   <Avatar.Icon {...props} icon="map-marker" size={40} />
                 )}
               />
-              <Button
-                style={{
-                  width: 0,
-                  height: 50,
-                  position: "absolut",
-                  left: 275,
-                  bottom: 6,
-                }}
-                labelStyle={{ fontSize: 35 }}
-                contentStyle={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                icon="arrow-down-box"
-                mode="text"
-                onPress={() => navigation.navigate("map")}
-              ></Button>
+               <View style={{ marginBottom: 5, flex: 1 }}>
               <Text
                 style={{
                   fontSize: 13,
-                  width: 275,
-                  height: 55, // Set height to 'auto' for multiline text
-                  // borderColor: 'green',
-                 // borderRadius: 15,
-                //  backgroundColor: "lightgrey",
-                  // borderWidth: 1,
-                  left: 10,
-                  bottom: 3,
                   paddingHorizontal: 15,
-                  position: "absolute",
-                  
+                  // position: "absolute",
+                  color: "blue",
                 }}
                 multiline={true}
+                onPress={() => navigation.navigate("map")}
               >
-                {address.replace(/([A-Z]{2,})/g, "$1\n")}
+                {address}
               </Text>
+            </View>
             </Card>
             <Card style={styles.card}>
               <Card.Title
@@ -314,8 +178,7 @@ const CarWashOrderScreen = () => {
                   <Avatar.Icon {...props} icon="car-cog" size={40} />
                 )}
               />
-              {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
-              {/* <Text style={{fontSize: 15, left: 155, top: -10, color: 'green'}}> +$25</Text> */}
+             
               <View style={styles.buttonContainer}>
                 <Button
                   style={styles.rectangularButton}
@@ -444,48 +307,9 @@ const CarWashOrderScreen = () => {
                 </View>
               </RadioButton.Group>
             </Card>
-            {/* <Card style={styles.card}>
-              <Card.Title
-                title="Note"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="note" size={40} />
-                )}
-              />
-              <TextInput
-                style={styles.input}
-                //label="Address"
-                value={note}
-                mode="outlined"
-                onChangeText={text => setNote(text)}
-                
-              />
-            </Card> */}
-            {/* <Card style={styles.card}>
-              <Card.Title
-                title="Payment"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="cash" size={40} />
-                )}
-              />
-              <RadioButton.Group
-               onValueChange={(newValue) => {
-                  setPaymentOption(newValue );
-                }}
-
-               value={paymentOption}
-              >
-               <Text style={{fontSize: 20, left: 235, bottom: 50, color: 'green' }}> Total: $24</Text>
-                <View style={styles.radioContainer}>
-                  <RadioButton.Item label="Cash" value="Cash"   />
-                  <RadioButton.Item label="Card" value="Card"  disabled />
-                  
-                </View>
-              </RadioButton.Group>
-            </Card> */}
+        
             <Button
-              style={{ marginBottom: 28, bottom: -10 }}
+              style={{ marginBottom: 75, bottom: -10 }}
               mode="contained"
               onPress={() => { navigation.navigate("checkOut", {
                   addCarWashOrder: addCarWashOrder,

@@ -13,23 +13,18 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth} from "firebase/auth"; // Corrected import
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { useBottomNavigationVisible, usePageIndex, useEmail, usePassword, useUser} from "../useAppStore";
+import useAppStore from "../useAppStore";
 
 
 const LogInScreen = () => {
- const [email  , setEmail ] = useEmail(state => [state.email, state.setEmail]);
- const [password, setPassword] = useState("");
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+   const [password, setPassword] = useState("");
     
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
   const navigation = useNavigation(); // Added navigation
 
  
-  
-
-
-  const [visible  , setVisible ] = useBottomNavigationVisible(state => [state.visible, state.setVisible]);
-  const [index  , setIndex ] = usePageIndex(state => [state.index, state.setIndex]);
   useFocusEffect(
     React.useCallback(() => {
       setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
@@ -53,7 +48,7 @@ const LogInScreen = () => {
           const userData = userDocSnap.data();
           if (userData && userData.Role === "Client") {
             navigation.navigate('account');
-            setIndex(1);
+            setIndexBottom(1);
             setVisible(true)
           } 
           else  if (userData && userData.Role === "Admin") {

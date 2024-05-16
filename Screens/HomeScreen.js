@@ -9,16 +9,12 @@ import {
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native"; // Added import
 import { useEffect } from "react";
-import { useBottomNavigationVisible } from "../useAppStore";
+import useAppStore from "../useAppStore";
 import { Avatar, Button, Card } from "react-native-paper";
 
 const HomeScreen = () => {
   const navigation = useNavigation(); // Added navigation hook
-  const [visible, setVisible] = useBottomNavigationVisible((state) => [
-    state.visible,
-    state.setVisible,
-  ]);
-
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
   useFocusEffect(
     React.useCallback(() => {
       setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
@@ -78,7 +74,7 @@ const HomeScreen = () => {
       description:
         "Experience the ease of our dry cleaning service. We provide professional care for your delicate garments, ensuring they remain fresh, clean, and impeccably pressed. From formal wear to everyday clothing, trust our Dry Cleaning service for garments that look and feel brand new.",
       image: require("./DryClean.png"),
-      screen: "carWash",
+      screen: "dryClean",
     },
   
     {

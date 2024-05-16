@@ -5,7 +5,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import Geolocation from 'react-native-geolocation-service';
-import { useAddress } from "../useAppStore";
+import useAppStore from "../useAppStore";
 import { ThemeProvider, useTheme } from 'react-native-paper';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -21,8 +21,8 @@ const LocationSearch = () => {
 
  
 
-  const [address, setAddress] = useAddress((state) => [state.address, state.setAddress]);
-  const theme = useTheme();
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+    const theme = useTheme();
 
   const ref = useRef(null); // Initialize ref with null
 

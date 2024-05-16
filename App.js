@@ -9,6 +9,7 @@ import AccountScreen from "./Screens/AccountScreen";
 import CarWashOrderScreen from "./Screens/CarWashOrderScreen ";
  import CheckOutScreen from "./Screens/CheckOutScreen";
 import OrderCompleteScreen from "./Screens/OrderCompleteScreen";
+import DryCleanOrderScreen from "./Screens/DryCleanOrderScreen";
 import BottomNavagationComponent from "./Components/BottomNavagationComponent";
 
 
@@ -228,7 +229,18 @@ export default function App() {
             name="carWash"
             component={CarWashOrderScreen}
             options={{
-              headerTitle: "Order", // Hide header title
+              headerTitle: "Car Wash", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+              headerRight: null
+            }}
+          />
+           <Stack.Screen
+            name="dryClean"
+            component={DryCleanOrderScreen}
+            options={{
+              headerTitle: "Dry Clean", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

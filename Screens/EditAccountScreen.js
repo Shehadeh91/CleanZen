@@ -12,14 +12,7 @@ import {
   collection,
   updateDoc,
 } from "firebase/firestore";
-import {
-  useBottomNavigationVisible,
-  useUser,
-  useEmail,
-  usePassword,
-  useName,
-  usePhone,
-} from "../useAppStore";
+import useAppStore from "../useAppStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LogInScreen from "./LogInScreen";
 import { TextInput } from "react-native-gesture-handler";
@@ -27,19 +20,9 @@ import { TextInput } from "react-native-gesture-handler";
 const EditAccountScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
-  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
-  const [visible, setVisible] = useBottomNavigationVisible((state) => [
-    state.visible,
-    state.setVisible,
-  ]);
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
   const [userInfo, setUserInfo] = useState({});
-
-  const [name, setName] = useName((state) => [state.name, state.setName]);
-
-  //const [name, setName] = useState("");
-  const [phone, setPhone] = usePhone((state) => [state.phone, state.setPhone]);
-  const [email, setEmail] = useEmail((state) => [state.email, state.setEmail]);
-  const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("");
 
   const handleConfirm = () => {
     navigation.goBack(); // Navigate back one page

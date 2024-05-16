@@ -4,32 +4,19 @@ import { List, Divider, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDocs, setDoc, collection } from "firebase/firestore";
-import {
-  useBottomNavigationVisible,
-  useUser,
-  useEmail,
-  usePassword,
-  useName,
-  usePhone,
-} from "../useAppStore";
+import useAppStore from "../useAppStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LogInScreen from "./LogInScreen";
 
 const AccountScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
-  const [user, setUser] = useUser((state) => [state.user, state.setUser]);
-  const [visible, setVisible] = useBottomNavigationVisible((state) => [
-    state.visible,
-    state.setVisible,
-  ]);
+
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+
+  
   const [userInfo, setUserInfo] = useState({});
-
-  const [name, setName] = useName((state) => [state.name, state.setName]);
-
-  //const [name, setName] = useState("");
-  const [phone, setPhone] = usePhone((state) => [state.phone, state.setPhone]);
-  const [email, setEmail] = useEmail((state) => [state.email, state.setEmail]);
+  
   const [password, setPassword] = useState("");
 
   useEffect(() => {
