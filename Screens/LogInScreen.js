@@ -46,6 +46,8 @@ const LogInScreen = () => {
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
+          setName(userData.Name),
+          setPhone(userData.Phone)
           if (userData && userData.Role === "Client") {
             navigation.navigate('home');
             setIndexBottom(0);
@@ -59,6 +61,8 @@ const LogInScreen = () => {
             navigation.navigate('agent');
             setVisible(false)
           }
+          
+          
           else {
             Alert.alert(
               "Access Denied",

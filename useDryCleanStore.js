@@ -65,6 +65,28 @@ const useDryCleanCart = create((set, get) => ({
 
     return itemCountsWithTitles;
   },
+
+  serviceTime: '',
+
+  setServiceTime: (when) => {
+    const currentDate = new Date();
+    const currentHours = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Calculate new time
+    const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
+
+    // Format the new time
+    const formattedTime = newTime.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+
+    set({ serviceTime: formattedTime });
+  },
 }));
 
 export default useDryCleanCart;

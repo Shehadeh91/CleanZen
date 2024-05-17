@@ -64,6 +64,8 @@ const DryCleanCheckOutScreen = () => {
     note,
     setNote,
     getItemCountsWithTitles,
+    serviceTime,
+    SetServiceTime
   } = useDryCleanCart();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -152,7 +154,8 @@ const DryCleanCheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
-              //subtitle={date}
+              subtitle={serviceTime}
+              subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon
                   {...props}

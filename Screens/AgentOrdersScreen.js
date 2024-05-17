@@ -619,6 +619,8 @@ const AgentOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -653,6 +655,8 @@ const AgentOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
             </Swipeable>
@@ -873,6 +877,8 @@ const AgentOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -907,7 +913,8 @@ const AgentOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Button  onPress={() => setEstimatedServiceTime(serviceOrder.id, serviceOrder.Service, "June 13th")}> Set Service Date</Button>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
             </Swipeable>

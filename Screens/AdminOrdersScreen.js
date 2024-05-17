@@ -448,6 +448,8 @@ const AdminOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -483,6 +485,8 @@ const AdminOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
             </View>
@@ -799,6 +803,9 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
+                  
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                   <Text style={{ fontSize: 13, color: "red" }}>
                     {serviceOrder.Assigned}
                   </Text>
@@ -837,6 +844,9 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
+                 
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                   <Text style={{ fontSize: 13, color: "red" }}>
                     {serviceOrder.Assigned}
                   </Text>

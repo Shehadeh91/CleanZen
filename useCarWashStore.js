@@ -43,17 +43,27 @@ const useCarWashStore = create((set, get) => ({
   totalCost: 25, // Initial value for totalCost
   updateTotalCost: (value) => set({ totalCost: value }),
 
-  date: "45 - 60 min", // Initial value for date
-  setDate: (value) => set({ date: value }),
-  // getFormattedDate: () => {
-  //   const date = new Date();
-  //   const day = date.toLocaleString("en-US", { weekday: "long" });
-  //   const month = date.toLocaleString("en-US", { month: "long" });
-  //   const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
-  //   const minutes = date.getMinutes();
-  //   const period = date.getHours() >= 12 ? "PM" : "AM";
+  serviceTime: '',
 
-  //   return `${day}, ${month} ${date.getDate()}, ${hours}:${minutes} ${period}`;
-  // },
+  setServiceTime: (when) => {
+    const currentDate = new Date();
+    const currentHours = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Calculate new time
+    const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
+
+    // Format the new time
+    const formattedTime = newTime.toLocaleString('default', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+
+    set({ serviceTime: formattedTime });
+  },
+
 }));
 export default useCarWashStore;

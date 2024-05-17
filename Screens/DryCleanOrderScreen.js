@@ -47,6 +47,8 @@ const DryCleanOrderScreen = () => {
     note,
     setNote,
     getItemCountsWithTitles,
+    serviceTime,
+    setServiceTime
   } = useDryCleanCart();
 
   const auth = FIREBASE_AUTH;
@@ -116,7 +118,8 @@ const DryCleanOrderScreen = () => {
         Total: "$" + (getTotalPrice() + deliveryCost).toFixed(2),
         Status: "InProgress",
         Assigned: "No One",
-        Service: "Dry Clean"
+        Service: "Dry Clean",
+        EstimateTime: serviceTime
       });
 
       await setDoc(
@@ -259,10 +262,10 @@ const DryCleanOrderScreen = () => {
                 setDeliveryOption(newValue);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
-                  setDate("30-45 min");
+                  setServiceTime(2880);
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
-                  setDate("15-30 min");
+                  setServiceTime(1440);
                 }
               }}
               value={deliveryOption}
@@ -287,7 +290,7 @@ const DryCleanOrderScreen = () => {
                     position: "absolute",
                   }}
                 >
-                  {"45 - 60 min"}
+                  {"2 - 3 day"}
                 </Text>
                 {/* <RadioButton.Item
                     label="Schedule"
@@ -315,7 +318,7 @@ const DryCleanOrderScreen = () => {
                     position: "absolute",
                   }}
                 >
-                  {"25 - 45 min"}
+                  {"1 - 2 day"}
                 </Text>
               </View>
             </RadioButton.Group>

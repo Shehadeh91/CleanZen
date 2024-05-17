@@ -38,7 +38,7 @@ const CheckOutScreen = () => {
 
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
-  const {date, setDate, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
+  const {serviceTime, setServiceTime, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
     iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
      carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
      bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
@@ -132,8 +132,9 @@ const CheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
-              subtitle={date}
-              subtitleStyle={{fontSize: 12, color: 'grey'}}
+              subtitle={serviceTime}
+              
+              subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
