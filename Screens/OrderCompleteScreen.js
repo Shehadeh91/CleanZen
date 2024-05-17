@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, BackHandler } from 'react-native';
+import { View, Text, BackHandler, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; // Added import
 import useAppStore from '../useAppStore';
@@ -38,6 +38,7 @@ const OrderCompleteScreen = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Image  style={{tintColor: 'black', height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
         Your Order Is Complete
       </Text>

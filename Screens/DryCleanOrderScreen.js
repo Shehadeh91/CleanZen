@@ -189,7 +189,9 @@ const DryCleanOrderScreen = () => {
               title="Location"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
               left={(props) => (
-                <Avatar.Icon {...props} icon="map-marker" size={40} />
+                <TouchableOpacity onPress={() => navigation.navigate("map")}>
+                  <Avatar.Icon {...props} icon="map-marker" size={40} />
+                </TouchableOpacity>
               )}
             />
 
@@ -241,7 +243,7 @@ const DryCleanOrderScreen = () => {
 
           <Card style={styles.card}>
             <Card.Title
-              title="Delivery"
+              title="Service Time"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
               left={(props) => (
                 <Avatar.Icon
@@ -251,34 +253,70 @@ const DryCleanOrderScreen = () => {
                 />
               )}
             />
-            <Text
-              style={{
-                fontSize: 15,
-                left: 240,
-                top: 60,
-                color: "green",
-                position: "absolute",
-              }}
-            >
-              {"+$3.99"}
-            </Text>
+
             <RadioButton.Group
               onValueChange={(newValue) => {
                 setDeliveryOption(newValue);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
-                  // setDate("30-45 min");
+                  setDate("30-45 min");
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
-                  // setDate("15-30 min");
+                  setDate("15-30 min");
                 }
               }}
               value={deliveryOption}
             >
-              <View style={styles.radioContainer}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  //alignItems: "center",
+                  bottom: 13,
+                  marginBottom: 8,
+                  marginLeft: 10,
+                }}
+              >
                 <RadioButton.Item label="Standard" value="Standard" />
-                <RadioButton.Item label="Schedule" value="Schedule" disabled />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {"45 - 60 min"}
+                </Text>
+                {/* <RadioButton.Item
+                    label="Schedule"
+                    value="Schedule"
+                    disabled
+                  /> */}
                 <RadioButton.Item label="Priority" value="Priority" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 80,
+                    top: 69,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"(+$3.99)"}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {"25 - 45 min"}
+                </Text>
               </View>
             </RadioButton.Group>
           </Card>

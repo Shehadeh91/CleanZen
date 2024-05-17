@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  TouchableOpacity
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -22,6 +23,7 @@ import {
   Modal,
   Portal,
   PaperProvider,
+  Icon
 } from "react-native-paper";
 import useCarWashStore from "../useCarWashStore";
 import useAppStore from "../useAppStore";
@@ -106,7 +108,7 @@ const CheckOutScreen = () => {
             <Card.Title
               title={address}
               titleStyle={{
-                fontSize: 20,
+                fontSize: 18,
                 flexWrap: "wrap",
                 // textAlign: "center",
                 maxWidth: "100%",
@@ -129,8 +131,9 @@ const CheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               title={deliveryOption}
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               subtitle={date}
+              subtitleStyle={{fontSize: 12, color: 'grey'}}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -151,7 +154,7 @@ const CheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               title={prefrenceOption + " " + "Car Wash"}
-              titleStyle={{ fontSize: 20 }}
+              titleStyle={{ fontSize: 18 }}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -173,79 +176,28 @@ const CheckOutScreen = () => {
                 flexDirection: "row",
                 justifyContent: "space-around",
                 marginTop: -30,
-                marginHorizontal: 50,
+                marginHorizontal: 35,
                 
                 //gap: 1,
-                left: 5
+                left: 30
               }}
             >
-              <Button
-                style={{
-                  width: 90,
-                  height: 40,
-                  //borderRadius: 15,
-                  //justifyContent: "center",
-                  // alignItems: "center",
-                  //backgroundColor: "#007bff",
-                  top: 5,
-                  marginLeft: 30,
-                }}
-                icon={iconBrand}
-                mode="text"
-                labelStyle={{ fontSize: 50 }}
-                //contentStyle={{ left: 0 }}
-              >
-                {/* Brand */}
-              </Button>
-              <Button
-                style={{
-                  width: 90,
-                  height: 40,
-                  borderRadius: 15,
-                  //justifyContent: "center",
-                  // alignItems: "center",
-                  //backgroundColor: "#007bff",
+             
+      <Icon   source={iconBrand} size={55}  />
+      <Icon   source={iconBodyStyle} size={55}  />
+      <Icon    source= "format-paint" size={55} color= {currentColor}  />
+      <Text style={{ borderWidth: 1, textAlign: 'center', textAlignVertical: 'center', paddingHorizontal: 5, height: 35, fontWeight: 'bold', alignSelf: 'center', borderStyle: 'dashed' }}>
+  {carPlate}
+</Text>
 
-                  marginLeft: 30,
-                }}
-                //icon="camera"
-                labelStyle={{ fontSize: 60 }}
-                contentStyle={{ left: 7 }}
-                icon={iconBodyStyle}
-                mode="text"
-              >
-                {/* Style */}
-              </Button>
-              <Button
-                style={styles.rectangularButton}
-                icon="format-paint"
-                labelStyle={{ fontSize: 40, color: currentColor }}
-                mode="text"
-                contentStyle={{ left: 7 }}
-              ></Button>
-              <Button
-                style={{
-                  width: 125,
-                  //  height: 40,
-                  left: 25,
-                  borderWidth: 2,
-                  marginVertical: 10,
-                  //marginLeft: 30,
-                }}
-                //contentStyle={{borderWidth: 1, width: 130,}}
-                labelStyle={{ fontSize: 20, textAlign: "center" }}
-                mode="text"
-              >
-                {" "}
-                <Text>{carPlate}</Text>
-              </Button>
+              
             </View>
           </Card>
 
           <Card style={styles.card}>
             <Card.Title
-              // title="Note"
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+               title="Add Additional Note"
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               // subtitle= "example"
 
               left={(props) => (
@@ -259,7 +211,7 @@ const CheckOutScreen = () => {
               )}
             />
             <Card.Content
-              style={{ marginHorizontal: 50, marginTop: -60, width: 275 }}
+              style={{ marginHorizontal: 50, marginTop: -15, width: 275 }}
             >
               <TextInput
                 //label="Address"
@@ -275,7 +227,7 @@ const CheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               // title="Note"
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               // subtitle= "example"
 
               left={(props) => (

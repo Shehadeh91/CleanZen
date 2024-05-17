@@ -417,6 +417,7 @@ const AdminOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
+                        borderStyle: 'dashed'
                       }}
                     >
                       {" "}
@@ -531,6 +532,7 @@ const AdminOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
+                        borderStyle: 'dashed'
                       }}
                     >
                       {" "}
@@ -647,6 +649,7 @@ const AdminOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
+                        borderStyle: 'dashed'
                       }}
                     >
                       {" "}
@@ -763,6 +766,7 @@ const AdminOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
+                        borderStyle: 'dashed'
                       }}
                     >
                       {" "}

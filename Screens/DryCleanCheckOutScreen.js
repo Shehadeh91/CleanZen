@@ -128,7 +128,7 @@ const DryCleanCheckOutScreen = () => {
             <Card.Title
               title={address}
               titleStyle={{
-                fontSize: 20,
+                fontSize: 18,
                 flexWrap: "wrap",
                 // textAlign: "center",
                 maxWidth: "100%",
@@ -151,7 +151,7 @@ const DryCleanCheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               title={deliveryOption}
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               //subtitle={date}
               left={(props) => (
                 <Avatar.Icon
@@ -173,11 +173,11 @@ const DryCleanCheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               title={"Dry Clean"}
-              titleStyle={{ fontSize: 20 }}
+              titleStyle={{ fontSize: 18 }}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
-                  icon="hair-dryer"
+                  icon="tshirt-crew"
                   size={55}
                   left={-10}
                   bottom={0}
@@ -210,8 +210,8 @@ const DryCleanCheckOutScreen = () => {
 
           <Card style={styles.card}>
             <Card.Title
-              // title="Note"
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+               title="Add Additional Note"
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               // subtitle= "example"
 
               left={(props) => (
@@ -225,7 +225,7 @@ const DryCleanCheckOutScreen = () => {
               )}
             />
             <Card.Content
-              style={{ marginHorizontal: 50, marginTop: -60, width: 275 }}
+              style={{ marginHorizontal: 50, marginTop: -15, width: 275 }}
             >
               <TextInput
                 //label="Address"
@@ -241,7 +241,7 @@ const DryCleanCheckOutScreen = () => {
           <Card style={styles.card}>
             <Card.Title
               // title="Note"
-              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
               // subtitle= "example"
 
               left={(props) => (

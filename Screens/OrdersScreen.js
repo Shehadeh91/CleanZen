@@ -367,6 +367,7 @@ const OrderScreen = () => {
                 alignSelf: "center",
                 borderWidth: 1,
                 left: 5,
+                borderStyle: 'dashed'
               }}
             >
               {" "}
@@ -406,9 +407,13 @@ const OrderScreen = () => {
         </View>
       )}
       </Swipeable>
+      
     ))}
+    
   </ScrollView>
+  
 )}
+<Text style={{ fontStyle: 'italic', fontSize: 12 }}>To cancel an order, swipe on the card</Text>
 
       {showCompleted && (
         <ScrollView style={styles.ordersList}>
@@ -443,6 +448,7 @@ const OrderScreen = () => {
                       alignSelf: "center",
                       borderWidth: 1,
                       left: 5,
+                      borderStyle: 'dashed'
                     }}
                   >
                     {" "}
@@ -520,6 +526,7 @@ const OrderScreen = () => {
                       alignSelf: "center",
                       borderWidth: 1,
                       left: 5,
+                      borderStyle: 'dashed'
                     }}
                   >
                     {" "}
@@ -576,7 +583,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 75,
     paddingHorizontal: 10,
-    paddingBottom: 25,
+    paddingBottom: 10,
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -601,7 +608,7 @@ const styles = StyleSheet.create({
     height: "70%",
     // borderWidth: 2,
     borderColor: "black",
-    // marginBottom: 10,
+    // marginBottom: -20,
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {

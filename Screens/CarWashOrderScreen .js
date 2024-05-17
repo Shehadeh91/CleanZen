@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
   Card,
@@ -31,14 +37,56 @@ const CarWashOrderScreen = () => {
   const [visibleBodyStyle, setVisibleBodyStyle] = useState(false);
   const [visibleColorWheel, setVisibleColorWheel] = useState(false);
 
-  const {date, setDate, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
-     iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
-      carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
-      bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
-      deliveryOption, setDeliveryOption, prefrenceOption, setPrefrenceOption,
-      paymentOption, setPaymentOption} = useCarWashStore ();
-  
-      const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const {
+    date,
+    setDate,
+    getFormattedDate,
+    carBrand,
+    setCarBrand,
+    bodyStyle,
+    setBodyStyle,
+    iconBrand,
+    setIconBrand,
+    iconBodyStyle,
+    setIconBodyStyle,
+    currentColor,
+    setCurrentColor,
+    carPlate,
+    setCarPlate,
+    deliveryCost,
+    setDeliveryCost,
+    prefrenceCost,
+    setPrefrenceCost,
+    bodyStyleCost,
+    setBodyStyleCost,
+    totalCost,
+    updateTotalCost,
+    note,
+    setNote,
+    deliveryOption,
+    setDeliveryOption,
+    prefrenceOption,
+    setPrefrenceOption,
+    paymentOption,
+    setPaymentOption,
+  } = useCarWashStore();
+
+  const {
+    name,
+    setName,
+    phone,
+    setPhone,
+    address,
+    setAddress,
+    indexBottom,
+    setIndexBottom,
+    user,
+    setUser,
+    visible,
+    setVisible,
+    email,
+    setEmail,
+  } = useAppStore();
 
   const showModalBrand = () => setVisibleBrand(true);
 
@@ -53,9 +101,6 @@ const CarWashOrderScreen = () => {
 
   const auth = FIREBASE_AUTH;
 
- 
- 
-  
   const addCarWashOrder = async () => {
     try {
       const user = auth.currentUser;
@@ -102,10 +147,10 @@ const CarWashOrderScreen = () => {
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: "$"+totalCost,
+        Total: "$" + totalCost,
         Status: "InProgress",
         Assigned: "No One",
-        Service: "Car Wash"
+        Service: "Car Wash",
       });
 
       await setDoc(
@@ -134,33 +179,35 @@ const CarWashOrderScreen = () => {
   }, [currentColor]);
 
   return (
-    
-      <View style={{ flex: 1 }}>
-      
-      
-        <Appbar.Header style={{ height: 50, top: 5 }}>
-          <Appbar.Content
-            title= {'Subtotal: $'+(bodyStyleCost+prefrenceCost+deliveryCost).toFixed(2)}
-            style={{ position: "absolute", left: 225 }}
-            titleStyle={{fontSize: 15}}
-          />
-        </Appbar.Header>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.container}>
-            {/* Car Location Card */}
-            <Card style={styles.card}>
-              <Card.Title
-                title="Car Location"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
+    <View style={{ flex: 1 }}>
+      <Appbar.Header style={{ height: 50, top: 5 }}>
+        <Appbar.Content
+          title={
+            "Subtotal: $" +
+            (bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)
+          }
+          style={{ position: "absolute", left: 225 }}
+          titleStyle={{ fontSize: 15 }}
+        />
+      </Appbar.Header>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.container}>
+          {/* Car Location Card */}
+          <Card style={styles.card}>
+            <Card.Title
+              title="Car Location"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <TouchableOpacity onPress={() => navigation.navigate("map")}>
                   <Avatar.Icon {...props} icon="map-marker" size={40} />
-                )}
-              />
-               <View style={{ marginBottom: 5, flex: 1 }}>
+                </TouchableOpacity>
+              )}
+            />
+            <View style={{ marginBottom: 5, flex: 1, marginLeft: 15 }}>
               <Text
                 style={{
                   fontSize: 13,
-                  paddingHorizontal: 15,
+                  paddingHorizontal: 10,
                   // position: "absolute",
                   color: "blue",
                 }}
@@ -170,542 +217,476 @@ const CarWashOrderScreen = () => {
                 {address}
               </Text>
             </View>
-            </Card>
-            <Card style={styles.card}>
-              <Card.Title
-                title="Car Description"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="car-cog" size={40} />
-                )}
-              />
-             
-              <View style={styles.buttonContainer}>
-                <Button
-                  style={styles.rectangularButton}
-                  icon={iconBrand}
-                  mode="contained"
-                  labelStyle={{ fontSize: 40 }}
-                  contentStyle={{ left: 7 }}
-                  onPress={showModalBrand}
-                >
-                                 </Button>
-                <Button
-                  style={styles.rectangularButton}
-                  //icon="camera"
-                  labelStyle={{ fontSize: 45 }}
-                  contentStyle={{ left: 7 }}
-                  icon={iconBodyStyle}
-                  mode="contained"
-                  onPress={showModalBodyStyle}
-                >
-                  {/* Style */}
-                </Button>
-                <Button
-                  style={styles.rectangularButton}
-                  icon="format-paint"
-                  labelStyle={{ fontSize: 35, color: currentColor }}
-                  mode="contained"
-                  contentStyle={{ left: 7 }}
-                  onPress={showModalColorWheel}
-                ></Button>
-              </View>
-              <TextInput
-                style={{
-                  width: 150,
-                  marginBottom: 10,
-                  alignSelf: "center",
-                  left: 15,
-                  borderRadius: 25,
-                }}
-                label="Car Plate"
-                value={carPlate}
-                mode="outlined"
-                autoCapitalize="characters"
-                maxLength={10}
-                onChangeText={(text) => setCarPlate(text)}
-              />
-            </Card>
-            {/* Preference Card */}
-            <Card style={styles.card}>
-              <Card.Title
-                title="Preference"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon {...props} icon="bathtub" size={40} />
-                )}
-              />
-              {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
-              <Text style={{ fontSize: 15, left: 240, top: 60, color: "green", position: 'absolute'}}>
-                
-                {"+$"+bodyStyleCost * 0.75}
-              </Text>
-              <RadioButton.Group
-                onValueChange={(newValue) => {
-                  setPrefrenceOption(newValue);
-                 
-                  if (newValue === "Exterior") {
-                    setPrefrenceCost(0);
-
-                  } else if (newValue === "Interior") {
-                    setPrefrenceCost(0);
-                    
-                  } else {
-                    setPrefrenceCost(bodyStyleCost*0.75);
-                   
-                  }
-                }}
-                value={prefrenceOption}
-              >
-                <View style={styles.radioContainer}>
-                  <RadioButton.Item label="Exterior" value="Exterior" />
-                  <RadioButton.Item label="Interior" value="Interior" />
-                  <RadioButton.Item label="Int/Ext" value="Int/Ext"  />
-                </View>
-              </RadioButton.Group>
-            </Card>
-
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title
+              title="Car Description"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="car-cog" size={40} />
+              )}
+            />
+            <Text style={{ fontSize: 12, textAlign: "center" }}>
+              {" "}
+              Select your car details by tapping the buttons.
+            </Text>
+            <View style={styles.buttonContainer}>
+            <TouchableOpacity   style={{ width: 90,
+    height: 55,
+    borderRadius: 15,
+       alignContent: 'center',
+     // bottom: 8,
+       alignItems: 'center',
+       alignSelf: 'center',
+       
+    marginLeft: 30,
+    
+    //borderWidth: 1,
+    
+    }}   onPress={showModalBrand}>
+      <Icon   source={iconBrand} size={55}  />
+    </TouchableOpacity>
             
-           
-            <Card style={styles.card}>
-              <Card.Title
-                title="Delivery"
-                titleStyle={{ fontSize: 20, marginTop: 10 }}
-                left={(props) => (
-                  <Avatar.Icon
-                    {...props}
-                    icon="calendar-clock-outline"
-                    size={40}
-                  />
-                )}
-              />
-               <Text style={{ fontSize: 15, left: 240, top: 60, color: "green", position: 'absolute'}}>
-                
-                {"+$3.99"}
-              </Text>
-              <RadioButton.Group
-                onValueChange={(newValue) => {
-                  setDeliveryOption(newValue);
-                  if (newValue === "Standard") {
-                    setDeliveryCost(0);
-                    setDate("30-45 min");
-                  } else if (newValue === "Priority") {
-                    setDeliveryCost(3.99);
-                    setDate("15-30 min");
-                  }
-                }}
-                value={deliveryOption}
+              <Button
+                style={styles.rectangularButton}
+                //icon="camera"
+                labelStyle={{ fontSize: 60 }}
+                contentStyle={{ left: 7 }}
+                icon={iconBodyStyle}
+                mode="text"
+                onPress={showModalBodyStyle}
               >
-                <View style={styles.radioContainer}>
-                  <RadioButton.Item label="Standard" value="Standard" />
-                  <RadioButton.Item
+                {/* Style */}
+              </Button>
+              <Button
+                style={styles.rectangularButton}
+                icon="format-paint"
+                labelStyle={{ fontSize: 40, color: currentColor }}
+                mode="text"
+                contentStyle={{ left: 7 }}
+                onPress={showModalColorWheel}
+              ></Button>
+            </View>
+            <TextInput
+              style={{
+                width: 150,
+                marginBottom: 10,
+                alignSelf: "center",
+                left: 15,
+                borderRadius: 25,
+               
+              }}
+              label="Car Plate"
+              value={carPlate}
+              
+              mode="outlined"
+              autoCapitalize="characters"
+              maxLength={9}
+              onChangeText={(text) => setCarPlate(text)}
+            />
+          </Card>
+          {/* Preference Card */}
+          <Card style={styles.card}>
+            <Card.Title
+              title="Preference"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="car-door" size={40} />
+              )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
+            <Text
+              style={{
+                fontSize: 15,
+                left: 240,
+                top: 60,
+                color: "green",
+                position: "absolute",
+              }}
+            >
+              {"+$" + bodyStyleCost * 0.75}
+            </Text>
+            <RadioButton.Group
+              onValueChange={(newValue) => {
+                setPrefrenceOption(newValue);
+
+                if (newValue === "Exterior") {
+                  setPrefrenceCost(0);
+                } else if (newValue === "Interior") {
+                  setPrefrenceCost(0);
+                } else {
+                  setPrefrenceCost(bodyStyleCost * 0.75);
+                }
+              }}
+              value={prefrenceOption}
+            >
+              <View style={styles.radioContainer}>
+                <RadioButton.Item label="Exterior" value="Exterior" />
+                <RadioButton.Item label="Interior" value="Interior" />
+                <RadioButton.Item label="Int/Ext" value="Int/Ext" />
+              </View>
+            </RadioButton.Group>
+          </Card>
+
+          <Card style={styles.card}>
+            <Card.Title
+              title="Service Time"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="calendar-clock-outline"
+                  size={40}
+                />
+              )}
+            />
+
+            <RadioButton.Group
+              onValueChange={(newValue) => {
+                setDeliveryOption(newValue);
+                if (newValue === "Standard") {
+                  setDeliveryCost(0);
+                  setDate("30-45 min");
+                } else if (newValue === "Priority") {
+                  setDeliveryCost(3.99);
+                  setDate("15-30 min");
+                }
+              }}
+              value={deliveryOption}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  //alignItems: "center",
+                  bottom: 13,
+                  marginBottom: 8,
+                  marginLeft: 10,
+                }}
+              >
+                <RadioButton.Item label="Standard" value="Standard" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {"45 - 60 min"}
+                </Text>
+                {/* <RadioButton.Item
                     label="Schedule"
                     value="Schedule"
                     disabled
-                  />
-                  <RadioButton.Item label="Priority" value="Priority" />
+                  /> */}
+                <RadioButton.Item label="Priority" value="Priority" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 80,
+                    top: 69,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"(+$3.99)"}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {"25 - 45 min"}
+                </Text>
+              </View>
+            </RadioButton.Group>
+          </Card>
+
+          <Button
+            style={{ marginBottom: 75, bottom: -10 }}
+            mode="contained"
+            onPress={() => {
+              if (carPlate.trim().length > 0) {
+      navigation.navigate("checkOut", {
+        addCarWashOrder: addCarWashOrder,
+      });
+      updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost);
+    } else {
+      // Add code to handle the case when there's no input in the TextInput
+      alert("Please enter a car plate number.");
+    }
+  }}
+  labelStyle={{
+    fontSize: 20,
+    textAlignVertical: "center",
+    letterSpacing: 10,
+  }}
+          >
+            Confirm
+          </Button>
+          {/* Other cards */}
+          {/* Delivery, Additional Note, Payment Options, etc. */}
+        </View>
+      </ScrollView>
+
+      {/* Modal */}
+      <Portal>
+        <Modal
+          visible={visibleBrand}
+          onDismiss={hideModalBrand}
+          contentContainerStyle={styles.modalContainer}
+        >
+          <ScrollView>
+            <Text style={styles.modalHeader}>Choose Your Car Brand</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignItems: "center",
+                flexWrap: "wrap",
                 
-                </View>
-              </RadioButton.Group>
-            </Card>
-        
-            <Button
-              style={{ marginBottom: 75, bottom: -10 }}
-              mode="contained"
-              onPress={() => { navigation.navigate("checkOut", {
-                  addCarWashOrder: addCarWashOrder,
-                }); updateTotalCost(bodyStyleCost+prefrenceCost+deliveryCost)}
-               
-              }
-              labelStyle={{
-                fontSize: 20,
-                textAlignVertical: "center",
-                letterSpacing: 10,
+                gap: 15
               }}
             >
-              Confirm
-            </Button>
-            {/* Other cards */}
-            {/* Delivery, Additional Note, Payment Options, etc. */}
-          </View>
-        </ScrollView>
-
-        {/* Modal */}
-        <Portal>
-          <Modal
-            visible={visibleBrand}
-            onDismiss={hideModalBrand}
-            contentContainerStyle={styles.modalContainer}
-          >
-            <ScrollView>
-              <Text style={styles.modalHeader}>Choose Your Car Brand</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  flexWrap: "wrap",
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Honda"),
+                    setIconBrand(require("../assets/Icons/honda.png"));
                 }}
               >
-                <Button
-                  icon={require("../assets/Icons/honda.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Honda"),
-                      setIconBrand(require("../assets/Icons/honda.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/hyundai.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Hyundai"),
-                      setIconBrand(require("../assets/Icons/hyundai.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/ford.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Ford"),
-                      setIconBrand(require("../assets/Icons/ford.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/chevrolet.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Chevrolet"),
-                      setIconBrand(require("../assets/Icons/chevrolet.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/toyota.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Toyota"),
-                      setIconBrand(require("../assets/Icons/toyota.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/gmc.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("GMC"),
-                      setIconBrand(require("../assets/Icons/gmc.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/dodge.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Dodge"),
-                      setIconBrand(require("../assets/Icons/dodge.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/jeep.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Jeep"),
-                      setIconBrand(require("../assets/Icons/jeep.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/nissan.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Nissan"),
-                      setIconBrand(require("../assets/Icons/nissan.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/kia.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("KIA"),
-                      setIconBrand(require("../assets/Icons/kia.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/subaru.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Subaru"),
-                      setIconBrand(require("../assets/Icons/subaru.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/volkswagen.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Volkswagen"),
-                      setIconBrand(require("../assets/Icons/volkswagen.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/bmw.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("BMW"),
-                      setIconBrand(require("../assets/Icons/bmw.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/mercedes.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Mercedes"),
-                      setIconBrand(require("../assets/Icons/mercedes.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/audi.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Audi"),
-                      setIconBrand(require("../assets/Icons/audi.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/chrysler.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Chrysler"),
-                      setIconBrand(require("../assets/Icons/chrysler.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/lexus.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Lexus"),
-                      setIconBrand(require("../assets/Icons/lexus.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/cadilac.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Cadilac"),
-                      setIconBrand(require("../assets/Icons/cadilac.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-                <Button
-                  icon={require("../assets/Icons/mazda.png")}
-                  labelStyle={{ fontSize: 50 }}
-                  mode="contained"
-                  onPress={() => {
-                    hideModalBrand(),
-                      setCarBrand("Mazda"),
-                      setIconBrand(require("../assets/Icons/mazda.png"));
-                  }}
-                  style={{
-                    margin: 20,
-                    width: 100,
-                    height: 50,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingLeft: 15,
-                  }}
-                ></Button>
-              </View>
-            </ScrollView>
-          </Modal>
-        </Portal>
-        <Portal>
-          <Modal
-            visible={visibleBodyStyle}
-            onDismiss={hideModalBodyStyle}
-            contentContainerStyle={{  //flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    // margin: 0,
-    height: "50%",
-    borderWidth:3,
-   margin: 25}}
-          >
+                <Icon source={require("../assets/Icons/honda.png")} size={75} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Hyundai"),
+                    setIconBrand(require("../assets/Icons/hyundai.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/hyundai.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Ford"),
+                    setIconBrand(require("../assets/Icons/ford.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/ford.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Chevrolet"),
+                    setIconBrand(require("../assets/Icons/chevrolet.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/chevrolet.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Toyota"),
+                    setIconBrand(require("../assets/Icons/toyota.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/toyota.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("GMC"),
+                    setIconBrand(require("../assets/Icons/gmc.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/gmc.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Dodge"),
+                    setIconBrand(require("../assets/Icons/dodge.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/dodge.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Jeep"),
+                    setIconBrand(require("../assets/Icons/jeep.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/jeep.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Nissan"),
+                    setIconBrand(require("../assets/Icons/nissan.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/nissan.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("KIA"),
+                    setIconBrand(require("../assets/Icons/kia.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/kia.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Subaru"),
+                    setIconBrand(require("../assets/Icons/subaru.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/subaru.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Volkswagen"),
+                    setIconBrand(require("../assets/Icons/volkswagen.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/volkswagen.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("BMW"),
+                    setIconBrand(require("../assets/Icons/bmw.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/bmw.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Mercedes"),
+                    setIconBrand(require("../assets/Icons/mercedes.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/mercedes.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Audi"),
+                    setIconBrand(require("../assets/Icons/audi.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/audi.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Chrysler"),
+                    setIconBrand(require("../assets/Icons/chrysler.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/chrysler.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Lexus"),
+                    setIconBrand(require("../assets/Icons/lexus.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/lexus.png")} size={75} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Cadilac"),
+                    setIconBrand(require("../assets/Icons/cadilac.png"));
+                }}
+              >
+                <Icon
+                  source={require("../assets/Icons/cadilac.png")}
+                  size={75}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Mazda"),
+                    setIconBrand(require("../assets/Icons/mazda.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/mazda.png")} size={75} />
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </Modal>
+      </Portal>
+      <Portal>
+        <Modal
+          visible={visibleBodyStyle}
+          onDismiss={hideModalBodyStyle}
+          contentContainerStyle={{
+            //flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "white",
+            // margin: 0,
+            height: "50%",
+            borderWidth: 3,
+            margin: 25,
+          }}
+        >
           <ScrollView>
             <Text style={styles.modalHeader}>Choose Your Car Body Style</Text>
             <View
@@ -714,8 +695,6 @@ const CarWashOrderScreen = () => {
                 justifyContent: "space-around",
                 alignItems: "center",
                 flexWrap: "wrap",
-
-                
               }}
             >
               <Button
@@ -730,13 +709,13 @@ const CarWashOrderScreen = () => {
                 }}
                 style={{
                   marginVertical: 15,
-                 width: 130,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -764,13 +743,13 @@ const CarWashOrderScreen = () => {
                 }}
                 style={{
                   marginVertical: 15,
-                 width: 130,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -798,13 +777,13 @@ const CarWashOrderScreen = () => {
                 }}
                 style={{
                   marginVertical: 15,
-                 width: 130,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -828,17 +807,19 @@ const CarWashOrderScreen = () => {
                   hideModalBodyStyle(),
                     setBodyStyleCost(40),
                     setBodyStyle("PickupTruck"),
-                    setIconBodyStyle(require("../assets/Icons/PickupTruck.png"));
+                    setIconBodyStyle(
+                      require("../assets/Icons/PickupTruck.png")
+                    );
                 }}
                 style={{
                   marginVertical: 15,
-                 width: 130,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -866,13 +847,13 @@ const CarWashOrderScreen = () => {
                 }}
                 style={{
                   marginVertical: 15,
-                 width: 130,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -899,14 +880,14 @@ const CarWashOrderScreen = () => {
                     setIconBodyStyle(require("../assets/Icons/MiniVan.png"));
                 }}
                 style={{
-                 marginVertical: 15,
-                 width: 130,
+                  marginVertical: 15,
+                  width: 130,
                   height: 50,
                   justifyContent: "center",
-                 // alignItems: "center",
+                  // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
-                 // borderColor: 'red'
+                  // borderColor: 'red'
                 }}
               >
                 <Text
@@ -923,68 +904,99 @@ const CarWashOrderScreen = () => {
                 </Text>
               </Button>
             </View>
-            </ScrollView>
-          </Modal>
-        </Portal>
-        <Portal>
-          <Modal
-            visible={visibleColorWheel}
-            onDismiss={hideModalColorWheel}
-            contentContainerStyle={styles.modalContainerColorWheel}
-          >
-            <View style={styles.colorPickerContainer}>
-              <Text style={styles.modalHeader}>Choose Your Car Color</Text>
-              {/* Updated ColorPicker component */}
-              <ColorPicker
-                style={{ width: 300, top: 50 }}
-                color={currentColor} // Use currentColor state as the color value
-                onColorChange={onColorChange} // Pass the onColorChange function
-                thumbSize={25}
-                sliderSize={40}
-                row={false}
-                useNativeDriver={false}
-                useNativeLayout={false}
-                shadeWheelThumb={false}
-                //shadeSliderThumb={false}
-
-                swatches={true}
-                sliderHidden={true}
-                discretes={true}
-                // noSnap={true}
-
-                palette={[
-                  "#000000",
-                  "#888888",
-                  "#ed1c24",
-                  "#d11cd5",
-                  "#1633e6",
-                  "#00aeef",
-                  "#00c85d",
-                  "#57ff0a",
-                  "#ffde17",
-                  "#f26522",
-                ]}
-              />
-              {/* Colored box to display selected color */}
-              <View
-                style={[
-                  styles.colorBox,
-                  { backgroundColor: currentColor }, // Set background color dynamically
-                ]}
-              ></View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                bottom: 225,
+              }}
+            >
+              <View style={styles.column}>
+                <Text style={styles.text}>Sedan</Text>
+                <Text style={styles.text}>Hatchback</Text>
+                <Text style={styles.text}>SUV</Text>
+              </View>
+              <View style={styles.column}>
+                <Text style={styles.text}>Coupe</Text>
+                <Text style={styles.text}>Pickup Truck</Text>
+                <Text style={styles.text}>Mini-Van</Text>
+              </View>
             </View>
-          </Modal>
-        </Portal>
-      </View>
-    
+          </ScrollView>
+        </Modal>
+      </Portal>
+      <Portal>
+        <Modal
+          visible={visibleColorWheel}
+          onDismiss={hideModalColorWheel}
+          contentContainerStyle={styles.modalContainerColorWheel}
+        >
+          <View style={styles.colorPickerContainer}>
+            <Text style={styles.modalHeader}>Choose Your Car Color</Text>
+            {/* Updated ColorPicker component */}
+            <ColorPicker
+              style={{ width: 300, top: 50 }}
+              color={currentColor} // Use currentColor state as the color value
+              onColorChange={onColorChange} // Pass the onColorChange function
+              thumbSize={25}
+              sliderSize={40}
+              row={false}
+              useNativeDriver={false}
+              useNativeLayout={false}
+              shadeWheelThumb={false}
+              //shadeSliderThumb={false}
+
+              swatches={true}
+              sliderHidden={true}
+              discretes={true}
+              // noSnap={true}
+
+              palette={[
+                "#000000",
+                "#888888",
+                "#ed1c24",
+                "#d11cd5",
+                "#1633e6",
+                "#00aeef",
+                "#00c85d",
+                "#57ff0a",
+                "#ffde17",
+                "#f26522",
+              ]}
+            />
+
+            <View
+              style={[
+                styles.colorBox,
+                { backgroundColor: currentColor }, // Set background color dynamically
+              ]}
+            ></View>
+            <Button
+              style={{ marginBottom: 10 }}
+              mode="contained-tonal"
+              onPress={() => {
+                hideModalColorWheel();
+              }}
+              labelStyle={{
+                fontSize: 20,
+                textAlignVertical: "center",
+                letterSpacing: 2,
+              }}
+            >
+              Confirm Color
+            </Button>
+          </View>
+        </Modal>
+      </Portal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-    scrollView: {
-      flexDirection: 'column',
-      flex: 1
-    },
+  scrollView: {
+    flexDirection: "column",
+    flex: 1,
+  },
   container: {
     paddingHorizontal: 16,
     backgroundColor: "white",
@@ -1017,15 +1029,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: -15,
-    marginHorizontal: 20,
+    marginTop: 0,
+    marginHorizontal: 15,
   },
   rectangularButton: {
     width: 90,
-    height: 40,
+    height: 55,
     borderRadius: 15,
-    //justifyContent: "center",
-    // alignItems: "center",
+    justifyContent: "center",
+     alignItems: "center",
     //backgroundColor: "#007bff",
     marginVertical: 10,
     marginLeft: 30,
@@ -1037,7 +1049,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 3,
     height: "80%",
-   margin: 25
+    margin: 25,
   },
   modalContainerColorWheel: {
     //flex: 1,
@@ -1046,12 +1058,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     // margin: 0,
     height: "80%",
-    
+
     margin: 25,
     borderWidth: 3,
   },
   modalHeader: {
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold",
     marginBottom: 35, // Add margin bottom for spacing
   },
@@ -1065,6 +1077,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     bottom: 450,
     left: 95,
+  },
+  column: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 10,
+  },
+  text: {
+    fontSize: 13,
+    marginBottom: 10,
+
+    marginVertical: 50,
   },
 });
 export default CarWashOrderScreen;

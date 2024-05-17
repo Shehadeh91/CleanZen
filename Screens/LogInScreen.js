@@ -47,8 +47,8 @@ const LogInScreen = () => {
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
           if (userData && userData.Role === "Client") {
-            navigation.navigate('account');
-            setIndexBottom(1);
+            navigation.navigate('home');
+            setIndexBottom(0);
             setVisible(true)
           } 
           else  if (userData && userData.Role === "Admin") {

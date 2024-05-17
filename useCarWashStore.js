@@ -43,7 +43,7 @@ const useCarWashStore = create((set, get) => ({
   totalCost: 25, // Initial value for totalCost
   updateTotalCost: (value) => set({ totalCost: value }),
 
-  date: "30-45 min", // Initial value for date
+  date: "45 - 60 min", // Initial value for date
   setDate: (value) => set({ date: value }),
   // getFormattedDate: () => {
   //   const date = new Date();
