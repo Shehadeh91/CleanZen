@@ -38,8 +38,8 @@ const CarWashOrderScreen = () => {
   const [visibleColorWheel, setVisibleColorWheel] = useState(false);
 
   const {
-    date,
-    setDate,
+    serviceTime,
+    setServiceTime,
     getFormattedDate,
     carBrand,
     setCarBrand,
@@ -151,6 +151,7 @@ const CarWashOrderScreen = () => {
         Status: "InProgress",
         Assigned: "No One",
         Service: "Car Wash",
+        EstimateTime: serviceTime
       });
 
       await setDoc(
@@ -346,10 +347,10 @@ const CarWashOrderScreen = () => {
                 setDeliveryOption(newValue);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
-                  setDate("30-45 min");
+                  setServiceTime(60);
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
-                  setDate("15-30 min");
+                  setServiceTime(45);
                 }
               }}
               value={deliveryOption}
