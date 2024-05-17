@@ -26,29 +26,52 @@ import {
 import useCarWashStore from "../useCarWashStore";
 import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
+import useDryCleanCart from "../useDryCleanStore";
 
-
-const CheckOutScreen = () => {
+const DryCleanCheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const {
+    name,
+    setName,
+    phone,
+    setPhone,
+    address,
+    setAddress,
+    indexBottom,
+    setIndexBottom,
+    user,
+    setUser,
+    visible,
+    setVisible,
+    email,
+    setEmail,
+  } = useAppStore();
 
-  const { addCarWashOrder } = route.params; // Assuming route.params is available
+  const { addDryCleanOrder } = route.params; // Assuming route.params is available
 
-  const {date, setDate, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
-    iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
-     carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
-     bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
-     deliveryOption, setDeliveryOption, prefrenceOption, setPrefrenceOption,
-     paymentOption, setPaymentOption} = useCarWashStore ();
+  const {
+    clearCart,
+    getTotalPrice,
+    deliveryCost,
+    deliveryOption,
+    setDeliveryCost,
+    setDeliveryOption,
+    itemCounts,
+    paymentOption,
+    setPaymentOption,
+    note,
+    setNote,
+    getItemCountsWithTitles,
+  } = useDryCleanCart();
 
-  
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5);
-  }, []); // Empty dependency array to run the effect once on mount
+  const maxWidth = getItemCountsWithTitles().reduce(
+    (max, item) => Math.max(max, item.title.length),
+    0
+  );
 
   const handleConfirmOrder = async () => {
     setIsLoading(true); // Show activity indicator
@@ -62,11 +85,11 @@ const CheckOutScreen = () => {
         return;
       }
 
-      if (addCarWashOrder) {
+      if (addDryCleanOrder) {
         // Check if the function exists
-        await addCarWashOrder(); // Call the function
+        await addDryCleanOrder(); // Call the function
         // Other logic after adding the car wash order
-        console.log("Car wash order added successfully!");
+        console.log("Dry Clean order added successfully!");
         //
       }
     } catch (error) {
@@ -77,25 +100,24 @@ const CheckOutScreen = () => {
   };
 
   const goToLogIn = () => {
-    navigation.navigate('login');
-    
+    navigation.navigate("login");
+
     setIndexBottom(1);
   };
-
 
   useEffect(() => {
     if (!user) {
       goToLogIn();
     }
-  }, [user]); 
+  }, [user]);
 
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + totalCost.toFixed(2)}
+          title={"Total: $" + (getTotalPrice() + 4 + 1.5).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
-            titleStyle={{fontSize: 20}}
+          titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
@@ -130,7 +152,7 @@ const CheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 20, marginTop: 10 }}
-              subtitle={date}
+              //subtitle={date}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -150,95 +172,39 @@ const CheckOutScreen = () => {
 
           <Card style={styles.card}>
             <Card.Title
-              title={prefrenceOption + " " + "Car Wash"}
+              title={"Dry Clean"}
               titleStyle={{ fontSize: 20 }}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
-                  icon="car"
+                  icon="hair-dryer"
                   size={55}
                   left={-10}
-                  bottom={-15}
+                  bottom={0}
+                  
                 />
               )}
             />
-            {/* <Text
-                 style={{ fontSize: 20, left: 250, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
-              >
-                $+ {prefrenceCost + bodyStyleCost} 
-              </Text> */}
 
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                marginTop: -30,
-                marginHorizontal: 50,
-                
-                //gap: 1,
-                left: 5
+                marginLeft: 75,
+                bottom: 15,
               }}
             >
-              <Button
-                style={{
-                  width: 90,
-                  height: 40,
-                  //borderRadius: 15,
-                  //justifyContent: "center",
-                  // alignItems: "center",
-                  //backgroundColor: "#007bff",
-                  top: 5,
-                  marginLeft: 30,
-                }}
-                icon={iconBrand}
-                mode="text"
-                labelStyle={{ fontSize: 50 }}
-                //contentStyle={{ left: 0 }}
-              >
-                {/* Brand */}
-              </Button>
-              <Button
-                style={{
-                  width: 90,
-                  height: 40,
-                  borderRadius: 15,
-                  //justifyContent: "center",
-                  // alignItems: "center",
-                  //backgroundColor: "#007bff",
-
-                  marginLeft: 30,
-                }}
-                //icon="camera"
-                labelStyle={{ fontSize: 60 }}
-                contentStyle={{ left: 7 }}
-                icon={iconBodyStyle}
-                mode="text"
-              >
-                {/* Style */}
-              </Button>
-              <Button
-                style={styles.rectangularButton}
-                icon="format-paint"
-                labelStyle={{ fontSize: 40, color: currentColor }}
-                mode="text"
-                contentStyle={{ left: 7 }}
-              ></Button>
-              <Button
-                style={{
-                  width: 125,
-                  //  height: 40,
-                  left: 25,
-                  borderWidth: 2,
-                  marginVertical: 10,
-                  //marginLeft: 30,
-                }}
-                //contentStyle={{borderWidth: 1, width: 130,}}
-                labelStyle={{ fontSize: 20, textAlign: "center" }}
-                mode="text"
-              >
-                {" "}
-                <Text>{carPlate}</Text>
-              </Button>
+              {getItemCountsWithTitles().map((item, index) => (
+                <Text
+                  key={index}
+                  style={{
+                    fontSize: 12,
+                    fontFamily: "monospace",
+                    marginVertical: 5,
+                  }}
+                >
+                  {item.title.padEnd(maxWidth + 3)}X{" "}
+                  {item.count.toString().padEnd(1)}
+                </Text>
+              ))}
             </View>
           </Card>
 
@@ -296,8 +262,7 @@ const CheckOutScreen = () => {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   paddingHorizontal: 20,
-                 // marginTop: 20,
-                  
+                  // marginTop: 20,
                 }}
               >
                 <View style={{ alignItems: "flex-start" }}>
@@ -305,8 +270,8 @@ const CheckOutScreen = () => {
                   <Text>Service Fee</Text>
                   <Text>Taxes & Other Fees</Text>
                 </View>
-                <View style={{ alignItems: "flex-start", left: 10}}>
-                  <Text> ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}</Text>
+                <View style={{ alignItems: "flex-start", left: 10 }}>
+                  <Text> ${(getTotalPrice() + deliveryCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
                   <Text> $1.50</Text>
                 </View>
@@ -462,4 +427,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CheckOutScreen;
+export default DryCleanCheckOutScreen;

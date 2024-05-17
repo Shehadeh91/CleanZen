@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   BackHandler,
-  Linking
+  Linking,
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -23,8 +23,23 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 const AdminOrdersScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
-    const [orders, setOrders] = useState([]);
+  const {
+    name,
+    setName,
+    phone,
+    setPhone,
+    address,
+    setAddress,
+    indexBottom,
+    setIndexBottom,
+    user,
+    setUser,
+    visible,
+    setVisible,
+    email,
+    setEmail,
+  } = useAppStore();
+  const [orders, setOrders] = useState([]);
   const [showAvailable, setShowAvailable] = useState(true);
   const [showCompleted, setShowCompleted] = useState(false);
   const [showAssigned, setShowAssigned] = useState(false);
@@ -37,8 +52,8 @@ const AdminOrdersScreen = () => {
 
   const swipeableRef = useRef(null);
 
-  const filterOrders = (status) =>
-    availableOrders.filter((order) => order.Status === status);
+  // const filterOrders = (status) =>
+  //   availableOrders.filter((carWashOrder) => carWashOrder.Status === status);
 
   const handleButtonPress = (status) => {
     setShowAvailable(status === "Available");
@@ -46,7 +61,76 @@ const AdminOrdersScreen = () => {
     setShowAssigned(status === "Assigned");
     setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
+
+    const fetchOrders = async () => {
+      try {
+        
+
+        const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
+        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+
+        const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
+        const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+
+        const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Filter orders by user's email
+        //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
+
+       
+          // Update state by reversing the carWashOrder of new orders
+          setAvailableOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Assigned === "No One")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Assigned === "No One")
+              .reverse(),
+          ]);
+          setAssignedOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Assigned !== "No One")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Assigned !== "No One")
+              .reverse(),
+          ]);
+          setCompletedOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+          ]);
+          setCanceledOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Canceled")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+          ]);
+
+          //   setCanceledOrders(
+          //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
+          //   );
+      
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
   };
+  
 
   useEffect(() => {
     //setVisible(true); // Call setVisible(false) when the component mounts
@@ -68,31 +152,59 @@ const AdminOrdersScreen = () => {
           return;
         }
 
-        const ordersRef = collection(FIRESTORE_DB, "Car-Wash");
-        const querySnapshot = await getDocs(ordersRef);
+        const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
+        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
 
-        const data = querySnapshot.docs.map((doc) => ({
+        const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
+        const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+
+        const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
 
         // Filter orders by user's email
-        //const userOrders = data.filter((order) => order.Email === user.email);
+        //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
         if (isMounted) {
-          // Update state by reversing the order of new orders
-          setAvailableOrders(
-            data.filter((order) => order.Assigned === "No One").reverse()
-          );
-          setAssignedOrders(
-            data.filter((order) => order.Assigned !== "No One").reverse()
-          );
-          setCompletedOrders(
-            data.filter((order) => order.Status === "Completed").reverse()
-          );
-          setCanceledOrders(
-            data.filter((order) => order.Status === "Canceled").reverse()
-          );
+          // Update state by reversing the carWashOrder of new orders
+          setAvailableOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Assigned === "No One")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Assigned === "No One")
+              .reverse(),
+          ]);
+          setAssignedOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Assigned !== "No One")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Assigned !== "No One")
+              .reverse(),
+          ]);
+          setCompletedOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+          ]);
+          setCanceledOrders([
+            ...carWashOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Canceled")
+              .reverse(),
+            ...dryCleanOrders
+              .filter((serviceOrder) => serviceOrder.Status === "Completed")
+              .reverse(),
+          ]);
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -158,9 +270,9 @@ const AdminOrdersScreen = () => {
   //       // Update state after canceling the users
   //       setAvailableOrders((prevOrders) => [...prevOrders, ...assignedOrders]);
   //       setAssignedOrders([]); // Clear the client array after moving all users to agent
-  //       // Update state after canceling the order
+  //       // Update state after canceling the carWashOrder
   //     } catch (error) {
-  //       console.error("Error marking order as Assigned:", error);
+  //       console.error("Error marking carWashOrder as Assigned:", error);
   //     }
   //   };
   // Define handleOpenMaps function
@@ -169,7 +281,6 @@ const AdminOrdersScreen = () => {
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${formattedAddress}`;
     Linking.openURL(mapUrl);
   };
-
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -265,242 +376,468 @@ const AdminOrdersScreen = () => {
       </View>
       {showAvailable && (
         <ScrollView style={styles.ordersList}>
-          {availableOrders.map((order) => (
+          {availableOrders.map((serviceOrder) => (
             <View
-              key={order.id} // Add key prop here
-              // ref={swipeableRef}
-              //rightThreshold={100}
-              //on
-              //   renderRightActions={() => (
-              //     <View
-              //       key={order.id}
-              //       style={{ justifyContent: "center", width: 100 }}
-              //     >
-              //       <Button
-              //         mode="contained"
-              //         onPress={() => markOrderAsAssigned(order.id)}
-              //         style={{
-              //           flex: 1,
-              //           justifyContent: "center",
-              //           backgroundColor: "#C6373C",
-              //           borderRadius: 0,
-              //         }}
-              //       >
-              //         Cancel
-              //       </Button>
-              //     </View>
-              //   )}
+              key={serviceOrder.id} // Add key prop here
             >
-              <View style={styles.orderItem}>
-                <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
-
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+              {serviceOrder.Service === "Car Wash" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    {getIconSource("bodyType", serviceOrder.BodyType) && (
+                      <Icon
+                        source={getIconSource(
+                          "bodyType",
+                          serviceOrder.BodyType
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+                    {getIconSource("carBrand", serviceOrder.CarBrand) && (
+                      <Icon
+                        source={getIconSource(
+                          "carBrand",
+                          serviceOrder.CarBrand
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
+                      source="format-paint"
+                      color={serviceOrder.Color}
                       size={35}
                     />
-                  )}
-
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  <Icon source="format-paint" color={order.Color} size={35} />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.PlateNumber}{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        //borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.Preference}{" "}
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
                   <Text
                     style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
                     }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.Address}
                   </Text>
                 </View>
+              )}
+              {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
 
-                <Text style={{ fontSize: 13,  fontStyle: 'italic' }}>
-                  {order.Note}
-                </Text>
-                <Text style={{ fontSize: 13,  color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
-                  { order.Address}
-                </Text>
-              </View>
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+                </View>
+              )}
             </View>
           ))}
         </ScrollView>
       )}
       {showCompleted && (
         <ScrollView style={styles.ordersList}>
-          {completedOrders.map((order) => (
-            <View key={order.id}>
-              <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
+          {completedOrders.map((serviceOrder) => (
+            <View key={serviceOrder.id}>
+              {serviceOrder.Service === "Car Wash" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
 
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    {getIconSource("bodyType", serviceOrder.BodyType) && (
+                      <Icon
+                        source={getIconSource(
+                          "bodyType",
+                          serviceOrder.BodyType
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+
+                    {getIconSource("carBrand", serviceOrder.CarBrand) && (
+                      <Icon
+                        source={getIconSource(
+                          "carBrand",
+                          serviceOrder.CarBrand
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
+                      source="format-paint"
+                      color={serviceOrder.Color}
                       size={35}
                     />
-                  )}
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.PlateNumber}{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        //borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.Preference}{" "}
+                    </Text>
+                  </View>
 
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  <Icon source="format-paint" color={order.Color} size={35} />
                   <Text
                     style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
                     }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.Address}
                   </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                    {" "}
-                    {order.Delivery}{" "}
-                  </Text> */}
-                </View>
 
-                <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
-                  { order.Address}
-                </Text>
-                
-                
-                <Text style={{ fontSize: 13, color: 'red'  }}>
-                  {order.Assigned}
-                </Text>
-              </View>
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
+              {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
             </View>
           ))}
         </ScrollView>
       )}
       {showCanceled && (
         <ScrollView style={styles.ordersList}>
-          {canceledOrders.map((order) => (
-            <View key={order.id}>
-              <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
+          {canceledOrders.map((serviceOrder) => (
+            <View key={serviceOrder.id}>
+              {serviceOrder.Service === "Car Wash" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
 
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    {getIconSource("bodyType", serviceOrder.BodyType) && (
+                      <Icon
+                        source={getIconSource(
+                          "bodyType",
+                          serviceOrder.BodyType
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+
+                    {getIconSource("carBrand", serviceOrder.CarBrand) && (
+                      <Icon
+                        source={getIconSource(
+                          "carBrand",
+                          serviceOrder.CarBrand
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
+                      source="format-paint"
+                      color={serviceOrder.Color}
                       size={35}
                     />
-                  )}
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.PlateNumber}{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        //borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.Preference}{" "}
+                    </Text>
+                  </View>
 
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  <Icon source="format-paint" color={order.Color} size={35} />
                   <Text
                     style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
                     }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.Address}
                   </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                    {" "}
-                    {order.Delivery}{" "}
-                  </Text> */}
-                </View>
 
-                <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
-                  { order.Address}
-                </Text>
-                
-                
-                <Text style={{ fontSize: 13, color: 'red'  }}>
-                  {order.Assigned}
-                </Text>
-              </View>
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
+              {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
             </View>
           ))}
         </ScrollView>
       )}
       {showAssigned && (
         <ScrollView style={styles.ordersList}>
-          {assignedOrders.map((order) => (
-            <View key={order.id}>
-              <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
+          {assignedOrders.map((serviceOrder) => (
+            <View key={serviceOrder.id}>
+              {serviceOrder.Service === "Car Wash" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
 
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    {getIconSource("bodyType", serviceOrder.BodyType) && (
+                      <Icon
+                        source={getIconSource(
+                          "bodyType",
+                          serviceOrder.BodyType
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
+
+                    {getIconSource("carBrand", serviceOrder.CarBrand) && (
+                      <Icon
+                        source={getIconSource(
+                          "carBrand",
+                          serviceOrder.CarBrand
+                        )}
+                        // color={MD3Colors.error50}
+                        size={35}
+                      />
+                    )}
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
+                      source="format-paint"
+                      color={serviceOrder.Color}
                       size={35}
                     />
-                  )}
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.PlateNumber}{" "}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        alignSelf: "center",
+                        //borderWidth: 1,
+                        left: 5,
+                      }}
+                    >
+                      {" "}
+                      {serviceOrder.Preference}{" "}
+                    </Text>
+                  </View>
 
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-
-                  <Icon source="format-paint" color={order.Color} size={35} />
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
                   <Text
                     style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
                     }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.Address}
+                  </Text>
+
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
                   </Text>
                 </View>
+              )}
+              {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
 
-                <Text style={{ fontSize: 13, fontStyle: 'italic' }}>
-                  {order.Note}
-                </Text>
-                  <Text style={{ fontSize: 13, color: 'blue', textDecorationLine: 'underline' }} onPress={() => handleOpenMaps(order.Address)}>
-                  { order.Address}
-                </Text>
-               
-                
-                <Text style={{ fontSize: 13, color: 'red'  }}>
-                  {order.Assigned}
-                </Text>
-              </View>
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
             </View>
           ))}
         </ScrollView>

@@ -22,6 +22,7 @@ import UsersScreen from "./Screens/UsersScreen";
 import AdminOrdersScreen from "./Screens/AdminOrdersScreen";
 import AgentOrdersScreen from "./Screens/AgentOrdersScreen";
 import AgentScreen from "./Screens/AgentScreen";
+import DryCleanCheckOutScreen from "./Screens/DryCleanCheckOutScreen";
 // import NotificationSettingsScreen from "./Screens/NotificationSettingsScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
@@ -241,6 +242,17 @@ export default function App() {
             component={DryCleanOrderScreen}
             options={{
               headerTitle: "Dry Clean", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+              headerRight: null
+            }}
+          />
+            <Stack.Screen
+            name="dryCleanCheckOut"
+            component={DryCleanCheckOutScreen}
+            options={{
+              headerTitle: "Check Out", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import dryCleanData from "./assets/dryCleanData.json";
 
-
 // Initialize item counts to 0 for all items
 const initialItemCounts = Object.fromEntries(
   dryCleanData.map((item) => [item.id, 0])
@@ -12,9 +11,16 @@ const useDryCleanCart = create((set, get) => ({
   itemCounts: { ...initialItemCounts }, // Track item counts
   deliveryCost: 0,
   setDeliveryCost: (cost) => set({ deliveryCost: cost }),
-  
+
   deliveryOption: "Standard",
   setDeliveryOption: (option) => set({ deliveryOption: option }),
+
+  note: "", // Initial value for Note
+  setNote: (value) => set({ note: value }),
+
+  paymentOption: "Cash", // Initial value for paymentOption
+  setPaymentOption: (value) => set({ paymentOption: value }),
+
   addToCart: (itemId) =>
     set((state) => ({
       itemCounts: {
@@ -41,10 +47,23 @@ const useDryCleanCart = create((set, get) => ({
       .reduce((total, item) => {
         const itemTotal = item.price * state.itemCounts[item.id];
 
-        return total + itemTotal ;
+        return total + itemTotal;
       }, 0); // Calculate total price based on counts
 
     return totalPrice;
+  },
+  // New function to get item counts with titles
+  getItemCountsWithTitles: () => {
+    const state = get(); // Access the current state
+
+    const itemCountsWithTitles = dryCleanData
+      .filter((item) => state.itemCounts[item.id] > 0) // Only consider items with counts > 0
+      .map((item) => ({
+        title: item.title, // Get the title of the item
+        count: state.itemCounts[item.id], // Get the count of the item
+      }));
+
+    return itemCountsWithTitles;
   },
 }));
 

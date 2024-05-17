@@ -102,9 +102,10 @@ const CarWashOrderScreen = () => {
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: totalCost,
+        Total: "$"+totalCost,
         Status: "InProgress",
-        Assigned: "No One"
+        Assigned: "No One",
+        Service: "Car Wash"
       });
 
       await setDoc(

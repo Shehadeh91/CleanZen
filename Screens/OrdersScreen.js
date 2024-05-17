@@ -8,8 +8,9 @@ import {
   FlatList,
   BackHandler,
   
+  
 } from "react-native";
-import { Button, Icon, MD3Colors } from "react-native-paper";
+import { Button, Icon, MD3Colors, Divider } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
@@ -35,15 +36,71 @@ const OrderScreen = () => {
 
   const swipeableRef = useRef(null);
 
-  const filterOrders = (status) =>
-    inProgressOrders.filter((order) => order.Status === status);
+  // const filterOrders = (status) => {
+  //   const filteredInProgressOrders = inProgressOrders.filter((serviceOrder) => serviceOrder.Status === status);
+  //   const filteredDryCleanOrders = inProgressOrders.filter((dryCleanOrder) => dryCleanOrder.Status === status);
+  
+  //   return { filteredInProgressOrders, filteredDryCleanOrders };
+  // }
+  
+    
 
   const handleButtonPress = (status) => {
     setShowInProgress(status === "InProgress");
     setShowCompleted(status === "Completed");
     setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
+
+      const fetchOrders = async () => {
+      try {
+        
+
+        const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
+        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+
+        const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
+        const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+
+        const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Filter orders by user's email
+        //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
+
+       
+          // Update state by reversing the carWashOrder of new orders
+          const carWashUserOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash");
+      const carWashCanceledOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash");
+      const carWashCompletedOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash");
+
+      // Filter orders by user's email and status for Dry-Clean orders
+      const dryCleanUserOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean");
+      const dryCleanCanceledOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean");
+      const dryCleanCompletedOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean");
+
+      
+        setInProgressOrders(carWashUserOrders.concat(dryCleanUserOrders));
+        setCanceledOrders(carWashCanceledOrders.concat(dryCleanCanceledOrders));
+        setCompletedOrders(carWashCompletedOrders.concat(dryCleanCompletedOrders));
+
+          //   setCanceledOrders(
+          //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
+          //   );
+      
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
   };
+  
 
   useEffect(() => {
     //setVisible(true); // Call setVisible(false) when the component mounts
@@ -56,51 +113,58 @@ const OrderScreen = () => {
   }, []);
 
   useEffect(() => {
-    let isMounted = true; // Flag to track component mount state
+  let isMounted = true; // Flag to track component mount state
 
-    const fetchOrders = async () => {
-      try {
-        if (!user || !user.email) {
-          console.error("User is not logged in or has no email.");
-          return;
-        }
-
-        const ordersRef = collection(FIRESTORE_DB, "Car-Wash");
-        const querySnapshot = await getDocs(ordersRef);
-
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // Filter orders by user's email
-        const userOrders = data.filter((order) => order.Email === user.email);
-
-        if (isMounted) {
-          // Update state by reversing the order of new orders
-          setInProgressOrders(
-            userOrders
-              .filter((order) => order.Status === "InProgress")
-              
-          );
-          setCanceledOrders(
-            userOrders.filter((order) => order.Status === "Canceled")
-          );
-          setCompletedOrders(
-            userOrders.filter((order) => order.Status === "Completed")
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+  const fetchOrders = async () => {
+    try {
+      if (!user || !user.email) {
+        console.error("User is not logged in or has no email.");
+        return;
       }
-    };
 
-    fetchOrders();
+      const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
+      const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
 
-    return () => {
-      isMounted = false; // Cleanup function to set isMounted to false on unmount
-    };
-  }, [user]);
+      const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
+      const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+
+      const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Filter orders by user's email and status for Car-Wash orders
+      const carWashUserOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash");
+      const carWashCanceledOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash");
+      const carWashCompletedOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash");
+
+      // Filter orders by user's email and status for Dry-Clean orders
+      const dryCleanUserOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean");
+      const dryCleanCanceledOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean");
+      const dryCleanCompletedOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean");
+
+      if (isMounted) {
+        setInProgressOrders(carWashUserOrders.concat(dryCleanUserOrders));
+        setCanceledOrders(carWashCanceledOrders.concat(dryCleanCanceledOrders));
+        setCompletedOrders(carWashCompletedOrders.concat(dryCleanCompletedOrders));
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  fetchOrders();
+
+  return () => {
+    isMounted = false; // Cleanup function to set isMounted to false on unmount
+  };
+}, [user]);
+
 
   const carBrandIcons = {
     Mazda: require("../assets/Icons/mazda.png"),
@@ -142,25 +206,36 @@ const OrderScreen = () => {
     }
   };
 
-  const markOrderAsCanceled = async (orderId) => {
+  const markOrderAsCanceled = async (orderId, serviceType) => {
     try {
-      const orderRef = doc(FIRESTORE_DB, "Car-Wash", orderId);
-      await setDoc(orderRef, { Status: "Canceled" }, { merge: true });
+      if (serviceType === "Dry Clean") {
+            const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+      await setDoc(doc(dryCleanOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
+      }else if (serviceType === "Car Wash") {
+        const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
+        await setDoc(doc(carWashOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
+    
+      }else {
+        console.error("Invalid service type:", serviceType);
+        return;
+      }
+    
+    
       console.log("Order marked as Canceled.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
-      // Update state after canceling the order
+      // Update state after canceling the serviceOrder
       setInProgressOrders((prevOrders) =>
-        prevOrders.filter((order) => order.id !== orderId)
+        prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId)
       );
       setCanceledOrders((prevOrders) => [
-        // Place the claimed order at the top of MyOrders
-        { id: orderId, ...inProgressOrders.find((order) => order.id === orderId) },
-        ...prevOrders.filter((order) => order.id !== orderId), // Filter out the old order if it exists
+        // Place the claimed serviceOrder at the top of MyOrders
+        { id: orderId, ...inProgressOrders.find((serviceOrder) => serviceOrder.id === orderId) },
+        ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old serviceOrder if it exists
       ]);
     } catch (error) {
-      console.error("Error marking order as Canceled:", error);
+      console.error("Error marking serviceOrder as Canceled:", error);
     }
   };
 
@@ -237,100 +312,131 @@ const OrderScreen = () => {
         </Button>
       </View>
       {showInProgress && (
-        <ScrollView style={styles.ordersList}>
-          {inProgressOrders.map((order) => (
-            <Swipeable
-              key={order.id} // Add key prop here
-              ref={swipeableRef}
-              rightThreshold={100}
-              on
-              renderRightActions={() => (
-                <View
-                  key={order.id}
-                  style={{ justifyContent: "center", width: 100 }}
-                >
-                  <Button
-                    mode="contained"
-                    onPress={() => markOrderAsCanceled(order.id)}
-                    style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      backgroundColor: "#C6373C",
-                      borderRadius: 0,
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                </View>
-              )}
+  <ScrollView style={styles.ordersList}>
+    {inProgressOrders.map((serviceOrder) => (
+      <Swipeable
+        key={serviceOrder.id} // Add key prop here
+        ref={swipeableRef}
+        rightThreshold={100}
+        on
+        renderRightActions={() => (
+          <View
+            key={serviceOrder.id} // Remove this key prop if not needed
+            style={{ justifyContent: "center", width: 100 }}
+          >
+            <Button
+              mode="contained"
+              onPress={() => markOrderAsCanceled(serviceOrder.id, serviceOrder.Service)}
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                backgroundColor: "#C6373C",
+                borderRadius: 0,
+              }}
             >
-              <View style={styles.orderItem}>
-              <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
-                </Text>
-
-                <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
-                    <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-
-                  {getIconSource("carBrand", order.CarBrand) && (
-                    <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
-                      // color={MD3Colors.error50}
-                      size={35}
-                    />
-                  )}
-                  <Icon source="format-paint" color={order.Color} size={35} />
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      alignSelf: "center",
-                      borderWidth: 1,
-                      left: 5,
-                    }}
-                  >
-                    {" "}
-                    {order.PlateNumber}{" "}
-                  </Text>
-                </View>
-
-                {/* Add other fields as needed */}
-              </View>
-            </Swipeable>
-          ))}
-        </ScrollView>
+              Cancel
+            </Button>
+          </View>
+        )}
+      >
+       {serviceOrder.Service === 'Car Wash' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          <View style={{ flexDirection: "row", gap: 5 }}>
+            {getIconSource("bodyType", serviceOrder.BodyType) && (
+              <Icon
+                source={getIconSource("bodyType", serviceOrder.BodyType)}
+                // color={MD3Colors.error50}
+                size={35}
+              />
+            )}
+            {getIconSource("carBrand", serviceOrder.CarBrand) && (
+              <Icon
+                source={getIconSource("carBrand", serviceOrder.CarBrand)}
+                // color={MD3Colors.error50}
+                size={35}
+              />
+            )}
+            <Icon source="format-paint" color={serviceOrder.Color} size={35} />
+            <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.PlateNumber}{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Preference}{" "}
+            </Text>
+          </View>
+        </View>
       )}
+      {serviceOrder.Service === 'Dry Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
+        </View>
+      )}
+      </Swipeable>
+    ))}
+  </ScrollView>
+)}
+
       {showCompleted && (
         <ScrollView style={styles.ordersList}>
-          {completedOrders.map((order) => (
-            <View key={order.id}>
+          {completedOrders.map((serviceOrder) => (
+            <View key={serviceOrder.id}>
+            {serviceOrder.Service === 'Car Wash' && (
               <View style={styles.orderItem}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
+                  {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+                  {getIconSource("bodyType", serviceOrder.BodyType) && (
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
+                      source={getIconSource("bodyType", serviceOrder.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
 
-                  {getIconSource("carBrand", order.CarBrand) && (
+                  {getIconSource("carBrand", serviceOrder.CarBrand) && (
                     <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
+                      source={getIconSource("carBrand", serviceOrder.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
-                  <Icon source="format-paint" color={order.Color} size={35} />
+                  <Icon source="format-paint" color={serviceOrder.Color} size={35} />
                   <Text
                     style={{
                       fontSize: 20,
@@ -340,47 +446,74 @@ const OrderScreen = () => {
                     }}
                   >
                     {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.PlateNumber}{" "}
                   </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                    {" "}
-                    {order.Delivery}{" "}
-                  </Text> */}
+                  <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Preference}{" "}
+            </Text>
                 </View>
 
                 {/* Add other fields as needed */}
               </View>
+              )}
+               {serviceOrder.Service === 'Dry Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
             </View>
-          ))}
+          )}
+          </View>
+    ))}
         </ScrollView>
       )}
       {showCanceled && (
         <ScrollView style={styles.ordersList}>
-          {canceledOrders.map((order) => (
-            <View key={order.id}>
+          {canceledOrders.map((serviceOrder) => (
+            <View key={serviceOrder.id}>
+            {serviceOrder.Service === 'Car Wash' && (
               <View style={styles.orderItem}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {order.Preference.padEnd(9) + "Car Wash   $" + order.Total}
+                  {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
-                  {getIconSource("bodyType", order.BodyType) && (
+                  {getIconSource("bodyType", serviceOrder.BodyType) && (
                     <Icon
-                      source={getIconSource("bodyType", order.BodyType)}
+                      source={getIconSource("bodyType", serviceOrder.BodyType)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
 
-                  {getIconSource("carBrand", order.CarBrand) && (
+                  {getIconSource("carBrand", serviceOrder.CarBrand) && (
                     <Icon
-                      source={getIconSource("carBrand", order.CarBrand)}
+                      source={getIconSource("carBrand", serviceOrder.CarBrand)}
                       // color={MD3Colors.error50}
                       size={35}
                     />
                   )}
-
-                  <Icon source="format-paint" color={order.Color} size={35} />
+                  <Icon source="format-paint" color={serviceOrder.Color} size={35} />
                   <Text
                     style={{
                       fontSize: 20,
@@ -390,20 +523,48 @@ const OrderScreen = () => {
                     }}
                   >
                     {" "}
-                    {order.PlateNumber}{" "}
+                    {serviceOrder.PlateNumber}{" "}
                   </Text>
-                  {/* <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                 {" "}
-                 {order.Delivery}{" "}
-               </Text> */}
+                  <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Preference}{" "}
+            </Text>
                 </View>
 
                 {/* Add other fields as needed */}
               </View>
+              )}
+               {serviceOrder.Service === 'Dry Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
             </View>
-          ))}
+          )}
+          </View>
+    ))}
         </ScrollView>
       )}
+      
     </View>
   );
 };

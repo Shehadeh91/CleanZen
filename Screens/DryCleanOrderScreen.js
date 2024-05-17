@@ -41,79 +41,98 @@ const DryCleanOrderScreen = () => {
     deliveryOption,
     setDeliveryCost,
     setDeliveryOption,
+    itemCounts,
+    paymentOption,
+    setPaymentOption,
+    note,
+    setNote,
+    getItemCountsWithTitles,
   } = useDryCleanCart();
 
   const auth = FIREBASE_AUTH;
 
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const {
+    name,
+    setName,
+    phone,
+    setPhone,
+    address,
+    setAddress,
+    indexBottom,
+    setIndexBottom,
+    user,
+    setUser,
+    visible,
+    setVisible,
+    email,
+    setEmail,
+  } = useAppStore();
   //const [name, setName] = useState("");
- 
 
-  //   const addCarWashOrder = async () => {
-  //     try {
-  //       const user = auth.currentUser;
-  //       if (!user || !user.emailVerified) {
-  //         console.error("Error: User is not authenticated.");
-  //         navigation.navigate("login");
+  const addDryCleanOrder = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user || !user.emailVerified) {
+        console.error("Error: User is not authenticated.");
+        navigation.navigate("login");
 
-  //         return;
-  //       }
+        return;
+      }
 
-  //       const userId = user?.email || "UnknownUser";
-  //       if (!userId) {
-  //         console.error("Error: User email is null or undefined.");
-  //         return;
-  //       }
+      const userId = user?.email || "UnknownUser";
+      if (!userId) {
+        console.error("Error: User email is null or undefined.");
+        return;
+      }
 
-  //       const counterDocRef = doc(FIRESTORE_DB, "OrderCounters", userId);
-  //       const counterDocSnap = await getDoc(counterDocRef);
+      const counterDocRef = doc(FIRESTORE_DB, "OrderCounters", userId);
+      const counterDocSnap = await getDoc(counterDocRef);
 
-  //       let orderNumber = 1;
-  //       if (counterDocSnap.exists()) {
-  //         const counterData = counterDocSnap.data();
-  //         if (counterData && counterData.orderNumber) {
-  //           orderNumber = counterData.orderNumber + 1;
-  //         }
-  //       }
+      let orderNumber = 1;
+      if (counterDocSnap.exists()) {
+        const counterData = counterDocSnap.data();
+        if (counterData && counterData.orderNumber) {
+          orderNumber = counterData.orderNumber + 1;
+        }
+      }
 
-  //       const orderDocRef = doc(
-  //         FIRESTORE_DB,
-  //         "Car-Wash",
-  //         `${userId}_${orderNumber}`
-  //       );
+      const orderDocRef = doc(
+        FIRESTORE_DB,
+        "Dry-Clean",
+        `${userId}_${orderNumber}`
+      );
 
-  //       await setDoc(orderDocRef, {
-  //         Email: userId,
-  //         Name: name,
-  //         Phone: phone,
-  //         Address: address,
-  //         CarBrand: carBrand,
-  //         BodyType: bodyStyle,
-  //         Preference: prefrenceOption, // Update Preference based on selected option
-  //         Color: currentColor,
-  //         PlateNumber: carPlate,
-  //         Payment: paymentOption,
-  //         Note: note,
-  //         Delivery: deliveryOption,
-  //         Total: totalCost,
-  //         Status: "InProgress",
-  //         Assigned: "No One",
-  //       });
+      await setDoc(orderDocRef, {
+        Email: userId,
+        Name: name,
+        Phone: phone,
+        Address: address,
 
-  //       await setDoc(
-  //         counterDocRef,
-  //         { orderNumber: orderNumber },
-  //         { merge: true }
-  //       );
-  //       console.log(
-  //         "Added car wash order document ID:",
-  //         `${userId}_${orderNumber}`
-  //       );
-  //       navigation.navigate("orderComplete");
-  //     } catch (error) {
-  //       console.error("Error adding car wash order:", error);
-  //     }
-  //   };
+        Items: getItemCountsWithTitles(),
+
+        Payment: paymentOption,
+        Note: note,
+        Delivery: deliveryOption,
+        Total: "$" + (getTotalPrice() + deliveryCost).toFixed(2),
+        Status: "InProgress",
+        Assigned: "No One",
+        Service: "Dry Clean"
+      });
+
+      await setDoc(
+        counterDocRef,
+        { orderNumber: orderNumber },
+        { merge: true }
+      );
+      console.log(
+        "Added dry clean order document ID:",
+        `${userId}_${orderNumber}`
+      );
+      navigation.navigate("orderComplete");
+    } catch (error) {
+      console.error("Error adding car wash order:", error);
+    }
+  };
 
   const Item = ({ item, lastItem }) => {
     const { addToCart, removeFromCart, itemCounts, getTotalPrice } =
@@ -130,14 +149,14 @@ const DryCleanOrderScreen = () => {
         >
           <View style={{ flex: 1 }}>
             <Text>{item?.title}</Text>
-            <Text>{item?.price}</Text>
+            <Text style={{ color: "green" }}>${item?.price}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
               removeFromCart(item.id);
             }}
           >
-            <Icon source="minus-thick" size={25} />
+            <Icon source="minus-thick" size={20} />
           </TouchableOpacity>
           <Text style={{ marginHorizontal: 15 }}>{itemCounts[item.id]}</Text>
           <TouchableOpacity
@@ -145,7 +164,7 @@ const DryCleanOrderScreen = () => {
               addToCart(item?.id);
             }}
           >
-            <Icon source="plus-thick" size={25} />
+            <Icon source="plus-thick" size={20} />
           </TouchableOpacity>
         </View>
         {!lastItem && <Divider />}
@@ -157,7 +176,7 @@ const DryCleanOrderScreen = () => {
     <View style={{ flex: 1 }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Subtotal: $" + (getTotalPrice()+ deliveryCost).toFixed(2)}
+          title={"Subtotal: $" + (getTotalPrice() + deliveryCost).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
           titleStyle={{ fontSize: 15 }}
         />
@@ -248,10 +267,10 @@ const DryCleanOrderScreen = () => {
                 setDeliveryOption(newValue);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
-                 // setDate("30-45 min");
+                  // setDate("30-45 min");
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
-                 // setDate("15-30 min");
+                  // setDate("15-30 min");
                 }
               }}
               value={deliveryOption}
@@ -268,8 +287,8 @@ const DryCleanOrderScreen = () => {
             style={{ marginBottom: 28, bottom: -10 }}
             mode="contained"
             onPress={() => {
-              navigation.navigate("checkOut", {
-                addCarWashOrder: addCarWashOrder,
+              navigation.navigate("dryCleanCheckOut", {
+                addDryCleanOrder: addDryCleanOrder,
               });
               // updateTotalCost(2);
             }}
