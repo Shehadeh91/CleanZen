@@ -12,7 +12,7 @@ const useDryCleanCart = create((set, get) => ({
   deliveryCost: 0,
   setDeliveryCost: (cost) => set({ deliveryCost: cost }),
 
-  deliveryOption: "Standard",
+  deliveryOption: "",
   setDeliveryOption: (option) => set({ deliveryOption: option }),
 
   note: "", // Initial value for Note

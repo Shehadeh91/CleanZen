@@ -378,7 +378,9 @@ setCompletedOrders(userCompletedOrders);
             >
               Cancel
             </Button>
+            
           </View>
+          
         )}
       >
        {serviceOrder.Service === 'Car Wash' && (
@@ -475,11 +477,12 @@ setCompletedOrders(userCompletedOrders);
       </Swipeable>
       
     ))}
+    <Text style={{ fontStyle: 'italic', fontSize: 12 }}>To cancel an order, swipe on the card</Text>
     
   </ScrollView>
   
 )}
-<Text style={{ fontStyle: 'italic', fontSize: 12 }}>To cancel an order, swipe on the card</Text>
+
 
       {showCompleted && (
         <ScrollView style={styles.ordersList}>

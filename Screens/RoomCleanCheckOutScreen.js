@@ -78,7 +78,7 @@ const RoomCleanCheckOutScreen = () => {
   );
 
   const handleConfirmOrder = async () => {
-    setIsLoading(true); // Show activity indicator
+    setIsLoading(true); // Show activity indicatorr
     try {
       const isConnected = await NetInfo.fetch().then(
         (state) => state.isConnected

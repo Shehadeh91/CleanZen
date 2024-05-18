@@ -25,7 +25,7 @@ const useCarWashStore = create((set, get) => ({
   paymentOption: "Cash", // Initial value for paymentOption
   setPaymentOption: (value) => set({ paymentOption: value }),
 
-  deliveryOption: "Standard", // Initial value for deliveryOption
+  deliveryOption: "", // Initial value for deliveryOption
   setDeliveryOption: (value) => set({ deliveryOption: value }),
 
   prefrenceOption: "Exterior", // Initial value for prefrenceOption
