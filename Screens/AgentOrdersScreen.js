@@ -70,9 +70,11 @@ const AgentOrdersScreen = () => {
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
 
         const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
         const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+        const roomCleanQuerySnapshot = await getDocs(roomCleanOrdersRef);
 
         const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -80,6 +82,11 @@ const AgentOrdersScreen = () => {
         }));
 
         const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const roomCleanOrders = roomCleanQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
@@ -102,6 +109,14 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "InProgress" &&
                 serviceOrder.Service === "Dry Clean"
             ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Assigned === "No One" &&
+                serviceOrder.Status === "InProgress" &&
+                serviceOrder.Service === "Room Clean"
+            ),
+
+
           ]);
           setMyOrders([
             ...carWashOrders.filter(
@@ -116,6 +131,12 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "InProgress" &&
                 serviceOrder.Service === "Dry Clean"
             ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Assigned === user.email &&
+                serviceOrder.Status === "InProgress" &&
+                serviceOrder.Service === "Room Clean"
+            ),
           ]);
           setCompletedOrders([
             ...carWashOrders.filter(
@@ -129,6 +150,12 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "Completed" &&
                 serviceOrder.Assigned === user.email &&
                 serviceOrder.Service === "Dry Clean"
+            ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Status === "Completed" &&
+                serviceOrder.Assigned === user.email &&
+                serviceOrder.Service === "Room Clean"
             ),
           ]);
 
@@ -165,9 +192,11 @@ const AgentOrdersScreen = () => {
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
 
         const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
         const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+        const roomCleanQuerySnapshot = await getDocs(roomCleanOrdersRef);
 
         const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -179,10 +208,16 @@ const AgentOrdersScreen = () => {
           ...doc.data(),
         }));
 
+        const roomCleanOrders = roomCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
         if (isMounted) {
+          // Update state by reversing the carWashOrder of new orders
           // Update state by reversing the carWashOrder of new orders
           setAvailableOrders([
             ...carWashOrders.filter(
@@ -197,6 +232,14 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "InProgress" &&
                 serviceOrder.Service === "Dry Clean"
             ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Assigned === "No One" &&
+                serviceOrder.Status === "InProgress" &&
+                serviceOrder.Service === "Room Clean"
+            ),
+
+
           ]);
           setMyOrders([
             ...carWashOrders.filter(
@@ -211,6 +254,12 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "InProgress" &&
                 serviceOrder.Service === "Dry Clean"
             ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Assigned === user.email &&
+                serviceOrder.Status === "InProgress" &&
+                serviceOrder.Service === "Room Clean"
+            ),
           ]);
           setCompletedOrders([
             ...carWashOrders.filter(
@@ -224,6 +273,12 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "Completed" &&
                 serviceOrder.Assigned === user.email &&
                 serviceOrder.Service === "Dry Clean"
+            ),
+            ...roomCleanOrders.filter(
+              (serviceOrder) =>
+                serviceOrder.Status === "Completed" &&
+                serviceOrder.Assigned === user.email &&
+                serviceOrder.Service === "Room Clean"
             ),
           ]);
 
@@ -303,6 +358,13 @@ const AgentOrdersScreen = () => {
           { Assigned: user.email },
           { merge: true }
         );
+      } else if (serviceType === "Room Clean") {
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
+        await setDoc(
+          doc(roomCleanOrdersRef, orderId),
+          { Assigned: user.email },
+          { merge: true }
+        );
       } else {
         console.error("Invalid service type:", serviceType);
         return;
@@ -335,24 +397,21 @@ const AgentOrdersScreen = () => {
   const markOrderAsComplete = async (orderId, serviceType) => {
     try {
       if (serviceType === "Dry Clean") {
-        console.log(serviceType)
-        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
-        await setDoc(
-          doc(dryCleanOrdersRef, orderId),
-          { Assigned: user.email },
-          { merge: true }
-        );
-      } else if (serviceType === "Car Wash") {
+            const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+      await setDoc(doc(dryCleanOrdersRef, orderId), { Status: "Completed" }, { merge: true });
+      }else if (serviceType === "Car Wash") {
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
-        await setDoc(
-          doc(carWashOrdersRef, orderId),
-          { Assigned: user.email },
-          { merge: true }
-        );
-      } else {
+        await setDoc(doc(carWashOrdersRef, orderId), { Status: "Completed" }, { merge: true });
+
+      }else if (serviceType === "Room Clean") {
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
+        await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Completed" }, { merge: true });
+    
+      }else {
         console.error("Invalid service type:", serviceType);
         return;
       }
+
       console.log("Order marked as Completed.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
@@ -659,6 +718,42 @@ const AgentOrdersScreen = () => {
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
                 </View>
               )}
+              {serviceOrder.Service === "Room Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                </View>
+              )}
             </Swipeable>
           ))}
         </ScrollView>
@@ -742,6 +837,41 @@ const AgentOrdersScreen = () => {
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+
+                  <Text style={{ fontSize: 13, color: "red" }}>
+                    {serviceOrder.Assigned}
+                  </Text>
+                </View>
+              )}
+              {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                     {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
@@ -882,6 +1012,42 @@ const AgentOrdersScreen = () => {
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
+                <View style={styles.orderItem}>
+                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  </Text>
+
+                  {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{
+                          fontSize: 13,
+                          fontFamily: "monospace",
+                          marginVertical: 3,
+                        }}
+                      >
+                        {item.title.padEnd(30)} x{item.count}
+                      </Text>
+                    ))}
+                  <Text style={{ fontSize: 13, fontStyle: "italic" }}>
+                    {serviceOrder.Note}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: "blue",
+                      textDecorationLine: "underline",
+                    }}
+                    onPress={() => handleOpenMaps(serviceOrder.Address)}
+                  >
+                    {serviceOrder.Address}
+                  </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                </View>
+              )}
+              {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                     {serviceOrder.Service.padEnd(20) + serviceOrder.Total}

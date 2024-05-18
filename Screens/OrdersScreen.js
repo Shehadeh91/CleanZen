@@ -57,9 +57,11 @@ const OrderScreen = () => {
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
 
         const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
         const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+        const roomCleanQuerySnapshot = await getDocs(roomCleanOrdersRef);
 
         const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -71,24 +73,39 @@ const OrderScreen = () => {
           ...doc.data(),
         }));
 
+        const roomCleanOrders = roomCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
        
-          // Update state by reversing the carWashOrder of new orders
-          const carWashUserOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash");
-      const carWashCanceledOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash");
-      const carWashCompletedOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash");
+         // Update state by filtering orders based on service type and status
+const userInProgressOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash").reverse(),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean").reverse(),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Room Clean").reverse(),
+];
 
-      // Filter orders by user's email and status for Dry-Clean orders
-      const dryCleanUserOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean");
-      const dryCleanCanceledOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean");
-      const dryCleanCompletedOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean");
+const userCanceledOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash").reverse(),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean").reverse(),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Room Clean").reverse(),
+];
 
-      
-        setInProgressOrders(carWashUserOrders.concat(dryCleanUserOrders));
-        setCanceledOrders(carWashCanceledOrders.concat(dryCleanCanceledOrders));
-        setCompletedOrders(carWashCompletedOrders.concat(dryCleanCompletedOrders));
+const userCompletedOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash").reverse(),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean").reverse(),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Room Clean").reverse(),
+];
+
+// Set the state with the filtered orders
+setInProgressOrders(userInProgressOrders);
+setCanceledOrders(userCanceledOrders);
+setCompletedOrders(userCompletedOrders);
+
 
           //   setCanceledOrders(
           //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
@@ -123,35 +140,56 @@ const OrderScreen = () => {
       }
 
       const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
-      const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
 
-      const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
-      const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+        const carWashQuerySnapshot = await getDocs(carWashOrdersRef);
+        const dryCleanQuerySnapshot = await getDocs(dryCleanOrdersRef);
+        const roomCleanQuerySnapshot = await getDocs(roomCleanOrdersRef);
 
-      const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+        const carWashOrders = carWashQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-      const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+        const dryCleanOrders = dryCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-      // Filter orders by user's email and status for Car-Wash orders
-      const carWashUserOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash");
-      const carWashCanceledOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash");
-      const carWashCompletedOrders = carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash");
+        const roomCleanOrders = roomCleanQuerySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-      // Filter orders by user's email and status for Dry-Clean orders
-      const dryCleanUserOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean");
-      const dryCleanCanceledOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean");
-      const dryCleanCompletedOrders = dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean");
+        // Filter orders by user's email
+        //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
+
+       
+          // Update state by filtering orders based on service type and status
+const userInProgressOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash"),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Dry Clean"),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Room Clean"),
+];
+
+const userCanceledOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Car Wash"),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Dry Clean"),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "Canceled" && order.Service === "Room Clean"),
+];
+
+const userCompletedOrders = [
+  ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Car Wash"),
+  ...dryCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Dry Clean"),
+  ...roomCleanOrders.filter((order) => order.Email === user.email && order.Status === "Completed" && order.Service === "Room Clean"),
+];
 
       if (isMounted) {
-        setInProgressOrders(carWashUserOrders.concat(dryCleanUserOrders));
-        setCanceledOrders(carWashCanceledOrders.concat(dryCleanCanceledOrders));
-        setCompletedOrders(carWashCompletedOrders.concat(dryCleanCompletedOrders));
+       // Set the state with the filtered orders
+setInProgressOrders(userInProgressOrders);
+setCanceledOrders(userCanceledOrders);
+setCompletedOrders(userCompletedOrders);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -214,6 +252,10 @@ const OrderScreen = () => {
       }else if (serviceType === "Car Wash") {
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         await setDoc(doc(carWashOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
+
+      }else if (serviceType === "Room Clean") {
+        const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
+        await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
     
       }else {
         console.error("Invalid service type:", serviceType);
@@ -409,6 +451,27 @@ const OrderScreen = () => {
         </View>
         
       )}
+      {serviceOrder.Service === 'Room Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
+                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time:  {serviceOrder.EstimateTime}</Text>
+        </View>
+        
+      )}
       </Swipeable>
       
     ))}
@@ -490,6 +553,27 @@ const OrderScreen = () => {
                         x{item.count}
                       </Text>
                     ))}
+                    
+            </View>
+          )}
+          {serviceOrder.Service === 'Room Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
+                    
             </View>
           )}
           </View>
@@ -552,6 +636,25 @@ const OrderScreen = () => {
               </View>
               )}
                {serviceOrder.Service === 'Dry Clean' && (
+        <View style={styles.orderItem}>
+       
+          <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
+            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+          </Text>
+          
+          {Array.isArray(serviceOrder.Items) &&
+                    serviceOrder.Items.map((item, index) => (
+                      <Text
+                        key={index}
+                        style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
+                      >
+                        {item.title.padEnd( 30 )}{" "}
+                        x{item.count}
+                      </Text>
+                    ))}
+            </View>
+          )}
+          {serviceOrder.Service === 'Room Clean' && (
         <View style={styles.orderItem}>
        
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>

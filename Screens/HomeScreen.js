@@ -61,14 +61,14 @@ const HomeScreen = () => {
       image: require("./CarClean.png"),
       screen: "carWash",
     },
-    // {
-    //   id: "2",
-    //   title: "HOUSE/APARTMENT CLEAN",
-    //   description:
-    //     "Discover the convenience of our house cleaning service. We offer comprehensive cleaning solutions for every corner of your home, including dusting, vacuuming, mopping, kitchen and bathroom sanitation, and trash removal. Choose our House Cleaning service for a spotless and inviting living space.",
-    //   image: require("./HouseClean.png"),
-    //   screen: "carWash",
-    // },
+    {
+      id: "2",
+      title: "HOUSE/APARTMENT CLEAN",
+      description:
+        "Discover the convenience of our house cleaning service. We offer comprehensive cleaning solutions for every corner of your home, including dusting, vacuuming, mopping, kitchen and bathroom sanitation, and trash removal. Choose our House Cleaning service for a spotless and inviting living space.",
+      image: require("./HouseClean.png"),
+      screen: "roomClean",
+    },
     {
       id: "3",
       title: "DRY CLEAN",

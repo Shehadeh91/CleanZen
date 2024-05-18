@@ -47,7 +47,8 @@ const LogInScreen = () => {
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
           setName(userData.Name),
-          setPhone(userData.Phone)
+          setPhone(userData.Phone),
+          setUser(user)
           if (userData && userData.Role === "Client") {
             navigation.navigate('home');
             setIndexBottom(0);
