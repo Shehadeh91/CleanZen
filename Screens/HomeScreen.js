@@ -12,6 +12,9 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native"; // Add
 import { useEffect } from "react";
 import useAppStore from "../useAppStore";
 import { Avatar, Button, Card, Icon } from "react-native-paper";
+import { onMessage, getMessaging, getToken } from "firebase/messaging";
+
+
 
 const HomeScreen = () => {
   const navigation = useNavigation(); // Added navigation hook
@@ -24,6 +27,38 @@ const HomeScreen = () => {
       };
     }, [])
   );
+
+
+
+  // useEffect(() => {
+  //   const requestNotificationPermission = async () => {
+  //     try {
+  //       const permission = await Notification.requestPermission();
+  //       if (permission === 'granted') {
+  //         console.log('Notification permission granted.');
+  //         // Call getToken from Firebase messaging
+  //         getToken().then((token) => {
+  //           console.log('FCM Token:', token);
+  //           // Send this token to your server to send notifications.
+  //         }).catch((error) => {
+  //           console.log('Error getting FCM token:', error);
+  //         });
+  //       } else {
+  //         console.log('Notification permission denied.');
+  //       }
+
+  //       // Handle message when the app is open
+  //       Notification.onMessage((message) => {
+  //         console.log('Message received:', message);
+  //         // Handle the incoming message, e.g., display a notification.
+  //       });
+  //     } catch (error) {
+  //       console.log('Error requesting notification permission:', error);
+  //     }
+  //   };
+
+  //   requestNotificationPermission();
+  // }, []);
 
   const renderItem = ({ item }) => (
     <Card style={styles.card}>

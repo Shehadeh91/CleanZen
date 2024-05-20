@@ -8,7 +8,9 @@ import {
   FlatList,
   BackHandler,
   Linking,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -341,7 +343,23 @@ const AgentOrdersScreen = () => {
     }
   };
 
-  const claimOrder = async (orderId, serviceType) => {
+  const openSmsApp = (phoneNumber, message) => {
+    const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+  
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (supported) {
+          return Linking.openURL(url);
+        } else {
+          Alert.alert('Error', 'Your device does not support sending SMS messages.');
+        }
+      })
+      .catch((error) => console.error('Error opening SMS app:', error));
+  };
+  
+
+
+  const claimOrder = async (orderId, serviceType, clientPhone) => {
     try {
       if (serviceType === "Dry Clean") {
         
@@ -369,6 +387,12 @@ const AgentOrdersScreen = () => {
         console.error("Invalid service type:", serviceType);
         return;
       }
+
+        // Usage example
+ // const phoneNumberToText = '1234567890'; // Replace with your variable
+ const messageText = `Thank you for ordering. I am your agent ${name}. I will take care of your ${serviceType} Service. I am on the way!`;
+
+openSmsApp(clientPhone,messageText)
 
       console.log("Order marked as MyOrders.");
       if (swipeableRef.current) {
@@ -597,7 +621,7 @@ const AgentOrdersScreen = () => {
                 >
                   <Button
                     mode="contained"
-                    onPress={() => claimOrder(serviceOrder.id, serviceOrder.Service)}
+                    onPress={() => claimOrder(serviceOrder.id, serviceOrder.Service, serviceOrder.Phone)}
                     style={{
                       flex: 1,
                       justifyContent: "center",
