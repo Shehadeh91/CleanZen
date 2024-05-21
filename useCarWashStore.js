@@ -28,6 +28,9 @@ const useCarWashStore = create((set, get) => ({
   deliveryOption: "", // Initial value for deliveryOption
   setDeliveryOption: (value) => set({ deliveryOption: value }),
 
+  date: new Date(), // Initial value for deliveryOption
+  setDate: (value) => set({ date: value }),
+
   prefrenceOption: "Exterior", // Initial value for prefrenceOption
   setPrefrenceOption: (value) => set({ prefrenceOption: value }),
 
@@ -46,24 +49,26 @@ const useCarWashStore = create((set, get) => ({
   serviceTime: '',
 
   setServiceTime: (when) => {
-    const currentDate = new Date();
-    const currentHours = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
-
-    // Calculate new time
-    const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
-
-    // Format the new time
-    const formattedTime = newTime.toLocaleString('default', {
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
-
-    set({ serviceTime: formattedTime });
+    if (when === 0) {
+      set({ serviceTime: 'N/A' });
+    } else {
+      const currentDate = new Date();
+      const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
+  
+      // Format the new time
+      const formattedTime = newTime.toLocaleString('default', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      });
+  
+      set({ serviceTime: formattedTime });
+    }
   },
+  
 
 }));
 export default useCarWashStore;

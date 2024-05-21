@@ -35,14 +35,12 @@ import { PaperProvider, useTheme } from 'react-native-paper';
 
 
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <PaperProvider>
-
-      <NavigationContainer>
+          <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
             name="home"
@@ -319,7 +317,7 @@ export default function App() {
         {/* BottomNavagationComponent inside NavigationContainer */}
         <BottomNavagationComponent />
       </NavigationContainer>
-    
+        
     </PaperProvider>
     
   );
