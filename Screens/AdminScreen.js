@@ -20,7 +20,7 @@ const AdminScreen = () => {
     auth
       .signOut()
       .then(() => navigation.navigate("login")) // Navigate to SignUpScreen after logout
-      .catch((error) => console.error("Logout failed:", error));
+      .catch(error) //=> console.error("Logout failed:", error));
   };
 
   return (

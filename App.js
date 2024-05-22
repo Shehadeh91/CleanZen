@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
@@ -34,10 +34,10 @@ import { PaperProvider, useTheme } from 'react-native-paper';
 
 
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
+
   return (
     <PaperProvider>
           <NavigationContainer>

@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  TouchableOpacity, Alert
 } from "react-native";
 
 import {
@@ -28,13 +28,12 @@ import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import roomCleanData from "../assets/roomCleanData.json";
 import useRoomCleanCart from "../useRoomCleanStore";
-
+import { LogBox } from "react-native";
 import useAppStore from "../useAppStore";
 
 const RoomCleanOrderScreen = () => {
   const navigation = useNavigation();
   const [text, setText] = useState("");
-  
 
   const {
     clearCart,
@@ -51,7 +50,7 @@ const RoomCleanOrderScreen = () => {
     getItemCountsWithTitles,
     serviceTime,
     setServiceTime,
-    getTotalItemCount
+    getTotalItemCount,
   } = useRoomCleanCart();
 
   const auth = FIREBASE_AUTH;
@@ -78,7 +77,7 @@ const RoomCleanOrderScreen = () => {
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-        console.error("Error: User is not authenticated.");
+        //console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -86,7 +85,7 @@ const RoomCleanOrderScreen = () => {
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        console.error("Error: User email is null or undefined.");
+        //console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -107,6 +106,10 @@ const RoomCleanOrderScreen = () => {
         `${userId}_${orderNumber}`
       );
 
+      LogBox.ignoreLogs([
+        "Non-serializable values were found in the navigation state",
+      ]);
+
       await setDoc(orderDocRef, {
         Email: userId,
         Name: name,
@@ -122,7 +125,7 @@ const RoomCleanOrderScreen = () => {
         Status: "InProgress",
         Assigned: "No One",
         Service: "Room Clean",
-        EstimateTime: serviceTime
+        EstimateTime: serviceTime,
       });
 
       await setDoc(
@@ -130,13 +133,10 @@ const RoomCleanOrderScreen = () => {
         { orderNumber: orderNumber },
         { merge: true }
       );
-      console.log(
-        "Added room clean order document ID:",
-        `${userId}_${orderNumber}`
-      );
+
       navigation.navigate("orderComplete");
     } catch (error) {
-      console.error("Error adding room clean order:", error);
+      //console.error("Error adding room clean order:", error);
     }
   };
 
@@ -331,6 +331,14 @@ const RoomCleanOrderScreen = () => {
             style={{ marginBottom: 28, bottom: -10 }}
             mode="contained"
             onPress={() => {
+              if (!deliveryOption) {
+                Alert.alert(
+                  "Error",
+                  "Please select a service time before confirming."
+                );
+                return;
+              }
+
               navigation.navigate("roomCleanCheckOut", {
                 addRoomCleanOrder: addRoomCleanOrder,
               });

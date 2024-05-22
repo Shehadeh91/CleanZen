@@ -59,7 +59,7 @@ const UsersScreen = () => {
     const fetchOrders = async () => {
       try {
         if (!user || !user.email) {
-          console.error("User is not logged in or has no email.");
+         // console.error("User is not logged in or has no email.");
           return;
         }
 
@@ -81,7 +81,7 @@ const UsersScreen = () => {
           setAdmin(data.filter((users) => users.Role === "Admin").reverse());
         }
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        //console.error("Error fetching orders:", error);
       }
     };
 
@@ -96,7 +96,7 @@ const UsersScreen = () => {
     try {
       const orderRef = doc(FIRESTORE_DB, "Users", orderId);
       await setDoc(orderRef, { Role: "Agent" }, { merge: true });
-      console.log("Order marked as Agent.");
+     
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -106,7 +106,7 @@ const UsersScreen = () => {
 
       
     } catch (error) {
-      console.error("Error marking users as Agent:", error);
+     // console.error("Error marking users as Agent:", error);
     }
   };
 

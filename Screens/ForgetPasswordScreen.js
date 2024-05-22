@@ -14,7 +14,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
       Alert.alert("Success", "Password reset email sent successfully.");
       navigation.goBack(); // Navigate back to the previous screen
     } catch (error) {
-      console.error("Error sending email:", error);
+     // console.error("Error sending email:", error);
       Alert.alert("Error", "Failed to send password reset email.");
     }
   };

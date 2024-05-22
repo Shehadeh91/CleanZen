@@ -49,7 +49,7 @@ const EditAccountScreen = () => {
     auth
       .signOut()
       .then(() => navigation.navigate("login")) // Navigate to SignUpScreen after logout
-      .catch((error) => console.error("Logout failed:", error));
+      .catch(error)// => console.error("Logout failed:", error));
   };
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const EditAccountScreen = () => {
           //   console.log("User data not found.");
         }
       } catch (error) {
-        console.error("Error fetching user info:", error);
+        //console.error("Error fetching user info:", error);
       }
     };
 
@@ -108,7 +108,7 @@ const EditAccountScreen = () => {
       await updatePassword(user, newPassword);
       Alert.alert("Success", "Password changed successfully.");
     } catch (error) {
-      console.error("Error changing password:", error);
+     // console.error("Error changing password:", error);
       Alert.alert("Error", "Failed to change password.");
     }
   };
@@ -131,9 +131,9 @@ const EditAccountScreen = () => {
       // Update the document in Firestore with the updates object
       await updateDoc(userDocRef, updates);
 
-      console.log("User profile updated successfully.");
+      
     } catch (error) {
-      console.error("Error updating user profile:", error);
+      //console.error("Error updating user profile:", error);
     }
   };
 

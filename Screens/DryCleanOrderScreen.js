@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  TouchableOpacity, Alert
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -29,6 +29,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import dryCleanData from "../assets/dryCleanData.json";
 import useDryCleanCart from "../useDryCleanStore";
 import useAppStore from "../useAppStore";
+import { LogBox } from "react-native";
+
 
 const DryCleanOrderScreen = () => {
   const navigation = useNavigation();
@@ -75,7 +77,7 @@ const DryCleanOrderScreen = () => {
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-        console.error("Error: User is not authenticated.");
+       // console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -83,7 +85,7 @@ const DryCleanOrderScreen = () => {
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        console.error("Error: User email is null or undefined.");
+        //console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -122,20 +124,24 @@ const DryCleanOrderScreen = () => {
         EstimateTime: serviceTime
       });
 
+     
+
       await setDoc(
         counterDocRef,
         { orderNumber: orderNumber },
         { merge: true }
       );
-      console.log(
-        "Added dry clean order document ID:",
-        `${userId}_${orderNumber}`
-      );
+    
       navigation.navigate("orderComplete");
     } catch (error) {
-      console.error("Error adding car wash order:", error);
+     //console.error("Error adding car wash order:", error);
     }
   };
+
+
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
 
   const Item = ({ item, lastItem }) => {
     const { addToCart, removeFromCart, itemCounts, getTotalPrice } =
@@ -328,6 +334,13 @@ const DryCleanOrderScreen = () => {
             style={{ marginBottom: 28, bottom: -10 }}
             mode="contained"
             onPress={() => {
+              if (!deliveryOption) {
+                Alert.alert(
+                  "Error",
+                  "Please select a service time before confirming."
+                );
+                return;
+              }
               navigation.navigate("dryCleanCheckOut", {
                 addDryCleanOrder: addDryCleanOrder,
               });

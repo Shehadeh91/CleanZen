@@ -28,7 +28,7 @@ const ChangePasswordScreen = ({  }) => {
     Alert.alert("Success", "Password changed successfully.");
     navigation.goBack(); // Navigate back on success
   } catch (error) {
-    console.error("Error changing password:", error);
+    //console.error("Error changing password:", error);
     Alert.alert("Error", "Failed to change password.");
   }
 };

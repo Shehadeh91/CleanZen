@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
+  TouchableOpacity, Alert
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -25,7 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-
+import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
 
 import useAppStore from "../useAppStore";
@@ -105,7 +105,7 @@ const CarWashOrderScreen = () => {
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-        console.error("Error: User is not authenticated.");
+        //console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -113,7 +113,7 @@ const CarWashOrderScreen = () => {
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        console.error("Error: User email is null or undefined.");
+        //console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -133,6 +133,10 @@ const CarWashOrderScreen = () => {
         "Car-Wash",
         `${userId}_${orderNumber}`
       );
+
+      LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+      ]);
 
       await setDoc(orderDocRef, {
         Email: userId,
@@ -159,13 +163,10 @@ const CarWashOrderScreen = () => {
         { orderNumber: orderNumber },
         { merge: true }
       );
-      console.log(
-        "Added car wash order document ID:",
-        `${userId}_${orderNumber}`
-      );
+     
       navigation.navigate("orderComplete");
     } catch (error) {
-      console.error("Error adding car wash order:", error);
+      //console.error("Error adding car wash order:", error);
     }
   };
   const onColorChange = (color) => {
@@ -413,6 +414,13 @@ const CarWashOrderScreen = () => {
             style={{ marginBottom: 75, bottom: -10 }}
             mode="contained"
             onPress={() => {
+              if (!deliveryOption) {
+                Alert.alert(
+                  "Error",
+                  "Please select a service time before confirming."
+                );
+                return;
+              }
               if (carPlate.trim().length > 0) {
       navigation.navigate("checkOut", {
         addCarWashOrder: addCarWashOrder,

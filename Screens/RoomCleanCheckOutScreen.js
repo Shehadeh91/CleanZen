@@ -93,7 +93,7 @@ const RoomCleanCheckOutScreen = () => {
         // Check if the function exists
         await addRoomCleanOrder(); // Call the function
         // Other logic after adding the car wash order
-        console.log("Room Clean order added successfully!");
+        
         //
       }
     } catch (error) {

@@ -112,7 +112,7 @@ setCompletedOrders(userCompletedOrders);
           //   );
       
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        //console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
@@ -135,7 +135,7 @@ setCompletedOrders(userCompletedOrders);
   const fetchOrders = async () => {
     try {
       if (!user || !user.email) {
-        console.error("User is not logged in or has no email.");
+        //console.error("User is not logged in or has no email.");
         return;
       }
 
@@ -192,7 +192,7 @@ setCanceledOrders(userCanceledOrders);
 setCompletedOrders(userCompletedOrders);
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
+     // console.error("Error fetching orders:", error);
     }
   };
 
@@ -258,12 +258,12 @@ setCompletedOrders(userCompletedOrders);
         await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
     
       }else {
-        console.error("Invalid service type:", serviceType);
+        //console.error("Invalid service type:", serviceType);
         return;
       }
     
     
-      console.log("Order marked as Canceled.");
+      
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -277,7 +277,7 @@ setCompletedOrders(userCompletedOrders);
         ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old serviceOrder if it exists
       ]);
     } catch (error) {
-      console.error("Error marking serviceOrder as Canceled:", error);
+      //("Error marking serviceOrder as Canceled:", error);
     }
   };
 

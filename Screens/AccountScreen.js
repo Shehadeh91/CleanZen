@@ -40,7 +40,7 @@ const AccountScreen = () => {
     auth
       .signOut()
       .then(() => navigation.navigate("login")) // Navigate to SignUpScreen after logout
-      .catch((error) => console.error("Logout failed:", error));
+      .catch(error) //=> console.error("Logout failed:", error));
   };
 
   useEffect(() => {
@@ -59,14 +59,14 @@ const AccountScreen = () => {
             ...doc.data(),
           }))
           .find((data) => data.userId === user.uid); // Assuming userId field in Firestore
-        console.log(userData);
+       
         if (userData) {
           setUserInfo(userData);
         } else {
-          console.log("User data not found.");
+          
         }
       } catch (error) {
-        console.error("Error fetching user info:", error);
+        //console.error("Error fetching user info:", error);
       }
     };
 

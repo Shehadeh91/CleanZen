@@ -144,7 +144,7 @@ const AdminOrdersScreen = () => {
           //   );
       
       } catch (error) {
-        console.error("Error fetching orders:", error);
+       // console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
@@ -167,7 +167,7 @@ const AdminOrdersScreen = () => {
     const fetchOrders = async () => {
       try {
         if (!user || !user.email) {
-          console.error("User is not logged in or has no email.");
+          //console.error("User is not logged in or has no email.");
           return;
         }
 
@@ -245,7 +245,7 @@ const AdminOrdersScreen = () => {
           ]);
         }
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        //console.error("Error fetching orders:", error);
       }
     };
 

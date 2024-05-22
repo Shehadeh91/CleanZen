@@ -9,14 +9,18 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-react": "^7.24.1",
     "@gorhom/bottom-sheet": "^4.6.3",
     "@nghinv/react-native-swipe-row": "^0.1.1",
     "@notifee/react-native": "^7.8.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "^8.0.1",
     "@react-native-community/geolocation": "^3.2.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^11.3.1",
-    "@react-native-firebase/app": "^19.3.0",
+    "@react-native-firebase/app": "^20.0.0",
+    "@react-native-firebase/auth": "^20.0.0",
     "@react-native-firebase/firestore": "^20.0.0",
     "@react-native-firebase/messaging": "^19.2.2",
     "@react-native-firebase/storage": "^19.2.2",
@@ -26,13 +30,15 @@
     "@stripe/stripe-react-native": "^0.37.3",
     "@twilio-labs/dev-phone-ui": "^1.0.0-beta.1",
     "@twilio-labs/plugin-dev-phone": "^1.0.0-beta.3",
-    "expo": "~51.0.2",
+    "expo": "^51.0.8",
     "expo-constants": "~16.0.1",
+    "expo-router": "^3.5.14",
     "expo-status-bar": "~1.12.1",
     "express": "^4.19.2",
-    "firebase": "^10.11.1",
+    "firebase": "^10.12.1",
     "react": "18.2.0",
     "react-native": "0.74.1",
+    "react-native-dotenv": "^3.4.11",
     "react-native-geocoding": "^0.5.0",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.16.2",
@@ -55,7 +61,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.24.5"
   },
   "private": true
 }

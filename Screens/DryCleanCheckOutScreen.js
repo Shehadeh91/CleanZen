@@ -91,7 +91,7 @@ const DryCleanCheckOutScreen = () => {
         // Check if the function exists
         await addDryCleanOrder(); // Call the function
         // Other logic after adding the car wash order
-        console.log("Dry Clean order added successfully!");
+      
         //
       }
     } catch (error) {
