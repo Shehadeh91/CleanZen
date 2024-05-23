@@ -27,7 +27,7 @@ import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import BottomSheet from '@gorhom/bottom-sheet';
-import DateTimePicker from '../Components/DateTimePickerModal'
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import roomCleanData from "../assets/roomCleanData.json";
 import useRoomCleanCart from "../useRoomCleanStore";
 
@@ -431,7 +431,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
          
         </View>
       </BottomSheet>
-      <DateTimePicker
+      <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode={mode}
         onConfirm={handleConfirm}

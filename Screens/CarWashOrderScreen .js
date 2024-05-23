@@ -29,7 +29,8 @@ import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
 import BottomSheet from '@gorhom/bottom-sheet';
 import useAppStore from "../useAppStore";
-import DateTimePicker from "../Components/DateTimePickerModal";
+
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -526,7 +527,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
          
         </View>
       </BottomSheet>
-      <DateTimePicker
+      <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode={mode}
         onConfirm={handleConfirm}
