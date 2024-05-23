@@ -30,7 +30,7 @@ import RoomCleanCheckOutScreen from "./Screens/RoomCleanCheckOutScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
 import { PaperProvider, useTheme } from 'react-native-paper';
-
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 
 
@@ -40,6 +40,7 @@ export default function App() {
 
   return (
     <PaperProvider>
+    <StripeProvider publishableKey="pk_test_51PIuTYRwhciiEfEmo9GLVvl1yMqLSpzRpRWUgVeOKpH6s3BFe035XP6lKfpuKHDwu6TP23UhSOPXDX3Z8zQQVv4S00krafLFdK" >
           <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
@@ -317,7 +318,7 @@ export default function App() {
         {/* BottomNavagationComponent inside NavigationContainer */}
         <BottomNavagationComponent />
       </NavigationContainer>
-        
+      </StripeProvider>
     </PaperProvider>
     
   );

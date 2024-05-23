@@ -104,10 +104,10 @@ await sendEmailVerification(auth.currentUser);
       setName(name);
       setPhone(phone);
 
-      
+     // console.log("User created:", user);
       alert("Check your emails!");
     } catch (error) {
-      
+     // console.log(error);
       alert("Sign up failed: " + error.message);
     } finally {
       setLoading(false);

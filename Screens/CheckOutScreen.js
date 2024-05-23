@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { FIREBASE_AUTH } from "../FirebaseConfig";
-import firebase from "firebase/compat/app";
+
+import BottomSheet from "@gorhom/bottom-sheet";
 import {
   Card,
   Title,
@@ -23,29 +23,75 @@ import {
   Modal,
   Portal,
   PaperProvider,
-  Icon
+  Icon,
 } from "react-native-paper";
 import useCarWashStore from "../useCarWashStore";
 import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 
 
+
+
+
 const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const bottomSheetRef = useRef(null);
+  const {
+    name,
+    setName,
+    phone,
+    setPhone,
+    address,
+    setAddress,
+    indexBottom,
+    setIndexBottom,
+    user,
+    setUser,
+    visible,
+    setVisible,
+    email,
+    setEmail,
+  } = useAppStore();
 
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
-  const {serviceTime, setServiceTime, getFormattedDate, carBrand, setCarBrand ,bodyStyle, setBodyStyle,
-    iconBrand, setIconBrand, iconBodyStyle, setIconBodyStyle, currentColor, setCurrentColor,
-     carPlate, setCarPlate, deliveryCost, setDeliveryCost, prefrenceCost, setPrefrenceCost,
-     bodyStyleCost, setBodyStyleCost, totalCost, updateTotalCost, note, setNote,
-     deliveryOption, setDeliveryOption, prefrenceOption, setPrefrenceOption,
-     paymentOption, setPaymentOption} = useCarWashStore ();
+  const {
+    serviceTime,
+    setServiceTime,
+    getFormattedDate,
+    carBrand,
+    setCarBrand,
+    bodyStyle,
+    setBodyStyle,
+    iconBrand,
+    setIconBrand,
+    iconBodyStyle,
+    setIconBodyStyle,
+    currentColor,
+    setCurrentColor,
+    carPlate,
+    setCarPlate,
+    deliveryCost,
+    setDeliveryCost,
+    prefrenceCost,
+    setPrefrenceCost,
+    bodyStyleCost,
+    setBodyStyleCost,
+    totalCost,
+    updateTotalCost,
+    note,
+    setNote,
+    deliveryOption,
+    setDeliveryOption,
+    prefrenceOption,
+    setPrefrenceOption,
+    paymentOption,
+    setPaymentOption,
+    date,
+    setDate,
+  } = useCarWashStore();
 
-  
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -68,7 +114,7 @@ const CheckOutScreen = () => {
         // Check if the function exists
         await addCarWashOrder(); // Call the function
         // Other logic after adding the car wash order
-        
+       // console.log("Car wash order added successfully!");
         //
       }
     } catch (error) {
@@ -79,25 +125,25 @@ const CheckOutScreen = () => {
   };
 
   const goToLogIn = () => {
-    navigation.navigate('login');
-    
+    navigation.navigate("login");
+
     setIndexBottom(1);
   };
-
 
   useEffect(() => {
     if (!user) {
       goToLogIn();
     }
-  }, [user]); 
+  }, [user]);
 
   return (
     <View style={{ flex: 1 }}>
+     
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Total: $" + totalCost.toFixed(2)}
           style={{ position: "absolute", left: 220 }}
-            titleStyle={{fontSize: 20}}
+          titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
@@ -132,9 +178,10 @@ const CheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
-              subtitle={serviceTime}
-              
-              subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
+              subtitle={
+                deliveryOption === "Schedule" ? date?.toString() : serviceTime
+              }
+              subtitleStyle={{ fontSize: 12, color: "grey", letterSpacing: 3 }}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -178,26 +225,34 @@ const CheckOutScreen = () => {
                 justifyContent: "space-around",
                 marginTop: -30,
                 marginHorizontal: 35,
-                
+
                 //gap: 1,
-                left: 30
+                left: 30,
               }}
             >
-             
-      <Icon   source={iconBrand} size={55}  />
-      <Icon   source={iconBodyStyle} size={55}  />
-      <Icon    source= "format-paint" size={55} color= {currentColor}  />
-      <Text style={{ borderWidth: 1, textAlign: 'center', textAlignVertical: 'center', paddingHorizontal: 5, height: 35, fontWeight: 'bold', alignSelf: 'center', borderStyle: 'dashed' }}>
-  {carPlate}
-</Text>
-
-              
+              <Icon source={iconBrand} size={55} />
+              <Icon source={iconBodyStyle} size={55} />
+              <Icon source="format-paint" size={55} color={currentColor} />
+              <Text
+                style={{
+                  borderWidth: 1,
+                  textAlign: "center",
+                  textAlignVertical: "center",
+                  paddingHorizontal: 5,
+                  height: 35,
+                  fontWeight: "bold",
+                  alignSelf: "center",
+                  borderStyle: "dashed",
+                }}
+              >
+                {carPlate}
+              </Text>
             </View>
           </Card>
 
           <Card style={styles.card}>
             <Card.Title
-               title="Add Additional Note"
+              title="Add Additional Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
               // subtitle= "example"
 
@@ -249,8 +304,7 @@ const CheckOutScreen = () => {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   paddingHorizontal: 20,
-                 // marginTop: 20,
-                  
+                  // marginTop: 20,
                 }}
               >
                 <View style={{ alignItems: "flex-start" }}>
@@ -258,8 +312,11 @@ const CheckOutScreen = () => {
                   <Text>Service Fee</Text>
                   <Text>Taxes & Other Fees</Text>
                 </View>
-                <View style={{ alignItems: "flex-start", left: 10}}>
-                  <Text> ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}</Text>
+                <View style={{ alignItems: "flex-start", left: 10 }}>
+                  <Text>
+                    {" "}
+                    ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}
+                  </Text>
                   <Text> $4.00</Text>
                   <Text> $1.50</Text>
                 </View>
@@ -296,8 +353,16 @@ const CheckOutScreen = () => {
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" />
-                <RadioButton.Item label="Card" value="Card" disabled />
+                <RadioButton.Item
+                  label="Cash"
+                  value="Cash"
+                 // onPress={bottomSheetRef.current?.close()}
+                />
+                <RadioButton.Item
+                  label="Card"
+                  value="Card"
+                  //onPress={bottomSheetRef.current?.expand()}
+                />
               </View>
             </RadioButton.Group>
           </Card>
@@ -318,8 +383,23 @@ const CheckOutScreen = () => {
           {/* Delivery, Additional Note, Payment Options, etc. */}
         </View>
       </ScrollView>
-
-      {/* Modal */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={["75%", "50%"]}
+        enablePanDownToClose={true}
+        backgroundStyle={{
+          borderWidth: 2,
+          borderRadius: 25,
+          backgroundColor: "grey",
+        }}
+      >
+       
+        <View style={{ flex: 0.75 }}>
+         
+        </View>
+      </BottomSheet>
+     
     </View>
   );
 };

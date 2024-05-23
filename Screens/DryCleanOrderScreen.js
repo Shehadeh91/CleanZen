@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity, Alert
+  TouchableOpacity,
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -26,11 +26,11 @@ import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import BottomSheet from '@gorhom/bottom-sheet';
+import DateTimePicker from '../Components/DateTimePickerModal'
 import dryCleanData from "../assets/dryCleanData.json";
 import useDryCleanCart from "../useDryCleanStore";
 import useAppStore from "../useAppStore";
-import { LogBox } from "react-native";
-
 
 const DryCleanOrderScreen = () => {
   const navigation = useNavigation();
@@ -50,7 +50,9 @@ const DryCleanOrderScreen = () => {
     setNote,
     getItemCountsWithTitles,
     serviceTime,
-    setServiceTime
+    setServiceTime,
+    date,
+    setDate
   } = useDryCleanCart();
 
   const auth = FIREBASE_AUTH;
@@ -73,11 +75,48 @@ const DryCleanOrderScreen = () => {
   } = useAppStore();
   //const [name, setName] = useState("");
 
+//////////////////////////////////////////////////
+const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+// const [selectedDate, setSelectedDate] = useState(null);
+ const [mode, setMode] = useState('date');
+ const bottomSheetRef = useRef(null);
+
+ const showDatePicker = () => {
+   setMode('date');
+   setDatePickerVisibility(true);
+ };
+
+ const showTimePicker = () => {
+   setMode('time');
+   setDatePickerVisibility(true);
+ };
+
+ const hideDatePicker = () => {
+   setDatePickerVisibility(false);
+ };
+
+ const handleConfirm = (dateTime) => {
+   const formattedDate = dateTime.toLocaleString('default', {
+     weekday: 'short',
+     month: 'short',
+     day: 'numeric',
+     hour: 'numeric',
+     minute: 'numeric',
+     hour12: true,
+   });
+   setDate(formattedDate);
+   hideDatePicker();
+   //bottomSheetRef.current?.close();
+ };
+////////////////////////////////////////
+
+
+
   const addDryCleanOrder = async () => {
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-       // console.error("Error: User is not authenticated.");
+        //console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -85,7 +124,7 @@ const DryCleanOrderScreen = () => {
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        //console.error("Error: User email is null or undefined.");
+       // console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -121,27 +160,24 @@ const DryCleanOrderScreen = () => {
         Status: "InProgress",
         Assigned: "No One",
         Service: "Dry Clean",
-        EstimateTime: serviceTime
+        EstimateTime: serviceTime,
+        Date: date
       });
-
-     
 
       await setDoc(
         counterDocRef,
         { orderNumber: orderNumber },
         { merge: true }
       );
-    
+      // console.log(
+      //   "Added dry clean order document ID:",
+      //   `${userId}_${orderNumber}`
+      // );
       navigation.navigate("orderComplete");
     } catch (error) {
-     //console.error("Error adding car wash order:", error);
+      //.error("Error adding car wash order:", error);
     }
   };
-
-
-  LogBox.ignoreLogs([
-    'Non-serializable values were found in the navigation state',
-  ]);
 
   const Item = ({ item, lastItem }) => {
     const { addToCart, removeFromCart, itemCounts, getTotalPrice } =
@@ -263,15 +299,23 @@ const DryCleanOrderScreen = () => {
               )}
             />
 
-            <RadioButton.Group
+<RadioButton.Group
               onValueChange={(newValue) => {
                 setDeliveryOption(newValue);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
-                  setServiceTime(2880);
+                  setServiceTime(60);
+                  setDate("Standard");
+                  {bottomSheetRef.current?.close()}
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
-                  setServiceTime(1440);
+                  setServiceTime(45);
+                  setDate("Urgent");
+                  {bottomSheetRef.current?.close()}
+                } else if (newValue === "Schedule") {
+                  setDeliveryCost(0);
+                  {bottomSheetRef.current?.expand()}
+                  setServiceTime(0);
                 }
               }}
               value={deliveryOption}
@@ -286,7 +330,7 @@ const DryCleanOrderScreen = () => {
                   marginLeft: 10,
                 }}
               >
-                <RadioButton.Item label="Standard" value="Standard" />
+                <RadioButton.Item label="Standard" value="Standard"  />
                 <Text
                   style={{
                     fontSize: 13,
@@ -296,14 +340,11 @@ const DryCleanOrderScreen = () => {
                     position: "absolute",
                   }}
                 >
-                  {"2 - 3 day"}
+                  {"45 - 60 min"}
                 </Text>
-                {/* <RadioButton.Item
-                    label="Schedule"
-                    value="Schedule"
-                    disabled
-                  /> */}
+               
                 <RadioButton.Item label="Priority" value="Priority" />
+               
                 <Text
                   style={{
                     fontSize: 13,
@@ -324,8 +365,26 @@ const DryCleanOrderScreen = () => {
                     position: "absolute",
                   }}
                 >
-                  {"1 - 2 day"}
+                  {"25 - 45 min"}
                 </Text>
+                <RadioButton.Item
+                    label="Schedule"
+                    value="Schedule"
+                   
+                  />
+                     <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 145,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {date && date.toString() }
+                </Text>
+                
+    
               </View>
             </RadioButton.Group>
           </Card>
@@ -334,13 +393,6 @@ const DryCleanOrderScreen = () => {
             style={{ marginBottom: 28, bottom: -10 }}
             mode="contained"
             onPress={() => {
-              if (!deliveryOption) {
-                Alert.alert(
-                  "Error",
-                  "Please select a service time before confirming."
-                );
-                return;
-              }
               navigation.navigate("dryCleanCheckOut", {
                 addDryCleanOrder: addDryCleanOrder,
               });
@@ -358,6 +410,31 @@ const DryCleanOrderScreen = () => {
           {/* Delivery, Additional Note, Payment Options, etc. */}
         </View>
       </ScrollView>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={['25%', '25%']}
+        enablePanDownToClose={true}
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
+        
+             >
+        <View style={{margin: 15, gap: 10, marginTop: 10}} >
+        {date && <Text> {date.toString()}</Text>}
+        {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
+       
+          <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
+          
+          <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
+         
+        </View>
+      </BottomSheet>
+      <DateTimePicker
+        isVisible={isDatePickerVisible}
+        mode={mode}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        
+      />
     </View>
   );
 };

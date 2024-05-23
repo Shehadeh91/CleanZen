@@ -28,7 +28,7 @@ const useCarWashStore = create((set, get) => ({
   deliveryOption: "", // Initial value for deliveryOption
   setDeliveryOption: (value) => set({ deliveryOption: value }),
 
-  date: new Date(), // Initial value for deliveryOption
+  date: "", // Initial value for deliveryOption
   setDate: (value) => set({ date: value }),
 
   prefrenceOption: "Exterior", // Initial value for prefrenceOption

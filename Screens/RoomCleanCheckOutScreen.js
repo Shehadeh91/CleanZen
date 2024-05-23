@@ -67,7 +67,7 @@ const RoomCleanCheckOutScreen = () => {
     getItemCountsWithTitles,
     serviceTime,
     SetServiceTime,
-    getTotalItemCount
+    getTotalItemCount,date, setDate
   } = useRoomCleanCart();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +93,7 @@ const RoomCleanCheckOutScreen = () => {
         // Check if the function exists
         await addRoomCleanOrder(); // Call the function
         // Other logic after adding the car wash order
-        
+       // console.log("Room Clean order added successfully!");
         //
       }
     } catch (error) {
@@ -156,7 +156,7 @@ const RoomCleanCheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
-              subtitle={serviceTime}
+              subtitle={deliveryOption === "Schedule" ? date?.toString() : serviceTime}
               subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon

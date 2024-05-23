@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 
 import { getAuth } from "firebase/auth";
@@ -29,3 +30,5 @@ export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
 export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
  
+// Your Stripe publishable key
+export const STRIPE_PUBLISHABLE_KEY = 'pk_test_51PIuTYRwhciiEfEmo9GLVvl1yMqLSpzRpRWUgVeOKpH6s3BFe035XP6lKfpuKHDwu6TP23UhSOPXDX3Z8zQQVv4S00krafLFdK';

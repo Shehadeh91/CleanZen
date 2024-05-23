@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import MapView from "react-native-maps";
+import MapView , { Marker }from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import IonIcons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
@@ -26,11 +26,13 @@ const LocationSearch = () => {
 
   const ref = useRef(null); // Initialize ref with null
 
-  useEffect(() => {
-    ref.current?.setAddressText(address);
-  }, [address]);
+  // useEffect(() => {
+  //   ref.current?.setAddressText(address);
+  // }, [address]);
 
   const handlePlaceSelect = (data, details) => {
+    
+
     const point = details.geometry.location;
     if (!point) return;
     setLocation({
@@ -39,6 +41,8 @@ const LocationSearch = () => {
       longitude: point.lng,
     });
     setAddress(details.formatted_address); // Set the address using setAddress
+   
+   
   };
 
 
@@ -82,9 +86,18 @@ const LocationSearch = () => {
         showsUserLocation={true}
         style={styles.map}
         region={location}
-        showsBuildings={true}
+        //showsBuildings={true}
         // showsMyLocationButton={true}
-      />
+        // showsPointsOfInterest={true}
+         //showsCompass ={true}
+         //showsIndoors = {true}
+         //showsScale = {true}
+        // showsTraffic = {true}
+        // showsIndoorLevelPicker = {true}
+         >
+        {/* Show Marker at the selected location */}
+        <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude,  }} />
+      </MapView>
       <View style={styles.absoluteBox}>
         <TouchableOpacity
           style={styles.button}

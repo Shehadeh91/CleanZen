@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   ScrollView,
@@ -27,8 +27,9 @@ import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
-
+import BottomSheet from '@gorhom/bottom-sheet';
 import useAppStore from "../useAppStore";
+import DateTimePicker from "../Components/DateTimePickerModal";
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -69,6 +70,8 @@ const CarWashOrderScreen = () => {
     setPrefrenceOption,
     paymentOption,
     setPaymentOption,
+    date,
+    setDate
   } = useCarWashStore();
 
   const {
@@ -100,6 +103,43 @@ const CarWashOrderScreen = () => {
   const hideModalColorWheel = () => setVisibleColorWheel(false);
 
   const auth = FIREBASE_AUTH;
+
+
+//////////////////////////////////////////////////
+const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+// const [selectedDate, setSelectedDate] = useState(null);
+ const [mode, setMode] = useState('date');
+ const bottomSheetRef = useRef(null);
+
+ const showDatePicker = () => {
+   setMode('date');
+   setDatePickerVisibility(true);
+ };
+
+ const showTimePicker = () => {
+   setMode('time');
+   setDatePickerVisibility(true);
+ };
+
+ const hideDatePicker = () => {
+   setDatePickerVisibility(false);
+ };
+
+ const handleConfirm = (dateTime) => {
+   const formattedDate = dateTime.toLocaleString('default', {
+     weekday: 'short',
+     month: 'short',
+     day: 'numeric',
+     hour: 'numeric',
+     minute: 'numeric',
+     hour12: true,
+   });
+   setDate(formattedDate);
+   hideDatePicker();
+   //bottomSheetRef.current?.close();
+ };
+////////////////////////////////////////
+
 
   const addCarWashOrder = async () => {
     try {
@@ -155,7 +195,8 @@ const CarWashOrderScreen = () => {
         Status: "InProgress",
         Assigned: "No One",
         Service: "Car Wash",
-        EstimateTime: serviceTime
+        EstimateTime: serviceTime,
+        Date: date
       });
 
       await setDoc(
@@ -349,9 +390,17 @@ const CarWashOrderScreen = () => {
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
                   setServiceTime(60);
+                  setDate('Standard');
+                  {bottomSheetRef.current?.close()}
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
                   setServiceTime(45);
+                  setDate('Urgent');
+                  {bottomSheetRef.current?.close()}
+                } else if (newValue === "Schedule") {
+                  setDeliveryCost(0);
+                  {bottomSheetRef.current?.expand()}
+                  setServiceTime(0);
                 }
               }}
               value={deliveryOption}
@@ -406,6 +455,22 @@ const CarWashOrderScreen = () => {
                 >
                   {"25 - 45 min"}
                 </Text>
+                <RadioButton.Item
+                    label="Schedule"
+                    value="Schedule"
+                   
+                  />
+                     <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 145,
+                    color: "grey",
+                    position: "absolute",
+                  }}
+                >
+                  {date && date.toString() }
+                </Text>
               </View>
             </RadioButton.Group>
           </Card>
@@ -443,7 +508,31 @@ const CarWashOrderScreen = () => {
           {/* Delivery, Additional Note, Payment Options, etc. */}
         </View>
       </ScrollView>
-
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={['25%', '25%']}
+        enablePanDownToClose={true}
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
+        
+             >
+        <View style={{margin: 15, gap: 10, marginTop: 10}} >
+        {date && <Text> {date.toString()}</Text>}
+        {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
+       
+          <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
+          
+          <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
+         
+        </View>
+      </BottomSheet>
+      <DateTimePicker
+        isVisible={isDatePickerVisible}
+        mode={mode}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        
+      />
       {/* Modal */}
       <Portal>
         <Modal

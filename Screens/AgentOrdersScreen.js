@@ -166,7 +166,7 @@ const AgentOrdersScreen = () => {
           //   );
       
       } catch (error) {
-        //console.error("Error fetching orders:", error);
+       // console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
@@ -188,7 +188,7 @@ const AgentOrdersScreen = () => {
     const fetchOrders = async () => {
       try {
         if (!user || !user.email) {
-         // console.error("User is not logged in or has no email.");
+          //console.error("User is not logged in or has no email.");
           return;
         }
 
@@ -289,7 +289,7 @@ const AgentOrdersScreen = () => {
           //   );
         }
       } catch (error) {
-       // console.error("Error fetching orders:", error);
+      //  console.error("Error fetching orders:", error);
       }
     };
 
@@ -354,7 +354,7 @@ const AgentOrdersScreen = () => {
           Alert.alert('Error', 'Your device does not support sending SMS messages.');
         }
       })
-      .catch(error) //=> console.error('Error opening SMS app:', error));
+      //.catch((error) => console.error('Error opening SMS app:', error));
   };
   
 
@@ -384,7 +384,7 @@ const AgentOrdersScreen = () => {
           { merge: true }
         );
       } else {
-        //console.error("Invalid service type:", serviceType);
+       // console.error("Invalid service type:", serviceType);
         return;
       }
 
@@ -394,7 +394,7 @@ const AgentOrdersScreen = () => {
 
 openSmsApp(clientPhone,messageText)
 
-      
+     // console.log("Order marked as MyOrders.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -436,7 +436,7 @@ openSmsApp(clientPhone,messageText)
         return;
       }
 
-     
+     // console.log("Order marked as Completed.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -453,7 +453,7 @@ openSmsApp(clientPhone,messageText)
         ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old carWashOrder if it exists
       ]);
     } catch (error) {
-      //console.error("Error marking serviceOrder as Canceled:", error);
+     // console.error("Error marking serviceOrder as Canceled:", error);
     }
   };
 
@@ -702,8 +702,9 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -738,8 +739,8 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -774,8 +775,8 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
             </Swipeable>
@@ -1031,8 +1032,8 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -1067,8 +1068,8 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -1103,8 +1104,8 @@ openSmsApp(clientPhone,messageText)
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
             </Swipeable>

@@ -15,7 +15,7 @@ const useDryCleanCart = create((set, get) => ({
   deliveryOption: "",
   setDeliveryOption: (option) => set({ deliveryOption: option }),
 
-  date: new Date(), // Initial value for deliveryOption
+  date: '', // Initial value for deliveryOption
   setDate: (value) => set({ date: value }),
 
   note: "", // Initial value for Note

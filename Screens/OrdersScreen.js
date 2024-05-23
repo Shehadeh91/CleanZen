@@ -135,7 +135,7 @@ setCompletedOrders(userCompletedOrders);
   const fetchOrders = async () => {
     try {
       if (!user || !user.email) {
-        //console.error("User is not logged in or has no email.");
+       // console.error("User is not logged in or has no email.");
         return;
       }
 
@@ -258,12 +258,12 @@ setCompletedOrders(userCompletedOrders);
         await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
     
       }else {
-        //console.error("Invalid service type:", serviceType);
+       // console.error("Invalid service type:", serviceType);
         return;
       }
     
     
-      
+     // console.log("Order marked as Canceled.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -277,7 +277,7 @@ setCompletedOrders(userCompletedOrders);
         ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old serviceOrder if it exists
       ]);
     } catch (error) {
-      //("Error marking serviceOrder as Canceled:", error);
+     // console.error("Error marking serviceOrder as Canceled:", error);
     }
   };
 
@@ -429,7 +429,8 @@ setCompletedOrders(userCompletedOrders);
               {serviceOrder.Preference}{" "}
             </Text>
           </View>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time:  {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
       )}
       {serviceOrder.Service === 'Dry Clean' && (
@@ -449,7 +450,8 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time:  {serviceOrder.EstimateTime}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
         
       )}
@@ -470,7 +472,8 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time:  {serviceOrder.EstimateTime}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
         
       )}

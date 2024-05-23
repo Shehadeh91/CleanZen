@@ -65,7 +65,7 @@ const DryCleanCheckOutScreen = () => {
     setNote,
     getItemCountsWithTitles,
     serviceTime,
-    SetServiceTime
+    SetServiceTime, date, setDate
   } = useDryCleanCart();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -91,7 +91,7 @@ const DryCleanCheckOutScreen = () => {
         // Check if the function exists
         await addDryCleanOrder(); // Call the function
         // Other logic after adding the car wash order
-      
+       // console.log("Dry Clean order added successfully!");
         //
       }
     } catch (error) {
@@ -154,7 +154,7 @@ const DryCleanCheckOutScreen = () => {
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
-              subtitle={serviceTime}
+              subtitle={deliveryOption === "Schedule" ? date?.toString() : serviceTime}
               subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon

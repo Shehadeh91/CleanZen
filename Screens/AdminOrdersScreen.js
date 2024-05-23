@@ -486,8 +486,10 @@ const AdminOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -523,8 +525,9 @@ const AdminOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -560,8 +563,9 @@ const AdminOrdersScreen = () => {
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
             </View>
@@ -638,12 +642,10 @@ const AdminOrdersScreen = () => {
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {serviceOrder.Address}
+                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -676,9 +678,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -711,9 +711,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>
@@ -793,9 +791,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -828,9 +824,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -863,9 +857,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>
@@ -949,11 +941,10 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                   
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+          <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -990,11 +981,10 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                  
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+          <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -1031,11 +1021,10 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                  
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}>  {serviceOrder.Name}   ({serviceOrder.Phone})</Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}>{serviceOrder.EstimateTime}</Text>
-                  <Text style={{ fontSize: 13, color: "red" }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
+                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>

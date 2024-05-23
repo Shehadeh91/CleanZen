@@ -71,7 +71,7 @@ const LogInScreen = () => {
               [
                 {
                   text: "OK",
-                  
+                 // onPress: () => console.log("OK Pressed"),
                 },
               ]
             );
@@ -84,13 +84,13 @@ const LogInScreen = () => {
           [
             {
               text: "OK",
-              
+             // onPress: () => console.log("OK Pressed"),
             },
           ]
         );
       }
     } catch (error) {
-      
+      //console.log(error);
       alert("Sign in failed: " + error.message);
     } finally {
       setLoading(false);
