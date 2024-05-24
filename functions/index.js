@@ -1,48 +1,119 @@
-const functions = require("firebase-functions");
-// const admin = require("firebase-admin");
-// const path = require("path");
-const stripe = require("stripe")(`
-  sk_test_51PIuTYRwhciiEfEmNZe77DxeRKdFCVT7
-  j0QVPl80wyWm6UQR6yEiV0KbO0inqcHtj2oSkKG7orJtSicr5BJ9VaWA00BXw8w4jr
-`);
+const functions = require("firebase-functions/v2/https");
+const express = require('express');
+const admin = require('firebase-admin');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const stripe = require('stripe');
+const { readFileSync } = require('fs');
 
-// Path to your service account key JSON file
-// const serviceAccount = require(path.resolve(__dirname, `./purecare-2a506-
-// firebase-adminsdk-j5azu-8607d40b26.json`),
-// );
+// Load environment variables from a .env file
+dotenv.config({ path: './env/.env.local' });
+
+const stripeSecretKey = process.env.STRIPE_SK;
+const stripeClient = stripe(stripeSecretKey);
+
+// Read the contents of the JSON file synchronously
+const serviceAccount = JSON.parse(readFileSync('./config/config.json', 'utf-8'));
 
 // Initialize Firebase Admin SDK
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://purecare-2a506-default-rtdb.firebaseio.com",
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
-const YOUR_DOMAIN = "https://purecare-2a506.firebaseapp.com"; // Update this with your actual domain
+// Create a Firestore instance
+const db = admin.firestore();
 
-exports.createCheckoutSession = functions.https.onRequest(async (req, res) => {
+// Create Express application
+const testing01 = express();
+
+// Middleware
+testing01.use(cors());
+
+testing01.use(express.json());
+
+
+//react native api for onetime payment event
+testing01.post('/payment-sheet-onetime', async (req, res) => {
+  // Get data from front end
+  const {
+    amount, customerId
+  } = req.body;
+  console.log(amount);
+
+  
+
+  const ephemeralKey = await stripeClient.ephemeralKeys.create(
+    { customer: customerId },
+    { apiVersion: '2022-11-15' }
+  );
+
+  // Create paymentIntent with or without transfer data and application fee
+  let paymentIntentParams = {
+    amount: amount * 100,
+    currency: 'cad',
+    setup_future_usage: 'off_session', //enable to save payment method by default
+    customer: customerId,
+    payment_method_types: ['card'],
+    // automatic_payment_methods: {
+    //     enabled: true,
+    // },
+    metadata: {
+
+    },
+  };
+
+  
+
+  const paymentIntent = await stripeClient.paymentIntents.create(paymentIntentParams);
+
+  console.log({
+    paymentIntent: paymentIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: customerId,
+  });
+
+  res.json({
+    paymentIntent: paymentIntent.client_secret,
+    ephemeralKey: ephemeralKey.secret,
+    customer: customerId,
+  });
+});
+
+
+//retrieve or create customer for stripe for user end
+testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
+  const { email } = req.body;
+
   try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "PureCare Service",
-              // Add more product details as needed
-            },
-            unit_amount: 1000, // Amount in cents
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${YOUR_DOMAIN}?success=true`,
-      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-    });
-    res.json({sessionId: session.id});
+    // Check if the customer already exists
+    let customer = await stripeClient.customers.list({ email, limit: 1 });
+
+    if (customer.data.length > 0) {
+      // Customer already exists, return existing customer id
+      res.json({ customerId: customer.data[0].id });
+    } else {
+      // Create a new customer
+      customer = await stripeClient.customers.create({ email });
+
+      // Return the new customer id
+      res.json({ customerId: customer.id });
+    }
   } catch (error) {
-    console.error("Error creating checkout session:", error);
-    res.status(500).json({error: "Could not create checkout session"});
+    console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 });
+
+
+
+
+
+
+
+testing01.get('/', (req, res) => {
+  res.send({
+    message: 'server is running'
+  });
+});
+
+exports.stripeApiEndPoint = functions.onRequest(testing01);
