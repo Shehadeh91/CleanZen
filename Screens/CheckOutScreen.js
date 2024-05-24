@@ -29,9 +29,8 @@ import useCarWashStore from "../useCarWashStore";
 import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 
-
-
-
+import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
+import StripePayment from "../Components/StripePayment";
 
 const CheckOutScreen = () => {
   const navigation = useNavigation();
@@ -53,6 +52,7 @@ const CheckOutScreen = () => {
     email,
     setEmail,
   } = useAppStore();
+
 
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
@@ -138,7 +138,7 @@ const CheckOutScreen = () => {
 
   return (
     <View style={{ flex: 1 }}>
-     
+
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Total: $" + totalCost.toFixed(2)}
@@ -148,7 +148,8 @@ const CheckOutScreen = () => {
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-          {/* Car Location Card */}
+        <StripePayment></StripePayment>
+
 
           <Card style={styles.card}>
             <Card.Title
@@ -195,7 +196,7 @@ const CheckOutScreen = () => {
                 style={{ fontSize: 20, left: 200, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
               >
                 {deliveryCost}
-               
+
               </Text> */}
           </Card>
 
@@ -216,7 +217,7 @@ const CheckOutScreen = () => {
             {/* <Text
                  style={{ fontSize: 20, left: 250, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
               >
-                $+ {prefrenceCost + bodyStyleCost} 
+                $+ {prefrenceCost + bodyStyleCost}
               </Text> */}
 
             <View
@@ -394,12 +395,12 @@ const CheckOutScreen = () => {
           backgroundColor: "grey",
         }}
       >
-       
+
         <View style={{ flex: 0.75 }}>
-         
+
         </View>
       </BottomSheet>
-     
+
     </View>
   );
 };

@@ -1,6 +1,16 @@
 {
   "projects": {
-    "default": "purecare-2a506"
+    "default": "purecare-2a506",
+    "development": "purecare-2a506",
+    "developing": "purecare-2a506"
+  },
+  "targets": {},
+  "etags": {
+    "purecare-2a506": {
+      "extensionInstances": {
+        "firestore-stripe-payments": "ca73be340edf549be662d0f1c9d702c05889721e7d9d09b0523722d3bcb30087"
+      }
+    }
   },
   "dataconnectEmulatorConfig": {
     "postgres": {

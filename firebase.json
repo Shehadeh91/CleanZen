@@ -9,6 +9,7 @@
   "functions": [
     {
       "source": "functions",
+      "region": "us-central1",
       "codebase": "default",
       "ignore": [
         "node_modules",

@@ -27,15 +27,17 @@
     "@react-native-google-signin/google-signin": "^11.0.1",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
-    "@stripe/stripe-react-native": "^0.37.3",
+    "@stripe/stripe-react-native": "^0.37.2",
     "@twilio-labs/dev-phone-ui": "^1.0.0-beta.1",
     "@twilio-labs/plugin-dev-phone": "^1.0.0-beta.3",
     "expo": "^51.0.8",
     "expo-constants": "~16.0.1",
+    "expo-crypto": "^13.0.2",
     "expo-router": "^3.5.14",
     "expo-status-bar": "~1.12.1",
     "express": "^4.19.2",
     "firebase": "^10.12.1",
+    "node-libs-react-native": "^1.2.1",
     "react": "18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-native": "0.74.1",
@@ -62,7 +64,8 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5"
+    "@babel/core": "^7.24.5",
+    "babel-plugin-module-resolver": "^5.0.2"
   },
   "private": true
 }

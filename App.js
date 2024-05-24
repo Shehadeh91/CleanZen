@@ -40,13 +40,14 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <StripeProvider publishableKey="pk_test_51PIuTYRwhciiEfEmo9GLVvl1yMqLSpzRpRWUgVeOKpH6s3BFe035XP6lKfpuKHDwu6TP23UhSOPXDX3Z8zQQVv4S00krafLFdK" >
+    <StripeProvider publishableKey="pk_test_51PIuTYRwhciiEfEmo9GLVvl1yMqLSpzRpRWUgVeOKpH6s3BFe035XP6lKfpuKHDwu6TP23UhSOPXDX3Z8zQQVv4S00krafLFdK"
+    urlScheme="your-url-scheme" >
           <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
             name="home"
             component={HomeScreen}
-            
+
             options={{ headerShown: false }} // Hide header for Home screen
           />
           <Stack.Screen
@@ -320,6 +321,6 @@ export default function App() {
       </NavigationContainer>
       </StripeProvider>
     </PaperProvider>
-    
+
   );
 }

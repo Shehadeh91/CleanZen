@@ -1,0 +1,81 @@
+[debug] [2024-05-24T01:20:24.253Z] ----------------------------------------------------------------------
+[debug] [2024-05-24T01:20:24.255Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\muhan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2024-05-24T01:20:24.255Z] CLI Version:   13.10.0
+[debug] [2024-05-24T01:20:24.255Z] Platform:      win32
+[debug] [2024-05-24T01:20:24.255Z] Node Version:  v20.12.2
+[debug] [2024-05-24T01:20:24.255Z] Time:          Thu May 23 2024 20:20:24 GMT-0500 (Central Daylight Saving Time)
+[debug] [2024-05-24T01:20:24.255Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-05-24T01:20:24.328Z] Field ".functions" in "firebase.json" is possibly invalid: should be object
+[debug] [2024-05-24T01:20:24.328Z] Object ".functions[0]" in "firebase.json" has unknown property: {"additionalProperty":"region"}
+[debug] [2024-05-24T01:20:24.328Z] Field ".functions" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2024-05-24T01:20:24.331Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-05-24T01:20:24.332Z] > authorizing via signed-in user (muhannad.shehadeh91@gmail.com)
+[debug] [2024-05-24T01:20:24.332Z] [iam] checking project purecare-2a506 for permissions ["firebase.projects.get"]
+[debug] [2024-05-24T01:20:24.333Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions [none]
+[debug] [2024-05-24T01:20:24.333Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions x-goog-quota-user=projects/purecare-2a506
+[debug] [2024-05-24T01:20:24.333Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-05-24T01:20:24.617Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions 200
+[debug] [2024-05-24T01:20:24.618Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-05-24T01:20:24.619Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 [none]
+[debug] [2024-05-24T01:20:24.813Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 200
+[debug] [2024-05-24T01:20:24.813Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 {"projectId":"purecare-2a506","projectNumber":"458703941149","displayName":"PureCare","name":"projects/purecare-2a506","resources":{"hostingSite":"purecare-2a506","realtimeDatabaseInstance":"purecare-2a506-default-rtdb","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_dafbe484-1d0a-49a5-86cd-5e090cf7d8b2"}
+[info] 
+[info] === Serving from 'C:\Users\muhan\CleanZen'...
+[info] 
+[debug] [2024-05-24T01:20:24.822Z] defaultcredentials: writing to file C:\Users\muhan\AppData\Roaming\firebase\muhannad_shehadeh91_gmail.com_application_default_credentials.json
+[debug] [2024-05-24T01:20:24.822Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/purecare-2a506/sites 
+[debug] [2024-05-24T01:20:24.825Z] Setting GAC to C:\Users\muhan\AppData\Roaming\firebase\muhannad_shehadeh91_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\muhan\\AppData\\Roaming\\firebase\\muhannad_shehadeh91_gmail.com_application_default_credentials.json"}}
+[debug] [2024-05-24T01:20:24.826Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig [none]
+[debug] [2024-05-24T01:20:25.135Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig 200
+[debug] [2024-05-24T01:20:25.135Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig {"projectId":"purecare-2a506","databaseURL":"https://purecare-2a506-default-rtdb.firebaseio.com","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central"}
+[debug] [2024-05-24T01:20:25.799Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/purecare-2a506/sites 200
+[debug] [2024-05-24T01:20:25.799Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/purecare-2a506/sites {"sites":[{"name":"projects/purecare-2a506/sites/purecare-2a506","defaultUrl":"https://purecare-2a506.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2024-05-24T01:20:25.799Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/webApps/-/config [none]
+[debug] [2024-05-24T01:20:26.177Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/webApps/-/config 200
+[debug] [2024-05-24T01:20:26.177Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/webApps/-/config {"projectId":"purecare-2a506","appId":"1:458703941149:web:2320b58b1fe052c70ca0f4","databaseURL":"https://purecare-2a506-default-rtdb.firebaseio.com","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central","apiKey":"AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk","authDomain":"purecare-2a506.firebaseapp.com","messagingSenderId":"458703941149","measurementId":"G-PNR85X9X41"}
+[debug] [2024-05-24T01:20:26.183Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 [none]
+[debug] [2024-05-24T01:20:26.274Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 200
+[debug] [2024-05-24T01:20:26.274Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 {"projectId":"purecare-2a506","projectNumber":"458703941149","displayName":"PureCare","name":"projects/purecare-2a506","resources":{"hostingSite":"purecare-2a506","realtimeDatabaseInstance":"purecare-2a506-default-rtdb","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_dafbe484-1d0a-49a5-86cd-5e090cf7d8b2"}
+[info] i  functions: Watching "C:\Users\muhan\CleanZen\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\muhan\\CleanZen\\functions\" for Cloud Functions..."}}
+[info] i  hosting[purecare-2a506]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] +  hosting[purecare-2a506]: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[debug] [2024-05-24T01:20:26.288Z] Validating nodejs source
+[debug] [2024-05-24T01:20:27.442Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@stripe/stripe-react-native": "0.37.2",
+    "firebase-admin": "^12.1.0",
+    "firebase-functions": "^5.0.0",
+    "stripe": "^15.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-05-24T01:20:27.442Z] Building nodejs source
+[debug] [2024-05-24T01:20:27.442Z] Failed to find version of module node: reached end of search path C:\Users\muhan\CleanZen\functions\node_modules
+[warn] !  functions: Your requested "node" version "18" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2024-05-24T01:20:27.444Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-05-24T01:20:27.451Z] Found firebase-functions binary at 'C:\Users\muhan\CleanZen\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8035
+
+[debug] [2024-05-24T01:20:28.001Z] Got response from /__/functions.yaml {"endpoints":{"createCheckoutSession":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"createCheckoutSession"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: createCheckoutSession. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: createCheckoutSession."}}
+[info] +  functions[us-central1-createCheckoutSession]: http function initialized (http://localhost:5001/purecare-2a506/us-central1/createCheckoutSession). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5001/purecare-2a506/us-central1/createCheckoutSession)."}}

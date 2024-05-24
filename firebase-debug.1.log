@@ -1,0 +1,38 @@
+[debug] [2024-05-24T01:19:47.856Z] ----------------------------------------------------------------------
+[debug] [2024-05-24T01:19:47.858Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\muhan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2024-05-24T01:19:47.858Z] CLI Version:   13.10.0
+[debug] [2024-05-24T01:19:47.858Z] Platform:      win32
+[debug] [2024-05-24T01:19:47.858Z] Node Version:  v20.12.2
+[debug] [2024-05-24T01:19:47.858Z] Time:          Thu May 23 2024 20:19:47 GMT-0500 (Central Daylight Saving Time)
+[debug] [2024-05-24T01:19:47.858Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-05-24T01:19:47.929Z] Field ".functions" in "firebase.json" is possibly invalid: should be object
+[debug] [2024-05-24T01:19:47.930Z] Object ".functions[0]" in "firebase.json" has unknown property: {"additionalProperty":"region"}
+[debug] [2024-05-24T01:19:47.930Z] Field ".functions" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2024-05-24T01:19:47.933Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-05-24T01:19:47.934Z] > authorizing via signed-in user (muhannad.shehadeh91@gmail.com)
+[debug] [2024-05-24T01:19:47.934Z] [iam] checking project purecare-2a506 for permissions ["firebase.projects.get"]
+[debug] [2024-05-24T01:19:47.935Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions [none]
+[debug] [2024-05-24T01:19:47.935Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions x-goog-quota-user=projects/purecare-2a506
+[debug] [2024-05-24T01:19:47.935Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-05-24T01:19:48.201Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions 200
+[debug] [2024-05-24T01:19:48.201Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/purecare-2a506:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2024-05-24T01:19:48.202Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 [none]
+[debug] [2024-05-24T01:19:48.429Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 200
+[debug] [2024-05-24T01:19:48.430Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506 {"projectId":"purecare-2a506","projectNumber":"458703941149","displayName":"PureCare","name":"projects/purecare-2a506","resources":{"hostingSite":"purecare-2a506","realtimeDatabaseInstance":"purecare-2a506-default-rtdb","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_dafbe484-1d0a-49a5-86cd-5e090cf7d8b2"}
+[info] 
+[info] === Serving from 'C:\Users\muhan\CleanZen'...
+[info] 
+[debug] [2024-05-24T01:19:48.442Z] defaultcredentials: writing to file C:\Users\muhan\AppData\Roaming\firebase\muhannad_shehadeh91_gmail.com_application_default_credentials.json
+[debug] [2024-05-24T01:19:48.442Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/purecare-2a506/sites 
+[debug] [2024-05-24T01:19:48.445Z] Setting GAC to C:\Users\muhan\AppData\Roaming\firebase\muhannad_shehadeh91_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\muhan\\AppData\\Roaming\\firebase\\muhannad_shehadeh91_gmail.com_application_default_credentials.json"}}
+[debug] [2024-05-24T01:19:48.445Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig [none]
+[debug] [2024-05-24T01:19:48.768Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig 200
+[debug] [2024-05-24T01:19:48.769Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/purecare-2a506/adminSdkConfig {"projectId":"purecare-2a506","databaseURL":"https://purecare-2a506-default-rtdb.firebaseio.com","storageBucket":"purecare-2a506.appspot.com","locationId":"us-central"}
+[debug] [2024-05-24T01:19:48.788Z] Error: listen EADDRINUSE: address already in use ::1:5001
+    at Server.setupListenHandle [as _listen2] (node:net:1897:16)
+    at listenInCluster (node:net:1945:12)
+    at GetAddrInfoReqWrap.doListen [as callback] (node:net:2109:7)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:109:8)
+[error] 
+[error] Error: An unexpected error has occurred.

@@ -1,20 +1,48 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require("firebase-functions");
+// const admin = require("firebase-admin");
+// const path = require("path");
+const stripe = require("stripe")(`
+  sk_test_51PIuTYRwhciiEfEmNZe77DxeRKdFCVT7
+  j0QVPl80wyWm6UQR6yEiV0KbO0inqcHtj2oSkKG7orJtSicr5BJ9VaWA00BXw8w4jr
+`);
 
-const {onRequest} = require("firebase-functions/v2/https");
-const {logger} = require("firebase-functions");
+// Path to your service account key JSON file
+// const serviceAccount = require(path.resolve(__dirname, `./purecare-2a506-
+// firebase-adminsdk-j5azu-8607d40b26.json`),
+// );
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+// Initialize Firebase Admin SDK
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://purecare-2a506-default-rtdb.firebaseio.com",
+// });
 
-exports.helloWorld = onRequest((request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+const YOUR_DOMAIN = "https://purecare-2a506.firebaseapp.com"; // Update this with your actual domain
+
+exports.createCheckoutSession = functions.https.onRequest(async (req, res) => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: "PureCare Service",
+              // Add more product details as needed
+            },
+            unit_amount: 1000, // Amount in cents
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${YOUR_DOMAIN}?success=true`,
+      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    });
+    res.json({sessionId: session.id});
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({error: "Could not create checkout session"});
+  }
 });
-

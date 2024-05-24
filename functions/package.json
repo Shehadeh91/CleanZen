@@ -14,8 +14,10 @@
   },
   "main": "index.js",
   "dependencies": {
+    "@stripe/stripe-react-native": "0.37.2",
     "firebase-admin": "^12.1.0",
-    "firebase-functions": "^5.0.0"
+    "firebase-functions": "^5.0.0",
+    "stripe": "^15.7.0"
   },
   "devDependencies": {
     "eslint": "^8.15.0",
