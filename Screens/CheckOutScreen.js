@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
 
-import BottomSheet from "@gorhom/bottom-sheet";
+
 import {
   Card,
   Title,
@@ -30,12 +31,11 @@ import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 
 import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
-import StripePayment from "../Components/StripePayment";
 
 const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const bottomSheetRef = useRef(null);
+
   const {
     name,
     setName,
@@ -52,7 +52,132 @@ const CheckOutScreen = () => {
     email,
     setEmail,
   } = useAppStore();
+  ///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
 
+    const [paymentLoading, setPaymentLoading] = useState(false);
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+    const API_URL ='https://stripeapiendpoint-p2xcnmarfq-uc.a.run.app'
+
+    //stripe state
+
+    const [loading, setLoading] = useState(false);
+    //
+
+
+    // payment handler api
+    const initializePaymentSheet = async (price) => {
+      try {
+        console.log('Initializing payment sheet');
+        const {
+          paymentIntent,
+          ephemeralKey,
+          customer,
+          publishableKey,
+        } = await fetchPaymentSheetParams(price);
+
+        const { error } = await initPaymentSheet({
+          merchantDisplayName: 'Car Wash',
+          customerId: customer,
+          customerEphemeralKeySecret: ephemeralKey,
+          paymentIntentClientSecret: paymentIntent,
+          returnURL: 'https://url.com/',
+          allowsDelayedPaymentMethods: true,
+          defaultBillingDetails: {
+            name: name,
+
+
+          },
+          applePay: {
+            merchantCountryCode: 'US',
+          },
+          googlePay: {
+            merchantCountryCode: 'US',
+            testEnv: true,
+          },
+        });
+
+        if (!error) {
+          setLoading(true);
+          const { error } = await presentPaymentSheet();
+
+          if (error) {
+            Alert.alert(`Payment cancelled`);
+          } else {
+            //after successful payment
+
+            Alert.alert(
+              "Payment Successful",
+              "Your payment has been successfully processed.",
+              [{ text: "OK", onPress: () => handleConfirmOrder() }]
+            );
+          }
+        }
+      } catch (error) {
+        console.error('Error initializing payment sheet:', error);
+      } finally {
+        setLoading(false);
+        setIsLoading(false); // Show activity indicator
+      }
+    };
+
+    const fetchPaymentSheetParams = async (price) => {
+      const customerIdResponse = await fetch(`${API_URL}/retrieveOrCreateCustomer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+
+        }),
+      });
+
+      const { customerId } = await customerIdResponse.json();
+
+      const response = await fetch(`${API_URL}/payment-sheet-onetime`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: price,
+          customerId,
+
+        }),
+      });
+
+      const { paymentIntent, ephemeralKey, customer } = await response.json();
+
+      return {
+        paymentIntent,
+        ephemeralKey,
+        customer,
+      };
+    };
+
+
+
+
+
+
+    const handleCardPayment = async () => {
+      setPaymentLoading(true);
+      try {
+        const price = totalCost;
+        await initializePaymentSheet(price);
+      } catch (error) {
+        console.error('Error initiating checkout session:', error);
+        // Handle unexpected errors
+      }
+      setPaymentLoading(false);
+    };
+
+
+
+
+
+  ///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
 
   const { addCarWashOrder } = route.params; // Assuming route.params is available
 
@@ -114,7 +239,7 @@ const CheckOutScreen = () => {
         // Check if the function exists
         await addCarWashOrder(); // Call the function
         // Other logic after adding the car wash order
-       // console.log("Car wash order added successfully!");
+        // console.log("Car wash order added successfully!");
         //
       }
     } catch (error) {
@@ -146,10 +271,9 @@ const CheckOutScreen = () => {
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
+
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
-        <StripePayment></StripePayment>
-
 
           <Card style={styles.card}>
             <Card.Title
@@ -341,6 +465,7 @@ const CheckOutScreen = () => {
             <RadioButton.Group
               onValueChange={(newValue) => {
                 setPaymentOption(newValue);
+
                 //   updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 100)
               }}
               value={paymentOption}
@@ -357,26 +482,46 @@ const CheckOutScreen = () => {
                 <RadioButton.Item
                   label="Cash"
                   value="Cash"
-                 // onPress={bottomSheetRef.current?.close()}
+                  disabled={isLoading}
                 />
                 <RadioButton.Item
                   label="Card"
                   value="Card"
-                  //onPress={bottomSheetRef.current?.expand()}
+                  disabled={isLoading}
                 />
               </View>
             </RadioButton.Group>
           </Card>
-          {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+          {isLoading && (
+        <View style={{position: "absolute",
+    top: "50%", // Position at half of the screen vertically
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,}}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
           <Button
             style={{ marginBottom: 50, top: 10, borderWidth: 1 }}
             mode="contained"
-            onPress={() => handleConfirmOrder()}
-            labelStyle={{
+            onPress={() => {
+
+    if (paymentOption === "Card") {
+      setIsLoading(true); // Show activity indicator
+      handleCardPayment();
+
+    } else {
+      handleConfirmOrder();
+    }
+
+  }}            labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
               letterSpacing: 10,
             }}
+            disabled={isLoading} // Disable the button while loading
           >
             Confirm
           </Button>
@@ -384,22 +529,6 @@ const CheckOutScreen = () => {
           {/* Delivery, Additional Note, Payment Options, etc. */}
         </View>
       </ScrollView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={-1}
-        snapPoints={["75%", "50%"]}
-        enablePanDownToClose={true}
-        backgroundStyle={{
-          borderWidth: 2,
-          borderRadius: 25,
-          backgroundColor: "grey",
-        }}
-      >
-
-        <View style={{ flex: 0.75 }}>
-
-        </View>
-      </BottomSheet>
 
     </View>
   );

@@ -64,7 +64,7 @@ const AdminOrdersScreen = () => {
 
     const fetchOrders = async () => {
       try {
-        
+
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
@@ -92,7 +92,7 @@ const AdminOrdersScreen = () => {
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
-       
+
           // Update state by reversing the carWashOrder of new orders
           setAvailableOrders([
             ...carWashOrders
@@ -142,14 +142,14 @@ const AdminOrdersScreen = () => {
           //   setCanceledOrders(
           //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
           //   );
-      
+
       } catch (error) {
        // console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
   };
-  
+
 
   useEffect(() => {
     //setVisible(true); // Call setVisible(false) when the component mounts
@@ -420,8 +420,8 @@ const AdminOrdersScreen = () => {
             >
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -481,6 +481,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -489,13 +490,13 @@ const AdminOrdersScreen = () => {
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
-                  
+
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -520,6 +521,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -532,8 +534,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -558,6 +560,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -578,8 +581,8 @@ const AdminOrdersScreen = () => {
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -639,6 +642,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -650,8 +654,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -672,6 +676,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -683,8 +688,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -705,6 +710,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -724,8 +730,8 @@ const AdminOrdersScreen = () => {
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -785,6 +791,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -796,8 +803,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -818,6 +825,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -829,8 +837,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -851,6 +859,7 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -870,8 +879,8 @@ const AdminOrdersScreen = () => {
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -934,13 +943,14 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
 
-                  
+
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
@@ -949,8 +959,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -974,13 +984,14 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
 
-                 
+
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
@@ -989,8 +1000,8 @@ const AdminOrdersScreen = () => {
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1014,13 +1025,14 @@ const AdminOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
 
-                 
+
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>

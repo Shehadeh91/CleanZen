@@ -4,7 +4,8 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity, Alert
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -27,10 +28,10 @@ import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet from "@gorhom/bottom-sheet";
 import useAppStore from "../useAppStore";
 
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -72,7 +73,7 @@ const CarWashOrderScreen = () => {
     paymentOption,
     setPaymentOption,
     date,
-    setDate
+    setDate,
   } = useCarWashStore();
 
   const {
@@ -84,8 +85,8 @@ const CarWashOrderScreen = () => {
     setAddress,
     indexBottom,
     setIndexBottom,
-    user,
-    setUser,
+userID,
+setUserID,
     visible,
     setVisible,
     email,
@@ -105,48 +106,46 @@ const CarWashOrderScreen = () => {
 
   const auth = FIREBASE_AUTH;
 
+  //////////////////////////////////////////////////
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  // const [selectedDate, setSelectedDate] = useState(null);
+  const [mode, setMode] = useState("date");
+  const bottomSheetRef = useRef(null);
 
-//////////////////////////////////////////////////
-const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-// const [selectedDate, setSelectedDate] = useState(null);
- const [mode, setMode] = useState('date');
- const bottomSheetRef = useRef(null);
+  const showDatePicker = () => {
+    setMode("date");
+    setDatePickerVisibility(true);
+  };
 
- const showDatePicker = () => {
-   setMode('date');
-   setDatePickerVisibility(true);
- };
+  const showTimePicker = () => {
+    setMode("time");
+    setDatePickerVisibility(true);
+  };
 
- const showTimePicker = () => {
-   setMode('time');
-   setDatePickerVisibility(true);
- };
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
- const hideDatePicker = () => {
-   setDatePickerVisibility(false);
- };
-
- const handleConfirm = (dateTime) => {
-   const formattedDate = dateTime.toLocaleString('default', {
-     weekday: 'short',
-     month: 'short',
-     day: 'numeric',
-     hour: 'numeric',
-     minute: 'numeric',
-     hour12: true,
-   });
-   setDate(formattedDate);
-   hideDatePicker();
-   //bottomSheetRef.current?.close();
- };
-////////////////////////////////////////
-
+  const handleConfirm = (dateTime) => {
+    const formattedDate = dateTime.toLocaleString("default", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    setDate(formattedDate);
+    hideDatePicker();
+    //bottomSheetRef.current?.close();
+  };
+  ////////////////////////////////////////
 
   const addCarWashOrder = async () => {
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-        //console.error("Error: User is not authenticated.");
+        console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -154,7 +153,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        //console.error("Error: User email is null or undefined.");
+        console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -176,13 +175,13 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
       );
 
       LogBox.ignoreLogs([
-        'Non-serializable values were found in the navigation state',
+        "Non-serializable values were found in the navigation state",
       ]);
 
       await setDoc(orderDocRef, {
         Email: userId,
         Name: name,
-        Phone: phone,
+                Phone: phone,
         Address: address,
         CarBrand: carBrand,
         BodyType: bodyStyle,
@@ -197,7 +196,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         Assigned: "No One",
         Service: "Car Wash",
         EstimateTime: serviceTime,
-        Date: date
+        Date: date,
       });
 
       await setDoc(
@@ -205,10 +204,10 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         { orderNumber: orderNumber },
         { merge: true }
       );
-     
+
       navigation.navigate("orderComplete");
     } catch (error) {
-      //console.error("Error adding car wash order:", error);
+      console.error("Error adding car wash order:", error);
     }
   };
   const onColorChange = (color) => {
@@ -275,22 +274,25 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
               Select your car details by tapping the buttons.
             </Text>
             <View style={styles.buttonContainer}>
-            <TouchableOpacity   style={{ width: 90,
-    height: 55,
-    borderRadius: 15,
-       alignContent: 'center',
-     // bottom: 8,
-       alignItems: 'center',
-       alignSelf: 'center',
-       
-    marginLeft: 30,
-    
-    //borderWidth: 1,
-    
-    }}   onPress={showModalBrand}>
-      <Icon   source={iconBrand} size={55}  />
-    </TouchableOpacity>
-            
+              <TouchableOpacity
+                style={{
+                  width: 90,
+                  height: 55,
+                  borderRadius: 15,
+                  alignContent: "center",
+                  // bottom: 8,
+                  alignItems: "center",
+                  alignSelf: "center",
+
+                  marginLeft: 30,
+
+                  //borderWidth: 1,
+                }}
+                onPress={showModalBrand}
+              >
+                <Icon source={iconBrand} size={55} />
+              </TouchableOpacity>
+
               <Button
                 style={styles.rectangularButton}
                 //icon="camera"
@@ -318,11 +320,9 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 alignSelf: "center",
                 left: 15,
                 borderRadius: 25,
-               
               }}
               label="Car Plate"
               value={carPlate}
-              
               mode="outlined"
               autoCapitalize="characters"
               maxLength={9}
@@ -391,16 +391,22 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 if (newValue === "Standard") {
                   setDeliveryCost(0);
                   setServiceTime(60);
-                  setDate('Standard');
-                  {bottomSheetRef.current?.close()}
+                  setDate("Standard");
+                  {
+                    bottomSheetRef.current?.close();
+                  }
                 } else if (newValue === "Priority") {
                   setDeliveryCost(3.99);
                   setServiceTime(45);
-                  setDate('Urgent');
-                  {bottomSheetRef.current?.close()}
+                  setDate("Urgent");
+                  {
+                    bottomSheetRef.current?.close();
+                  }
                 } else if (newValue === "Schedule") {
                   setDeliveryCost(0);
-                  {bottomSheetRef.current?.expand()}
+                  {
+                    bottomSheetRef.current?.expand();
+                  }
                   setServiceTime(0);
                 }
               }}
@@ -456,12 +462,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 >
                   {"25 - 45 min"}
                 </Text>
-                <RadioButton.Item
-                    label="Schedule"
-                    value="Schedule"
-                   
-                  />
-                     <Text
+                <RadioButton.Item label="Schedule" value="Schedule" />
+                <Text
                   style={{
                     fontSize: 13,
                     left: 17,
@@ -470,7 +472,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                     position: "absolute",
                   }}
                 >
-                  {date && date.toString() }
+                  {date && date.toString()}
                 </Text>
               </View>
             </RadioButton.Group>
@@ -488,20 +490,20 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 return;
               }
               if (carPlate.trim().length > 0) {
-      navigation.navigate("checkOut", {
-        addCarWashOrder: addCarWashOrder,
-      });
-      updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost);
-    } else {
-      // Add code to handle the case when there's no input in the TextInput
-      alert("Please enter a car plate number.");
-    }
-  }}
-  labelStyle={{
-    fontSize: 20,
-    textAlignVertical: "center",
-    letterSpacing: 10,
-  }}
+                navigation.navigate("checkOut", {
+                  addCarWashOrder: addCarWashOrder,
+                });
+                updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost);
+              } else {
+                // Add code to handle the case when there's no input in the TextInput
+                alert("Please enter a car plate number.");
+              }
+            }}
+            labelStyle={{
+              fontSize: 20,
+              textAlignVertical: "center",
+              letterSpacing: 10,
+            }}
           >
             Confirm
           </Button>
@@ -512,19 +514,21 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
-        snapPoints={['25%', '25%']}
+        snapPoints={["25%", "25%"]}
         enablePanDownToClose={true}
-        backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
-        
-             >
-        <View style={{margin: 15, gap: 10, marginTop: 10}} >
-        {date && <Text> {date.toString()}</Text>}
-        {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
-       
-          <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
-          
-          <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
-         
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25 }}
+      >
+        <View style={{ margin: 15, gap: 10, marginTop: 10 }}>
+          {date && <Text> {date.toString()}</Text>}
+          {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
+
+          <Button onPress={showDatePicker} mode="contained-tonal">
+            Select Date
+          </Button>
+
+          <Button onPress={showTimePicker} mode="contained-tonal">
+            Select Time
+          </Button>
         </View>
       </BottomSheet>
       <DateTimePickerModal
@@ -532,7 +536,6 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-        
       />
       {/* Modal */}
       <Portal>
@@ -549,8 +552,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 justifyContent: "space-around",
                 alignItems: "center",
                 flexWrap: "wrap",
-                
-                gap: 15
+
+                gap: 15,
               }}
             >
               <TouchableOpacity
@@ -1136,7 +1139,7 @@ const styles = StyleSheet.create({
     height: 55,
     borderRadius: 15,
     justifyContent: "center",
-     alignItems: "center",
+    alignItems: "center",
     //backgroundColor: "#007bff",
     marginVertical: 10,
     marginLeft: 30,

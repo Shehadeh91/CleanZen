@@ -13,7 +13,7 @@ const StripePayment = () => {
   const { totalCost } = useCarWashStore();
   const API_URL ='https://stripeapiendpoint-p2xcnmarfq-uc.a.run.app'
 
-  //stripe state yes
+  //stripe state
 
   const [loading, setLoading] = useState(false);
   //

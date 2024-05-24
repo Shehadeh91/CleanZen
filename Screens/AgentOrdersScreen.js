@@ -10,7 +10,7 @@ import {
   Linking,
   ActivityIndicator,
   Alert,
-  
+
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -53,7 +53,7 @@ const AgentOrdersScreen = () => {
   // const [canceledOrders, setCanceledOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const swipeableRef = useRef(null);
 
   // const filterOrders = (status) =>
@@ -65,10 +65,10 @@ const AgentOrdersScreen = () => {
     setShowMyOrders(status === "MyOrders");
     // setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
-    
+
     const fetchOrders = async () => {
       try {
-        
+
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
@@ -96,7 +96,7 @@ const AgentOrdersScreen = () => {
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
-       
+
           // Update state by reversing the carWashOrder of new orders
           setAvailableOrders([
             ...carWashOrders.filter(
@@ -164,7 +164,7 @@ const AgentOrdersScreen = () => {
           //   setCanceledOrders(
           //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
           //   );
-      
+
       } catch (error) {
        // console.error("Error fetching orders:", error);
       }
@@ -300,7 +300,7 @@ const AgentOrdersScreen = () => {
     };
   }, [user]);
 
-  
+
 
 
   const carBrandIcons = {
@@ -345,7 +345,7 @@ const AgentOrdersScreen = () => {
 
   const openSmsApp = (phoneNumber, message) => {
     const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
-  
+
     Linking.canOpenURL(url)
       .then((supported) => {
         if (supported) {
@@ -356,13 +356,13 @@ const AgentOrdersScreen = () => {
       })
       //.catch((error) => console.error('Error opening SMS app:', error));
   };
-  
+
 
 
   const claimOrder = async (orderId, serviceType, clientPhone) => {
     try {
       if (serviceType === "Dry Clean") {
-        
+
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
         await setDoc(
           doc(dryCleanOrdersRef, orderId),
@@ -392,7 +392,7 @@ const AgentOrdersScreen = () => {
  // const phoneNumberToText = '1234567890'; // Replace with your variable
  const messageText = `Thank you for ordering. I am your agent ${name}. I will take care of your ${serviceType} Service. I am on the way!`;
 
-openSmsApp(clientPhone,messageText)
+//openSmsApp(clientPhone,messageText)
 
      // console.log("Order marked as MyOrders.");
       if (swipeableRef.current) {
@@ -430,7 +430,7 @@ openSmsApp(clientPhone,messageText)
       }else if (serviceType === "Room Clean") {
         const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
         await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Completed" }, { merge: true });
-    
+
       }else {
         //console.error("Invalid service type:", serviceType);
         return;
@@ -488,8 +488,8 @@ openSmsApp(clientPhone,messageText)
           serviceOrder.id === orderId ? { ...serviceOrder, Note: setDate } : serviceOrder
         )
       );
-      
-      
+
+
       // setCompletedOrders((prevOrders) => [
       //   // Place the claimed carWashOrder at the top of MyOrders
       //   {
@@ -637,7 +637,7 @@ openSmsApp(clientPhone,messageText)
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                    {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -697,20 +697,21 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                    {serviceOrder.Address}
+                             {serviceOrder.Address}
                   </Text>
-                  
+
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -734,6 +735,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -745,8 +747,8 @@ openSmsApp(clientPhone,messageText)
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -770,6 +772,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -789,8 +792,8 @@ openSmsApp(clientPhone,messageText)
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -850,6 +853,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -863,8 +867,8 @@ openSmsApp(clientPhone,messageText)
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -885,6 +889,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -898,8 +903,8 @@ openSmsApp(clientPhone,messageText)
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -920,6 +925,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -966,8 +972,8 @@ openSmsApp(clientPhone,messageText)
             >
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -1027,6 +1033,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -1038,8 +1045,8 @@ openSmsApp(clientPhone,messageText)
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1063,6 +1070,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -1074,8 +1082,8 @@ openSmsApp(clientPhone,messageText)
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1099,6 +1107,7 @@ openSmsApp(clientPhone,messageText)
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
+                      paddingHorizontal: 5
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >

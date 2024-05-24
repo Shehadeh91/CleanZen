@@ -10,6 +10,8 @@ import NetInfo from "@react-native-community/netinfo";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import firebase from "firebase/compat/app";
+import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
+
 import {
   Card,
   Title,
@@ -31,6 +33,144 @@ import useDryCleanCart from "../useDryCleanStore";
 const DryCleanCheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+
+
+
+  ///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
+
+  const [paymentLoading, setPaymentLoading] = useState(false);
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const API_URL ='https://stripeapiendpoint-p2xcnmarfq-uc.a.run.app'
+
+  //stripe state
+
+  const [loading, setLoading] = useState(false);
+  //
+
+
+  // payment handler api
+  const initializePaymentSheet = async (price) => {
+    try {
+      console.log('Initializing payment sheet');
+      const {
+        paymentIntent,
+        ephemeralKey,
+        customer,
+        publishableKey,
+      } = await fetchPaymentSheetParams(price);
+
+      const { error } = await initPaymentSheet({
+        merchantDisplayName: 'Dry Wash',
+        customerId: customer,
+        customerEphemeralKeySecret: ephemeralKey,
+        paymentIntentClientSecret: paymentIntent,
+        returnURL: 'https://url.com/',
+        allowsDelayedPaymentMethods: true,
+        defaultBillingDetails: {
+          name: name,
+
+
+        },
+        applePay: {
+          merchantCountryCode: 'US',
+        },
+        googlePay: {
+          merchantCountryCode: 'US',
+          testEnv: true,
+        },
+      });
+
+      if (!error) {
+        setLoading(true);
+        const { error } = await presentPaymentSheet();
+
+        if (error) {
+          Alert.alert(`Payment cancelled`);
+        } else {
+          //after successful payment
+
+          Alert.alert(
+            "Payment Successful",
+            "Your payment has been successfully processed.",
+            [{ text: "OK", onPress: () => handleConfirmOrder() }]
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing payment sheet:', error);
+    } finally {
+      setLoading(false);
+      setIsLoading(false); // Show activity indicator
+    }
+  };
+
+  const fetchPaymentSheetParams = async (price) => {
+    const customerIdResponse = await fetch(`${API_URL}/retrieveOrCreateCustomer`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+
+      }),
+    });
+
+    const { customerId } = await customerIdResponse.json();
+
+    const response = await fetch(`${API_URL}/payment-sheet-onetime`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: price,
+        customerId,
+
+      }),
+    });
+
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
+  };
+
+
+
+
+
+
+  const handleCardPayment = async () => {
+    setPaymentLoading(true);
+    try {
+      const price = (getTotalPrice()+ deliveryCost + 4 + 1.5).toFixed(2);
+      await initializePaymentSheet(price);
+    } catch (error) {
+      console.error('Error initiating checkout session:', error);
+      // Handle unexpected errors
+    }
+    setPaymentLoading(false);
+  };
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
+
+
+
+
+
+
+
+
+
 
   const {
     name,
@@ -117,12 +257,12 @@ const DryCleanCheckOutScreen = () => {
     <View style={{ flex: 1 }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice() + 4 + 1.5).toFixed(2)}
+          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + 1.5).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView style={styles.scrollView} >
         <View style={styles.container}>
           {/* Car Location Card */}
 
@@ -169,7 +309,7 @@ const DryCleanCheckOutScreen = () => {
                 style={{ fontSize: 20, left: 200, bottom: 50, color: "green", borderWidth: 1, borderColor: 'red', width: 100, height: 100, marginBottom: -25 }}
               >
                 {deliveryCost}
-               
+
               </Text> */}
           </Card>
 
@@ -184,7 +324,7 @@ const DryCleanCheckOutScreen = () => {
                   size={55}
                   left={-10}
                   bottom={0}
-                  
+
                 />
               )}
             />
@@ -311,23 +451,44 @@ const DryCleanCheckOutScreen = () => {
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" />
-                <RadioButton.Item label="Card" value="Card" disabled />
+                <RadioButton.Item label="Cash" value="Cash" disabled={isLoading} />
+                <RadioButton.Item label="Card" value="Card" disabled={isLoading} />
               </View>
             </RadioButton.Group>
           </Card>
-          {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
+          {isLoading && (
+        <View style={{position: "absolute",
+    top: "50%", // Position at half of the screen vertically
+    left: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,}}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
           <Button
             style={{ marginBottom: 50, top: 10, borderWidth: 1 }}
             mode="contained"
-            onPress={() => handleConfirmOrder()}
-            labelStyle={{
-              fontSize: 20,
-              textAlignVertical: "center",
-              letterSpacing: 10,
-            }}
-          >
+            onPress={() => {
+
+if (paymentOption === "Card") {
+  setIsLoading(true); // Show activity indicator
+  handleCardPayment();
+
+} else {
+  handleConfirmOrder();
+}
+
+}}            labelStyle={{
+          fontSize: 20,
+          textAlignVertical: "center",
+          letterSpacing: 10,
+        }}
+        disabled={isLoading} // Disable the button while loading
+      >
             Confirm
+
           </Button>
           {/* Other cards */}
           {/* Delivery, Additional Note, Payment Options, etc. */}
