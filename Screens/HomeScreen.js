@@ -5,7 +5,7 @@ import {
   View,
   ImageBackground,
   FlatList,
-Image
+Image,
 } from "react-native";
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native"; // Added import
@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import useAppStore from "../useAppStore";
 import { Avatar, Button, Card, Icon } from "react-native-paper";
 import { onMessage, getMessaging, getToken } from "firebase/messaging";
+import WebView from "react-native-webview";
 
 
 
@@ -29,8 +30,6 @@ const HomeScreen = () => {
   );
 
 
-
-  // useEffect(() => {
   //   const requestNotificationPermission = async () => {
   //     try {
   //       const permission = await Notification.requestPermission();
@@ -112,7 +111,7 @@ const HomeScreen = () => {
       image: require("./DryClean.png"),
       screen: "dryClean",
     },
-  
+
     // {
     //   id: "4",
     //   title: "CARPET CLEAN",
@@ -126,6 +125,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+
        <Text style={styles.title}>PureCare </Text>
       <Text style={styles.subTitle}>Anywhere, Anytime    </Text>
       <Image  style={{tintColor: 'black', height: 100, width: 100, left: 125, bottom: 100, marginBottom: -90}} resizeMode= 'center' resizeMethod='auto'  source={require("./PureCare.png")} />
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     justifyContent: "flex-end",
   },
- 
+
   title: {
     fontSize: 30,
     fontWeight: "bold",

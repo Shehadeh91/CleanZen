@@ -22,7 +22,7 @@ admin.initializeApp({
 
 // Create a Firestore instance
 const db = admin.firestore();
-
+//
 // Create Express application
 const testing01 = express();
 
@@ -40,7 +40,7 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
   } = req.body;
   console.log(amount);
 
-  
+
 
   const ephemeralKey = await stripeClient.ephemeralKeys.create(
     { customer: customerId },
@@ -62,7 +62,7 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
     },
   };
 
-  
+
 
   const paymentIntent = await stripeClient.paymentIntents.create(paymentIntentParams);
 
