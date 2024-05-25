@@ -11,16 +11,21 @@ import {
 } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const AgentEarningOverviewScreen = () => {
   const [agentData, setAgentData] = useState(null);
 
-
-useEffect(()=> {
-fetchAgentData()
-})
-
+  useEffect(() => {
+    fetchAgentData();
+  });
 
   const fetchAgentData = async () => {
     try {
@@ -34,9 +39,6 @@ fetchAgentData()
         // Extract agent's data from the document snapshot
         const data = agentDocSnap.data();
         setAgentData(data); // Call setAgentData with the new value
-
-
-
       } else {
         console.log("Agent document does not exist");
       }
@@ -45,9 +47,18 @@ fetchAgentData()
     }
   };
 
+  const formatDate = (date) => {
+    return date.toLocaleDateString(undefined, {
+      weekday: "short",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+  };
 
   return (
     <View style={{ paddingTop: 75 }}>
+<ScrollView >
       <View
         style={{
           flexDirection: "row",
@@ -58,48 +69,62 @@ fetchAgentData()
       >
         <Avatar.Image size={100} source={require("./agentFace.png")} />
         <View style={{ marginLeft: 10 }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{agentData ? agentData.Name : ""}</Text>
-          <Text style={{ fontSize: 13 }}> {agentData ? agentData.Phone : ""}</Text>
-          <Text style={{ fontSize: 13 }}> {agentData ? agentData.Email : ""}</Text>
-
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            {agentData ? agentData.Name : ""}
+          </Text>
+          <Text style={{ fontSize: 13 }}>
+            {" "}
+            {agentData ? agentData.Phone : ""}
+          </Text>
+          <Text style={{ fontSize: 13 }}>
+            {" "}
+            {agentData ? agentData.Email : ""}
+          </Text>
         </View>
       </View>
-             <View
-          style={{
-            margin: 15,
-            flexDirection: "column",
-            justifyContent: "space-between",
-            gap: 10,
-            marginTop: 25,
-          }}
-        >
-          <Card style={{ borderWidth: 0.5 }}>
-            <Card.Title
-              leftStyle={{ alignItems: "center", top: 5 }}
-              title="Completed Services"
-              subtitleStyle={{paddingHorizontal: 5}}
-              subtitle={agentData ? agentData.NumberOfServices : ""}
-              left={(props) => (
-                <Avatar.Image source={require("./completed Services.png")} />
-              )}
-            />
-            <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
-          </Card>
-          <Card style={{ borderWidth: 0.5 }}>
-            <Card.Title
-              leftStyle={{ alignItems: "center", top: 5 }}
-              title="Total Earnings"
-              subtitleStyle={{paddingHorizontal: 5, letterSpacing: 2}}
-              subtitle={agentData ? "$" + (agentData.TotalEarnings * 0.75).toFixed(2) : ""}
-              left={(props) => (
-                <Avatar.Image source={require("./GrossEarnings.png")} />
-              )}
-            />
-            <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
-            <Text style={{fontStyle:'italic', fontSize: 10, paddingHorizontal: 10}}>Your earnings will be deposited into your bank account every Sunday.</Text>
-          </Card>
 
-          {/* <Card style={{borderWidth: 0.5}}>
+      <View
+        style={{
+          margin: 15,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          gap: 10,
+          marginTop: 25,
+        }}
+      >
+        <Card style={{ borderWidth: 0.5 }}>
+          <Card.Title
+            leftStyle={{ alignItems: "center", top: 5 }}
+            title="Completed Services"
+            subtitleStyle={{ paddingHorizontal: 5 }}
+            subtitle={agentData ? agentData.NumberOfServices : ""}
+            left={(props) => (
+              <Avatar.Image source={require("./completed Services.png")} />
+            )}
+          />
+          <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
+        </Card>
+        <Card style={{ borderWidth: 0.5 }}>
+          <Card.Title
+            leftStyle={{ alignItems: "center", top: 5 }}
+            title="Total Earnings"
+            subtitleStyle={{ paddingHorizontal: 5, letterSpacing: 2 }}
+            subtitle={
+              agentData ? "$" + (agentData.TotalEarnings * 0.75).toFixed(2) : ""
+            }
+            left={(props) => (
+              <Avatar.Image source={require("./GrossEarnings.png")} />
+            )}
+          />
+          <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
+          <Text
+            style={{ fontStyle: "italic", fontSize: 10, paddingHorizontal: 10 }}
+          >
+            Your earnings will be deposited into your bank account every Sunday.
+          </Text>
+        </Card>
+
+        {/* <Card style={{borderWidth: 0.5}}>
             <Card.Title
             leftStyle={{alignItems: 'center', top: 5}}
 
@@ -112,7 +137,7 @@ fetchAgentData()
             />
             <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
           </Card> */}
-          {/* <Card style={{ borderWidth: 0.5 }}>
+        {/* <Card style={{ borderWidth: 0.5 }}>
             <Card.Title
               leftStyle={{ alignItems: "center", top: 5 }}
               title="Total Paid"
@@ -125,23 +150,49 @@ fetchAgentData()
             />
             <Card.Actions style={{ alignSelf: "center" }}></Card.Actions>
           </Card> */}
-        </View>
-        <ScrollView>
-        <View style={{borderWidth: 1, flexDirection: 'column',
-          alignItems: "center",
-          marginHorizontal: 20}}>
- {agentData && agentData.Invoices ? (
-      agentData.Invoices.map((invoice, index) => (
-        <View key={index} style={{ marginTop: 10 }}>
-          <Text>Invoice {index + 1}</Text>
-          <Text>Start Date: {invoice["Start Date"] ? invoice["Start Date"].toDate().toLocaleString() : "N/A"}</Text>
-          <Text>End Date: {invoice["End Date"] ? invoice["End Date"].toDate().toLocaleString() : "N/A"}</Text>
-          <Text>Amount: {invoice.Amount}</Text>
-        </View>
-      ))
-    ) : (
-      <Text>No invoices found</Text>
-    )}
+      </View>
+
+      <Text variant="headlineMedium" style={{ paddingHorizontal: 20 }}>
+        Invoices
+      </Text>
+
+        <View
+          style={{
+            //borderWidth: 1,
+            flexDirection: "column",
+            alignItems: "center",
+            marginHorizontal: 20,
+
+          }}
+        >
+
+          {agentData && agentData.Invoices ? (
+            agentData.Invoices.slice()
+              .reverse()
+              .map((invoice, index) => (
+                <View
+                  key={index}
+                  style={{ gap: 5, borderWidth: 1, width: "100%", margin: 5, backgroundColor: '#D3D3D3', borderRadius: 15, padding: 5 }}
+                >
+                  <Text style={{letterSpacing: 3}}>Invoice {agentData.Invoices.length - index}</Text>
+                  <Text style={{letterSpacing: 3}}>
+                    From:{" "}
+                    {invoice["from"]
+                      ? formatDate(invoice["from"].toDate())
+                      : "N/A"}
+                  </Text>
+                  <Text style={{letterSpacing: 3}}>
+                    To:{" "}
+                    {invoice["to"]
+                      ? formatDate(invoice["to"].toDate())
+                      : "N/A"}
+                  </Text>
+                  <Text style={{letterSpacing: 3}}>Amount: ${invoice.amount}</Text>
+                </View>
+              ))
+          ) : (
+            <Text style={{letterSpacing: 3}}>No invoices found</Text>
+          )}
         </View>
       </ScrollView>
     </View>
