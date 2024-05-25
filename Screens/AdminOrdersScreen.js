@@ -421,7 +421,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -496,7 +496,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -535,7 +535,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -582,7 +582,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -655,7 +655,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -689,7 +689,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -731,7 +731,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -804,7 +804,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -838,7 +838,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -880,7 +880,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -960,7 +960,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1001,7 +1001,7 @@ const AdminOrdersScreen = () => {
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&

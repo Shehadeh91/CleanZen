@@ -28,7 +28,7 @@ const AgentScreen = () => {
     <ScrollView>
       <View style={{ margin: 15, flexDirection: 'column', justifyContent: 'space-between', gap: 25 }}>
       {/* <Card style={{borderRadius: 15 }}>
-          <Card.Cover 
+          <Card.Cover
             style={{borderRadius: 0, borderTopRightRadius: 15, borderTopLeftRadius: 15}}
             resizeMode="cover"
             source={require("../Screens/ManageUsers.png")}
@@ -38,14 +38,30 @@ const AgentScreen = () => {
               icon="human-queue"
               mode="text"
               onPress={() => navigation.navigate("users")}
-              
+
             >
               Manage Users
             </Button>
           </Card.Actions>
         </Card> */}
         <Card style={{borderRadius: 15 }}>
-          <Card.Cover 
+          <Card.Cover
+            style={{borderRadius: 0, borderTopRightRadius: 15, borderTopLeftRadius: 15}}
+            resizeMode="cover"
+            source={require("../Screens/EarningOverview.png")}
+          />
+          <Card.Actions style={{ alignSelf: "center" }}>
+            <Button
+              icon="account-cash"
+              mode="text"
+              onPress={() => navigation.navigate("earningOverview")}
+            >
+              Earnings Overview
+            </Button>
+          </Card.Actions>
+        </Card>
+        <Card style={{borderRadius: 15 }}>
+          <Card.Cover
             style={{borderRadius: 0, borderTopRightRadius: 15, borderTopLeftRadius: 15}}
             resizeMode="cover"
             source={require("../Screens/ManageOrders.png")}
@@ -61,7 +77,7 @@ const AgentScreen = () => {
           </Card.Actions>
         </Card>
         <Card style={{borderRadius: 15 }}>
-          <Card.Cover 
+          <Card.Cover
              style={{borderRadius: 0, borderTopRightRadius: 15, borderTopLeftRadius: 15}}
             resizeMode="cover"
             source={require("../Screens/Logout.png")}

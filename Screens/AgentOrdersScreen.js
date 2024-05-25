@@ -10,18 +10,19 @@ import {
   Linking,
   ActivityIndicator,
   Alert,
-
 } from "react-native";
 import { Button, Icon, MD3Colors } from "react-native-paper";
-import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
 import useAppStore from "../useAppStore";
-import { collection, query, getDocs, Firestore } from "firebase/firestore";
+import { collection, query, getDocs, Firestore, Timestamp } from "firebase/firestore";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { Swipeable } from "react-native-gesture-handler";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
+
+
 
 const AgentOrdersScreen = () => {
   const navigation = useNavigation();
@@ -68,8 +69,6 @@ const AgentOrdersScreen = () => {
 
     const fetchOrders = async () => {
       try {
-
-
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
         const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
@@ -96,77 +95,73 @@ const AgentOrdersScreen = () => {
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
+        // Update state by reversing the carWashOrder of new orders
+        setAvailableOrders([
+          ...carWashOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === "No One" &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Car Wash"
+          ),
+          ...dryCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === "No One" &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Dry Clean"
+          ),
+          ...roomCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === "No One" &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Room Clean"
+          ),
+        ]);
+        setMyOrders([
+          ...carWashOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Car Wash"
+          ),
+          ...dryCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Dry Clean"
+          ),
+          ...roomCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Status === "InProgress" &&
+              serviceOrder.Service === "Room Clean"
+          ),
+        ]);
+        setCompletedOrders([
+          ...carWashOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Status === "Completed" &&
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Service === "Car Wash"
+          ),
+          ...dryCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Status === "Completed" &&
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Service === "Dry Clean"
+          ),
+          ...roomCleanOrders.filter(
+            (serviceOrder) =>
+              serviceOrder.Status === "Completed" &&
+              serviceOrder.Assigned === user.email &&
+              serviceOrder.Service === "Room Clean"
+          ),
+        ]);
 
-          // Update state by reversing the carWashOrder of new orders
-          setAvailableOrders([
-            ...carWashOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === "No One" &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Car Wash"
-            ),
-            ...dryCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === "No One" &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Dry Clean"
-            ),
-            ...roomCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === "No One" &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Room Clean"
-            ),
-
-
-          ]);
-          setMyOrders([
-            ...carWashOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Car Wash"
-            ),
-            ...dryCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Dry Clean"
-            ),
-            ...roomCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Status === "InProgress" &&
-                serviceOrder.Service === "Room Clean"
-            ),
-          ]);
-          setCompletedOrders([
-            ...carWashOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Status === "Completed" &&
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Service === "Car Wash"
-            ),
-            ...dryCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Status === "Completed" &&
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Service === "Dry Clean"
-            ),
-            ...roomCleanOrders.filter(
-              (serviceOrder) =>
-                serviceOrder.Status === "Completed" &&
-                serviceOrder.Assigned === user.email &&
-                serviceOrder.Service === "Room Clean"
-            ),
-          ]);
-
-          //   setCanceledOrders(
-          //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
-          //   );
-
+        //   setCanceledOrders(
+        //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
+        //   );
       } catch (error) {
-       // console.error("Error fetching orders:", error);
+        // console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
@@ -240,8 +235,6 @@ const AgentOrdersScreen = () => {
                 serviceOrder.Status === "InProgress" &&
                 serviceOrder.Service === "Room Clean"
             ),
-
-
           ]);
           setMyOrders([
             ...carWashOrders.filter(
@@ -289,7 +282,7 @@ const AgentOrdersScreen = () => {
           //   );
         }
       } catch (error) {
-      //  console.error("Error fetching orders:", error);
+        //  console.error("Error fetching orders:", error);
       }
     };
 
@@ -299,9 +292,6 @@ const AgentOrdersScreen = () => {
       isMounted = false; // Cleanup function to set isMounted to false on unmount
     };
   }, [user]);
-
-
-
 
   const carBrandIcons = {
     Mazda: require("../assets/Icons/mazda.png"),
@@ -346,23 +336,22 @@ const AgentOrdersScreen = () => {
   const openSmsApp = (phoneNumber, message) => {
     const url = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
 
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (supported) {
-          return Linking.openURL(url);
-        } else {
-          Alert.alert('Error', 'Your device does not support sending SMS messages.');
-        }
-      })
-      //.catch((error) => console.error('Error opening SMS app:', error));
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        return Linking.openURL(url);
+      } else {
+        Alert.alert(
+          "Error",
+          "Your device does not support sending SMS messages."
+        );
+      }
+    });
+    //.catch((error) => console.error('Error opening SMS app:', error));
   };
-
-
 
   const claimOrder = async (orderId, serviceType, clientPhone) => {
     try {
       if (serviceType === "Dry Clean") {
-
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
         await setDoc(
           doc(dryCleanOrdersRef, orderId),
@@ -384,17 +373,17 @@ const AgentOrdersScreen = () => {
           { merge: true }
         );
       } else {
-       // console.error("Invalid service type:", serviceType);
+        // console.error("Invalid service type:", serviceType);
         return;
       }
 
-        // Usage example
- // const phoneNumberToText = '1234567890'; // Replace with your variable
- const messageText = `Thank you for ordering. I am your agent ${name}. I will take care of your ${serviceType} Service. I am on the way!`;
+      // Usage example
+      // const phoneNumberToText = '1234567890'; // Replace with your variable
+      const messageText = `Thank you for ordering. I am your agent ${name}. I will take care of your ${serviceType} Service. I am on the way!`;
 
-//openSmsApp(clientPhone,messageText)
+      //openSmsApp(clientPhone,messageText)
 
-     // console.log("Order marked as MyOrders.");
+      // console.log("Order marked as MyOrders.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -415,28 +404,38 @@ const AgentOrdersScreen = () => {
         ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old carWashOrder if it exists
       ]);
     } catch (error) {
-     // console.error("Error marking serviceOrder as MyOrders:", error);
+      // console.error("Error marking serviceOrder as MyOrders:", error);
     }
   };
-  const markOrderAsComplete = async (orderId, serviceType) => {
+  const markOrderAsComplete = async (orderId, serviceType,serviceTotal, servicePayment) => {
     try {
       if (serviceType === "Dry Clean") {
-            const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
-      await setDoc(doc(dryCleanOrdersRef, orderId), { Status: "Completed" }, { merge: true });
-      }else if (serviceType === "Car Wash") {
+        const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
+        await setDoc(
+          doc(dryCleanOrdersRef, orderId),
+          { Status: "Completed" },
+          { merge: true }
+        );
+      } else if (serviceType === "Car Wash") {
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
-        await setDoc(doc(carWashOrdersRef, orderId), { Status: "Completed" }, { merge: true });
-
-      }else if (serviceType === "Room Clean") {
+        await setDoc(
+          doc(carWashOrdersRef, orderId),
+          { Status: "Completed" },
+          { merge: true }
+        );
+      } else if (serviceType === "Room Clean") {
         const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
-        await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Completed" }, { merge: true });
-
-      }else {
+        await setDoc(
+          doc(roomCleanOrdersRef, orderId),
+          { Status: "Completed" },
+          { merge: true }
+        );
+      } else {
         //console.error("Invalid service type:", serviceType);
         return;
       }
 
-     // console.log("Order marked as Completed.");
+      // console.log("Order marked as Completed.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
@@ -453,14 +452,57 @@ const AgentOrdersScreen = () => {
         ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old carWashOrder if it exists
       ]);
     } catch (error) {
-     // console.error("Error marking serviceOrder as Canceled:", error);
+      // console.error("Error marking serviceOrder as Canceled:", error);
     }
-  };
 
+    try {
+      const user = auth.currentUser;
+
+      const agentDocRef = doc(FIRESTORE_DB, "Agents", user.email);
+      const agentDocSnap = await getDoc(agentDocRef);
+
+      let NumberOfServices = 0;
+      let TotalEarnings = 0;
+      let services = [];
+
+      if (agentDocSnap.exists()) {
+        NumberOfServices = agentDocSnap.data().NumberOfServices || 0;
+
+        services = agentDocSnap.data().services || [];
+        TotalEarnings = services.reduce((total, service) => total + parseFloat(service.Total || 0), 0);      }
+
+        const newService = {
+          Type: serviceType,
+          Payment: servicePayment,
+          Total: parseFloat(serviceTotal),
+          Date: Timestamp.now(),
+        };
+
+        services.push(newService);
+
+
+
+        TotalEarnings = services.reduce((total, service) => total + parseFloat(service.Total || 0), 0);
+
+      await setDoc(agentDocRef, {
+        Email: user.email,
+        Name: name,
+        Phone: phone,
+        Address: address,
+        services: services,
+        NumberOfServices: NumberOfServices + 1,
+        TotalEarnings: TotalEarnings.toFixed(2),
+      });
+
+    } catch (error) {
+      console.error("Error adding Agents Doc:", error);
+    }
+
+      };
   const setEstimatedServiceTime = async (orderId, serviceType, setDate) => {
     try {
       if (serviceType === "Dry Clean") {
-       // console.log(serviceType)
+        // console.log(serviceType)
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
         await setDoc(
           doc(dryCleanOrdersRef, orderId),
@@ -475,20 +517,21 @@ const AgentOrdersScreen = () => {
           { merge: true }
         );
       } else {
-       // console.error("Invalid service type:", serviceType);
+        // console.error("Invalid service type:", serviceType);
         return;
       }
-     // console.log("Order marked as Completed.");
+      // console.log("Order marked as Completed.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
       }
       // Update state after canceling the carWashOrder
       setMyOrders((prevOrders) =>
         prevOrders.map((serviceOrder) =>
-          serviceOrder.id === orderId ? { ...serviceOrder, Note: setDate } : serviceOrder
+          serviceOrder.id === orderId
+            ? { ...serviceOrder, Note: setDate }
+            : serviceOrder
         )
       );
-
 
       // setCompletedOrders((prevOrders) => [
       //   // Place the claimed carWashOrder at the top of MyOrders
@@ -499,13 +542,9 @@ const AgentOrdersScreen = () => {
       //   ...prevOrders.filter((serviceOrder) => serviceOrder.id !== orderId), // Filter out the old carWashOrder if it exists
       // ]);
     } catch (error) {
-     // console.error("Error marking serviceOrder as Canceled:", error);
+      // console.error("Error marking serviceOrder as Canceled:", error);
     }
   };
-
-
-
-
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -621,7 +660,14 @@ const AgentOrdersScreen = () => {
                 >
                   <Button
                     mode="contained"
-                    onPress={() => claimOrder(serviceOrder.id, serviceOrder.Service, serviceOrder.Phone)}
+                    onPress={() =>
+                      claimOrder(
+                        serviceOrder.id,
+                        serviceOrder.Service,
+                        serviceOrder.Phone
+
+                      )
+                    }
                     style={{
                       flex: 1,
                       justifyContent: "center",
@@ -636,8 +682,12 @@ const AgentOrdersScreen = () => {
             >
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                    {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -671,7 +721,7 @@ const AgentOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
-                        borderStyle: 'dashed'
+                        borderStyle: "dashed",
                       }}
                     >
                       {" "}
@@ -697,21 +747,45 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
-                             {serviceOrder.Address}
+                    {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -735,20 +809,44 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -772,14 +870,34 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
             </Swipeable>
@@ -793,7 +911,11 @@ const AgentOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -829,7 +951,7 @@ const AgentOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
-                        borderStyle: 'dashed'
+                        borderStyle: "dashed",
                       }}
                     >
                       {" "}
@@ -853,7 +975,7 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -868,7 +990,11 @@ const AgentOrdersScreen = () => {
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -889,7 +1015,7 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -904,7 +1030,11 @@ const AgentOrdersScreen = () => {
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -925,7 +1055,7 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
@@ -957,7 +1087,9 @@ const AgentOrdersScreen = () => {
                 >
                   <Button
                     mode="contained"
-                    onPress={() => markOrderAsComplete(serviceOrder.id, serviceOrder.Service)}
+                    onPress={() =>
+                      markOrderAsComplete(serviceOrder.id, serviceOrder.Service,serviceOrder.Total, serviceOrder.Payment)
+                    }
                     style={{
                       flex: 1,
                       justifyContent: "center",
@@ -973,7 +1105,11 @@ const AgentOrdersScreen = () => {
               {serviceOrder.Service === "Car Wash" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
                     {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -1007,7 +1143,7 @@ const AgentOrdersScreen = () => {
                         alignSelf: "center",
                         borderWidth: 1,
                         left: 5,
-                        borderStyle: 'dashed'
+                        borderStyle: "dashed",
                       }}
                     >
                       {" "}
@@ -1033,20 +1169,44 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1070,20 +1230,44 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
                 <View style={styles.orderItem}>
                   <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(15) + serviceOrder.Total.padEnd(5) + "("+serviceOrder.Payment+")"}
+                    {serviceOrder.Service.padEnd(15) +
+                      "$".padStart(3)+serviceOrder.Total +
+                      "(" +
+                      serviceOrder.Payment +
+                      ")"}
                   </Text>
 
                   {Array.isArray(serviceOrder.Items) &&
@@ -1107,14 +1291,34 @@ const AgentOrdersScreen = () => {
                       fontSize: 13,
                       color: "blue",
                       textDecorationLine: "underline",
-                      paddingHorizontal: 5
+                      paddingHorizontal: 5,
                     }}
                     onPress={() => handleOpenMaps(serviceOrder.Address)}
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Estimated Service Time: {serviceOrder.EstimateTime}
+                  </Text>
+                  <Text
+                    style={{
+                      marginTop: 5,
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {" "}
+                    Scheduled at: {serviceOrder.Date}
+                  </Text>
                 </View>
               )}
             </Swipeable>

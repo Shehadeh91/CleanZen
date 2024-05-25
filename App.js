@@ -25,6 +25,7 @@ import AgentScreen from "./Screens/AgentScreen";
 import DryCleanCheckOutScreen from "./Screens/DryCleanCheckOutScreen";
 import RoomCleanOrderScreen from "./Screens/RoomCleanOrderScreen";
 import RoomCleanCheckOutScreen from "./Screens/RoomCleanCheckOutScreen";
+import AgentEarningOverviewScreen from "./Screens/AgentEarningOverviewScreen";
 // import NotificationSettingsScreen from "./Screens/NotificationSettingsScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
@@ -110,6 +111,17 @@ export default function App() {
             component={AgentOrdersScreen}
             options={{
               headerTitle: "Orders", // Hide header title
+              headerBackTitleVisible: false, // Hide back button title
+              headerTransparent: true, // Make header transparent
+              headerTintColor: "black", // Set back button color
+             // headerLeft: null, // Remove the back button
+            }}
+          />
+            <Stack.Screen
+            name="earningOverview"
+            component={AgentEarningOverviewScreen}
+            options={{
+              headerTitle: "Earning Overview", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: "black", // Set back button color

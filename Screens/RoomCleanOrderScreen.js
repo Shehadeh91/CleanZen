@@ -36,7 +36,7 @@ import useAppStore from "../useAppStore";
 const RoomCleanOrderScreen = () => {
   const navigation = useNavigation();
   const [text, setText] = useState("");
-  
+
 
   const {
     clearCart,
@@ -159,7 +159,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: "$" + (getTotalPrice() + deliveryCost).toFixed(2),
+        Total: (getTotalPrice() + deliveryCost).toFixed(2),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Room Clean",
@@ -345,9 +345,9 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 >
                   {"45 - 60 min"}
                 </Text>
-               
+
                 <RadioButton.Item label="Priority" value="Priority" />
-               
+
                 <Text
                   style={{
                     fontSize: 13,
@@ -373,7 +373,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 <RadioButton.Item
                     label="Schedule"
                     value="Schedule"
-                   
+
                   />
                      <Text
                   style={{
@@ -386,8 +386,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 >
                   {date && date.toString() }
                 </Text>
-                
-    
+
+
               </View>
             </RadioButton.Group>
           </Card>
@@ -419,16 +419,16 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         snapPoints={['25%', '25%']}
         enablePanDownToClose={true}
         backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
-        
+
              >
         <View style={{margin: 15, gap: 10, marginTop: 10}} >
         {date && <Text> {date.toString()}</Text>}
         {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
-       
+
           <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
-          
+
           <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
-         
+
         </View>
       </BottomSheet>
       <DateTimePickerModal
@@ -436,7 +436,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
-        
+
       />
     </View>
   );

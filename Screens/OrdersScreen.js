@@ -7,8 +7,8 @@ import {
   Image,
   FlatList,
   BackHandler,
-  
-  
+
+
 } from "react-native";
 import { Button, Icon, MD3Colors, Divider } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -39,11 +39,11 @@ const OrderScreen = () => {
   // const filterOrders = (status) => {
   //   const filteredInProgressOrders = inProgressOrders.filter((serviceOrder) => serviceOrder.Status === status);
   //   const filteredDryCleanOrders = inProgressOrders.filter((dryCleanOrder) => dryCleanOrder.Status === status);
-  
+
   //   return { filteredInProgressOrders, filteredDryCleanOrders };
   // }
-  
-    
+
+
 
   const handleButtonPress = (status) => {
     setShowInProgress(status === "InProgress");
@@ -53,7 +53,7 @@ const OrderScreen = () => {
 
       const fetchOrders = async () => {
       try {
-        
+
 
         const carWashOrdersRef = collection(FIRESTORE_DB, "Car-Wash");
         const dryCleanOrdersRef = collection(FIRESTORE_DB, "Dry-Clean");
@@ -81,7 +81,7 @@ const OrderScreen = () => {
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
-       
+
          // Update state by filtering orders based on service type and status
 const userInProgressOrders = [
   ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash").reverse(),
@@ -110,14 +110,14 @@ setCompletedOrders(userCompletedOrders);
           //   setCanceledOrders(
           //     data.filter((carWashOrder) => carWashOrder.Status === "Canceled").reverse()
           //   );
-      
+
       } catch (error) {
         //console.error("Error fetching orders:", error);
       }
     };
     fetchOrders();
   };
-  
+
 
   useEffect(() => {
     //setVisible(true); // Call setVisible(false) when the component mounts
@@ -165,7 +165,7 @@ setCompletedOrders(userCompletedOrders);
         // Filter orders by user's email
         //const userOrders = data.filter((carWashOrder) => carWashOrder.Email === user.email);
 
-       
+
           // Update state by filtering orders based on service type and status
 const userInProgressOrders = [
   ...carWashOrders.filter((order) => order.Email === user.email && order.Status === "InProgress" && order.Service === "Car Wash"),
@@ -256,13 +256,13 @@ setCompletedOrders(userCompletedOrders);
       }else if (serviceType === "Room Clean") {
         const roomCleanOrdersRef = collection(FIRESTORE_DB, "Room-Clean");
         await setDoc(doc(roomCleanOrdersRef, orderId), { Status: "Canceled" }, { merge: true });
-    
+
       }else {
        // console.error("Invalid service type:", serviceType);
         return;
       }
-    
-    
+
+
      // console.log("Order marked as Canceled.");
       if (swipeableRef.current) {
         swipeableRef.current.close(); // Close the Swipeable component
@@ -378,16 +378,16 @@ setCompletedOrders(userCompletedOrders);
             >
               Cancel
             </Button>
-            
+
           </View>
-          
+
         )}
       >
        {serviceOrder.Service === 'Car Wash' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
           <View style={{ flexDirection: "row", gap: 5 }}>
             {getIconSource("bodyType", serviceOrder.BodyType) && (
@@ -435,11 +435,11 @@ setCompletedOrders(userCompletedOrders);
       )}
       {serviceOrder.Service === 'Dry Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -453,15 +453,15 @@ setCompletedOrders(userCompletedOrders);
                     <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
-        
+
       )}
       {serviceOrder.Service === 'Room Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -475,15 +475,15 @@ setCompletedOrders(userCompletedOrders);
                     <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
-        
+
       )}
       </Swipeable>
-      
+
     ))}
     <Text style={{ fontStyle: 'italic', fontSize: 12 }}>To cancel an order, swipe on the card</Text>
-    
+
   </ScrollView>
-  
+
 )}
 
 
@@ -494,7 +494,7 @@ setCompletedOrders(userCompletedOrders);
             {serviceOrder.Service === 'Car Wash' && (
               <View style={styles.orderItem}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  {serviceOrder.Service.padEnd(20) + "$"+serviceOrder.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
@@ -544,11 +544,11 @@ setCompletedOrders(userCompletedOrders);
               )}
                {serviceOrder.Service === 'Dry Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -559,16 +559,16 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    
+
             </View>
           )}
           {serviceOrder.Service === 'Room Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -579,7 +579,7 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    
+
             </View>
           )}
           </View>
@@ -593,7 +593,7 @@ setCompletedOrders(userCompletedOrders);
             {serviceOrder.Service === 'Car Wash' && (
               <View style={styles.orderItem}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-                  {serviceOrder.Service.padEnd(20) + serviceOrder.Total}
+                  {serviceOrder.Service.padEnd(20) + "$"+serviceOrder.Total}
                 </Text>
 
                 <View style={{ flexDirection: "row", gap: 5 }}>
@@ -643,11 +643,11 @@ setCompletedOrders(userCompletedOrders);
               )}
                {serviceOrder.Service === 'Dry Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -662,11 +662,11 @@ setCompletedOrders(userCompletedOrders);
           )}
           {serviceOrder.Service === 'Room Clean' && (
         <View style={styles.orderItem}>
-       
+
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
-            {(serviceOrder.Service).padEnd(20)+ serviceOrder.Total}
+            {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
           </Text>
-          
+
           {Array.isArray(serviceOrder.Items) &&
                     serviceOrder.Items.map((item, index) => (
                       <Text
@@ -683,7 +683,7 @@ setCompletedOrders(userCompletedOrders);
     ))}
         </ScrollView>
       )}
-      
+
     </View>
   );
 };
@@ -703,14 +703,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
 
     width: 375,
-    
+
     gap: 25,
   },
   button: {
     width: 110,
     textAlign: "center",
     borderRadius: 0,
-   
+
   },
   highlightedButton: {
     backgroundColor: "black",
