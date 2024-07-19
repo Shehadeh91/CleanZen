@@ -30,14 +30,14 @@ import AgentEarningOverviewScreen from "./Screens/AgentEarningOverviewScreen";
 // import DarkModeScreen from "./Screens/DarkModeScreen";
 import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
-import { PaperProvider, useTheme } from 'react-native-paper';
+import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
-
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
 
   return (
     <PaperProvider>
@@ -62,6 +62,7 @@ export default function App() {
               headerLeft: null, // Remove the back button
             }}
           />
+
             <Stack.Screen
             name="admin"
             component={AdminScreen}

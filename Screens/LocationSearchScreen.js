@@ -13,13 +13,13 @@ import { PROVIDER_GOOGLE } from 'react-native-maps';
 const LocationSearch = () => {
   const navigation = useNavigation();
   const [location, setLocation] = useState({
-    latitude: 53.76086,
-    longitude: -98.813873,
+    latitude: 49.8951,
+    longitude: -97.1384,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
 
- 
+
 
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
     const theme = useTheme();
@@ -31,7 +31,7 @@ const LocationSearch = () => {
   // }, [address]);
 
   const handlePlaceSelect = (data, details) => {
-    
+
 
     const point = details.geometry.location;
     if (!point) return;
@@ -41,8 +41,8 @@ const LocationSearch = () => {
       longitude: point.lng,
     });
     setAddress(details.formatted_address); // Set the address using setAddress
-   
-   
+
+
   };
 
 
@@ -50,7 +50,7 @@ const LocationSearch = () => {
     <View style={{ flex: 1, marginTop: 75, borderWidth: 0.5 }}>
       <GooglePlacesAutocomplete
         ref={ref}
-        
+
         placeholder="Search"
         fetchDetails={true}
         onPress={(data, details) =>  handlePlaceSelect(data, details)}
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 600, // This marginTop may need adjustment based on your layout
   },
- 
+
   buttonText: {
     fontWeight: "bold",
     fontSize: 18,

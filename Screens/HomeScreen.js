@@ -1,80 +1,38 @@
 import * as React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ImageBackground,
-  FlatList,
-Image,
-} from "react-native";
-
-import { useNavigation, useFocusEffect } from "@react-navigation/native"; // Added import
-import { useEffect } from "react";
+import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
 import useAppStore from "../useAppStore";
-import { Avatar, Button, Card, Icon } from "react-native-paper";
-import { onMessage, getMessaging, getToken } from "firebase/messaging";
-import WebView from "react-native-webview";
-
-
+import { Button, Card } from "react-native-paper";
 
 const HomeScreen = () => {
-  const navigation = useNavigation(); // Added navigation hook
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const navigation = useNavigation();
+  const { setVisible } = useAppStore();
+
   useFocusEffect(
-    React.useCallback(() => {
-      setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
-      return () => {
-        // Clean-up function when screen loses focus (optional)
-      };
+    useCallback(() => {
+      setVisible(true);
+      return () => {};
     }, [])
   );
-
-
-  //   const requestNotificationPermission = async () => {
-  //     try {
-  //       const permission = await Notification.requestPermission();
-  //       if (permission === 'granted') {
-  //         console.log('Notification permission granted.');
-  //         // Call getToken from Firebase messaging
-  //         getToken().then((token) => {
-  //           console.log('FCM Token:', token);
-  //           // Send this token to your server to send notifications.
-  //         }).catch((error) => {
-  //           console.log('Error getting FCM token:', error);
-  //         });
-  //       } else {
-  //         console.log('Notification permission denied.');
-  //       }
-
-  //       // Handle message when the app is open
-  //       Notification.onMessage((message) => {
-  //         console.log('Message received:', message);
-  //         // Handle the incoming message, e.g., display a notification.
-  //       });
-  //     } catch (error) {
-  //       console.log('Error requesting notification permission:', error);
-  //     }
-  //   };
-
-  //   requestNotificationPermission();
-  // }, []);
 
   const renderItem = ({ item }) => (
     <Card style={styles.card}>
       <Card.Title title={item.title} />
       <Card.Content>
-        <Text variant="bodyMedium">{item.description}</Text>
+        <Text variant= "displayLarge">{item.description}</Text>
       </Card.Content>
       <Card.Cover
         source={item.image}
         resizeMode="cover"
-        style={{ backgroundColor: "#F3E9F9" }}
+        style={styles.cardImage}
       />
       <Card.Actions style={styles.cardAction}>
         <Button
-          style={styles.button}
+style={{width: 'auto',  }}
+labelStyle={{fontSize: 12, letterSpacing: 1}}
           uppercase={true}
-          mode="contained"
+          mode= 'text'
           onPress={() => {
             navigation.navigate(item.screen);
             setVisible(false);
@@ -89,51 +47,42 @@ const HomeScreen = () => {
   const data = [
     {
       id: "1",
-      title: "CAR WASH",
-      description:
-        "Experience the best in car care with our express hand car wash service. We provide thorough cleaning, tire shine for a sleek appearance, deep tire cleaning for safety, a protective polymer layer for your car's body, and a professional towel dry. Choose our Car Wash service for ultimate car care and protection.",
+      title: "Hand Car Wash",
       image: require("./CarClean.png"),
       screen: "carWash",
     },
     {
       id: "2",
-      title: "HOUSE/APARTMENT CLEAN",
-      description:
-        "Discover the convenience of our house cleaning service. We offer comprehensive cleaning solutions for every corner of your home, including dusting, vacuuming, mopping, kitchen and bathroom sanitation, and trash removal. Choose our House Cleaning service for a spotless and inviting living space.",
+      title: "House Cleaning",
       image: require("./HouseClean.png"),
       screen: "roomClean",
     },
-    {
-      id: "3",
-      title: "DRY CLEAN",
-      description:
-        "Experience the ease of our dry cleaning service. We provide professional care for your delicate garments, ensuring they remain fresh, clean, and impeccably pressed. From formal wear to everyday clothing, trust our Dry Cleaning service for garments that look and feel brand new.",
-      image: require("./DryClean.png"),
-      screen: "dryClean",
-    },
-
     // {
-    //   id: "4",
-    //   title: "CARPET CLEAN",
-    //   description:
-    //     "Revitalize your carpets with our professional cleaning service. Our experts employ advanced techniques to remove deep-seated dirt, stains, and allergens, leaving your carpets looking vibrant and smelling fresh. Choose our Carpet Cleaning service for a healthier and more inviting home environment.",
-    //   image: require("./CarpetClean.png"),
-    //   screen: "carWash",
+    //   id: "3",
+    //   title: "Dry Cleaning",
+    //   image: require("./DryClean.png"),
+    //   screen: "dryClean",
     // },
-    // Add more data items as needed
   ];
 
   return (
     <View style={styles.container}>
-
-       <Text style={styles.title}>PureCare </Text>
-      <Text style={styles.subTitle}>Anywhere, Anytime    </Text>
-      <Image  style={{tintColor: 'black', height: 100, width: 100, left: 125, bottom: 100, marginBottom: -90}} resizeMode= 'center' resizeMethod='auto'  source={require("./PureCare.png")} />
+      <Text style={styles.title}>PureCare</Text>
+      <Text style={styles.subTitle}>Anywhere, Anytime</Text>
+      <Image
+        style={styles.logo}
+        resizeMode="center"
+        resizeMethod="auto"
+        source={require("./PureCare.png")}
+      />
       <FlatList
-        style={{ marginBottom: 5, marginHorizontal: 5 }}
+        style={styles.flatList}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        numColumns={2}
+
+        columnWrapperStyle={{ justifyContent: 'space-between' }} // Add this line
       />
     </View>
   );
@@ -142,33 +91,30 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // borderColor: 'black',
-    // borderWidth: 1,
     backgroundColor: "white",
+   // padding: 5,
   },
-
   card: {
-    borderWidth: 2,
+    flex: 0.5,
+    borderWidth: 1,
     backgroundColor: "#F3E9F9",
     margin: 5,
-    //height: "30%",
-    //width: '50%',
-    height: "auto",
-    width: "auto",
+    height: 250,
   },
   cardAction: {
     alignItems: "center",
     alignSelf: "center",
     alignContent: "center",
+    bottom: 80,
 
-    //bottom: 15,
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "contain",
-    justifyContent: "flex-end",
+
   },
 
+  cardImage: {
+    backgroundColor: "#F3E9F9",
+    bottom: 35,
+   // borderWidth: 1,
+  },
   title: {
     fontSize: 30,
     fontWeight: "bold",
@@ -182,7 +128,18 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     letterSpacing: 4,
   },
-  button: {},
+  logo: {
+    tintColor: "black",
+    height: 100,
+    width: 100,
+    alignSelf: "center",
+    marginBottom: -90,
+    left: -15,
+    bottom: 100,
+  },
+  flatList: {
+    marginBottom: 5,
+  },
 });
 
 export default HomeScreen;

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "458703941149",
+    "project_id": "purecare-2a506",
+    "storage_bucket": "purecare-2a506.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:458703941149:android:2b4ff370afce62060ca0f4",
+        "android_client_info": {
+          "package_name": "com.muhannad37.PureCare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAshzrH_gONBCot8DOSpLbmB55PUKeHp8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
