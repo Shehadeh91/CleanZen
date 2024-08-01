@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <PaperProvider>
-    <StripeProvider publishableKey="pk_test_51PIuTYRwhciiEfEmo9GLVvl1yMqLSpzRpRWUgVeOKpH6s3BFe035XP6lKfpuKHDwu6TP23UhSOPXDX3Z8zQQVv4S00krafLFdK"
+    <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
           <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
