@@ -1,9 +1,11 @@
 import * as React from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import useAppStore from "../useAppStore";
-import { Button, Card } from "react-native-paper";
+import { Card } from "react-native-paper";
+
+const { width, height } = Dimensions.get('window');
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -17,31 +19,25 @@ const HomeScreen = () => {
   );
 
   const renderItem = ({ item }) => (
-    <Card style={styles.card}>
-      <Card.Title title={item.title} />
-      <Card.Content>
-        <Text variant= "displayLarge">{item.description}</Text>
-      </Card.Content>
-      <Card.Cover
-        source={item.image}
-        resizeMode="cover"
-        style={styles.cardImage}
-      />
-      <Card.Actions style={styles.cardAction}>
-        <Button
-style={{width: 'auto',  }}
-labelStyle={{fontSize: 12, letterSpacing: 1}}
-          uppercase={true}
-          mode= 'text'
-          onPress={() => {
-            navigation.navigate(item.screen);
-            setVisible(false);
-          }}
-        >
-          Start
-        </Button>
-      </Card.Actions>
-    </Card>
+    <TouchableOpacity
+      style={styles.cardContainer}
+      onPress={() => {
+        navigation.navigate(item.screen);
+        setVisible(false);
+      }}
+    >
+      <Card style={styles.card}>
+        <Card.Title title={item.title} />
+        <Card.Content>
+          <Text variant="displayLarge">{item.description}</Text>
+        </Card.Content>
+        <Card.Cover
+          source={item.image}
+          resizeMode="cover"
+          style={styles.cardImage}
+        />
+      </Card>
+    </TouchableOpacity>
   );
 
   const data = [
@@ -80,9 +76,7 @@ labelStyle={{fontSize: 12, letterSpacing: 1}}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        numColumns={2}
-
-        columnWrapperStyle={{ justifyContent: 'space-between' }} // Add this line
+        numColumns={1}
       />
     </View>
   );
@@ -92,34 +86,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-   // padding: 5,
+    padding: 10,
+  },
+  cardContainer: {
+    marginBottom: 35,
+
   },
   card: {
-    flex: 0.5,
-    borderWidth: 1,
     backgroundColor: "#F3E9F9",
-    margin: 5,
-    height: 250,
-  },
-  cardAction: {
-    alignItems: "center",
-    alignSelf: "center",
-    alignContent: "center",
-    bottom: 80,
-
+    borderRadius: 15,
+    height: 250, // Adjusted height for the card
 
   },
-
   cardImage: {
     backgroundColor: "#F3E9F9",
-    bottom: 35,
-   // borderWidth: 1,
   },
   title: {
     fontSize: 30,
     fontWeight: "bold",
     color: "black",
-    marginTop: 50,
+    marginTop: 25,
     paddingLeft: 10,
   },
   subTitle: {
@@ -130,12 +116,11 @@ const styles = StyleSheet.create({
   },
   logo: {
     tintColor: "black",
-    height: 100,
-    width: 100,
+    height: height * 0.1, // Adjusts height relative to screen height
+    width: width * 0.25,  // Adjusts width relative to screen width
     alignSelf: "center",
-    marginBottom: -90,
-    left: -15,
-    bottom: 100,
+    marginBottom: -height * 0.08,
+    bottom: height * 0.1125,
   },
   flatList: {
     marginBottom: 5,

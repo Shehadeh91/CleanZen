@@ -1,5 +1,6 @@
 <resources>
-  <string name="app_name">CleanZen</string>
+  <string name="app_name">PureCare Tech</string>
   <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
   <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="google_maps_key">AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk</string>
 </resources>

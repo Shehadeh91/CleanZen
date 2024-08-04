@@ -236,6 +236,7 @@ setUserID,
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           {/* Car Location Card */}
+          <TouchableOpacity onPress={() => navigation.navigate("map")}>
           <Card style={styles.card}>
             <Card.Title
               title="Car Location"
@@ -261,6 +262,7 @@ setUserID,
               </Text>
             </View>
           </Card>
+          </TouchableOpacity>
           <Card style={styles.card}>
             <Card.Title
               title="Car Description"
@@ -479,7 +481,7 @@ setUserID,
           </Card>
 
           <Button
-            style={{ marginBottom: 75, bottom: -10 }}
+            style={{ marginBottom: 28, bottom: -10 }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {

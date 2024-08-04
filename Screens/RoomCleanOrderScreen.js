@@ -232,6 +232,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           {/* Car Location Card */}
+          <TouchableOpacity onPress={() => navigation.navigate("map")}>
           <Card style={styles.card}>
             <Card.Title
               title="Location"
@@ -258,6 +259,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
               </Text>
             </View>
           </Card>
+          </TouchableOpacity>
           <Card style={styles.card}>
             <Card.Title
               title="Rooms"
