@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BottomNavigation } from 'react-native-paper';
+import { BottomNavigation, useTheme } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'; // Import useNavigation and useFocusEffect hooks
 import useAppStore from "../useAppStore";
 
@@ -10,6 +10,7 @@ const OrdersRoute = () => null;
 
 const BottomNavagationComponent = ({ onIndexChange }) => {
   const navigation = useNavigation();
+  const theme = useTheme();
 
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
 
@@ -34,7 +35,7 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
     }, [])
   );
 
-  
+
 
   React.useEffect(() => {
     if (typeof onIndexChange === 'function') {
@@ -55,8 +56,8 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
       navigationState={{ index: indexBottom, routes }}
       onIndexChange={handleNavigation}
       renderScene={renderScene}
-      activeColor='purple'
-      barStyle={{ backgroundColor: 'white' }}
+      activeColor= 'red'
+      barStyle={{ backgroundColor: theme.colors.tertiary }}
       safeAreaInsets={{ bottom: 20 }}
       compact={true}
       style={{ flex: 0.1, marginBottom: 0, borderWidth: 1, borderColor: 'black' }}

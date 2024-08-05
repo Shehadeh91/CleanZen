@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  Alert
 } from "react-native";
 
 import {
@@ -21,6 +22,7 @@ import {
   PaperProvider,
   Icon,
   Divider,
+  useTheme
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -78,7 +80,7 @@ const RoomCleanOrderScreen = () => {
   } = useAppStore();
   //const [name, setName] = useState("");
 
-
+const theme = useTheme();
 //////////////////////////////////////////////////
 const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 // const [selectedDate, setSelectedDate] = useState(null);
@@ -98,6 +100,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
  const hideDatePicker = () => {
    setDatePickerVisibility(false);
  };
+
+
 
  const handleConfirm = (dateTime) => {
    const formattedDate = dateTime.toLocaleString('default', {
@@ -192,10 +196,11 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginVertical: 5,
+            marginVertical: 15,
+
           }}
         >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, bottom: -7 }}>
             <Text>{item?.title}</Text>
             <Text style={{ color: "green" }}>${item?.price}</Text>
           </View>
@@ -204,15 +209,15 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
               removeFromCart(item.id);
             }}
           >
-            <Icon source="minus-thick" size={20} />
+            <Icon source="minus-thick" size={35} />
           </TouchableOpacity>
-          <Text style={{ marginHorizontal: 15 }}>{itemCounts[item.id]}</Text>
+          <Text style={{ marginHorizontal: 15, fontSize: 15 }}>{itemCounts[item.id]}</Text>
           <TouchableOpacity
             onPress={() => {
               addToCart(item?.id);
             }}
           >
-            <Icon source="plus-thick" size={20} />
+            <Icon source="plus-thick" size={35}  />
           </TouchableOpacity>
         </View>
         {!lastItem && <Divider />}
@@ -221,7 +226,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.secondary }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost).toFixed(2)}
@@ -229,8 +234,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           titleStyle={{ fontSize: 15 }}
         />
       </Appbar.Header>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
+      <ScrollView  style={styles.scrollView}>
+        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
           {/* Car Location Card */}
           <TouchableOpacity onPress={() => navigation.navigate("map")}>
           <Card style={styles.card}>
@@ -335,7 +340,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   marginLeft: 10,
                 }}
               >
-                <RadioButton.Item label="Standard" value="Standard"  />
+                {/* <RadioButton.Item label="Standard" value="Standard"  />
                 <Text
                   style={{
                     fontSize: 13,
@@ -371,7 +376,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   }}
                 >
                   {"25 - 45 min"}
-                </Text>
+                </Text> */}
                 <RadioButton.Item
                     label="Schedule"
                     value="Schedule"
@@ -381,7 +386,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   style={{
                     fontSize: 13,
                     left: 17,
-                    top: 145,
+                    top: 40,
                     color: "grey",
                     position: "absolute",
                   }}
@@ -395,14 +400,31 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           </Card>
 
           <Button
-            style={{ marginBottom: 28, bottom: -10 }}
+            style={{ marginBottom: 75, bottom: -75 }}
             mode="contained"
             onPress={() => {
-              navigation.navigate("roomCleanCheckOut", {
-                addRoomCleanOrder: addRoomCleanOrder,
-              });
-              // updateTotalCost(2);
+              if (!deliveryOption) {
+                Alert.alert(
+                  "Error",
+                  "Please select a service time before confirming."
+                );
+                return;
+              }
+              if (getTotalItemCount() > 0) {
+                navigation.navigate("roomCleanCheckOut", {
+                  addRoomCleanOrder: addRoomCleanOrder,
+                });
+
+              } else {
+                // Add code to handle the case when there's no input in the TextInput
+                alert("Please select how many hours.");
+
+                console.log(getTotalItemCount())
+              }
             }}
+
+              // updateTotalCost(2);
+
             labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
@@ -447,12 +469,15 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 const styles = StyleSheet.create({
   scrollView: {
     flexDirection: "column",
-    flex: 1,
+
+
   },
   container: {
     paddingHorizontal: 16,
-    backgroundColor: "white",
+
     paddingTop: 15,
+    flex: 1,
+
   },
   card: {
     marginBottom: 16,

@@ -10,7 +10,7 @@ import {
 import { useEffect, useState } from "react"; // Import useEffect
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { collection, addDoc } from "firebase/firestore";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator, Button, useTheme } from "react-native-paper";
 
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -23,10 +23,10 @@ const SignupScreen = ({ navigation }) => {
 
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
-
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore(); 
+const theme = useTheme();
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
   const [password, setPassword] = useState("");
-  
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -82,7 +82,7 @@ const SignupScreen = ({ navigation }) => {
         auth,
         email,
         password
-        
+
       );
 // Send verification email
 await sendEmailVerification(auth.currentUser);
@@ -119,7 +119,7 @@ await sendEmailVerification(auth.currentUser);
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      style={styles.container}
+      style={[styles.container, {backgroundColor: theme.colors.secondary}]}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500} // Adjust the offset as needed
     >
       <Text style={styles.title}>Sign Up</Text>
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+   // backgroundColor: "#fff",
     height: "100%", // Set a fixed height for the container
   },
   title: {

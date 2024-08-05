@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, BackHandler, ScrollView, Alert, Text } from "react-native";
-import { List, Divider, Button } from "react-native-paper";
+import { List, Divider, Button, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { firebase } from "firebase/compat/app";
@@ -23,6 +23,8 @@ const EditAccountScreen = () => {
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
   const [userInfo, setUserInfo] = useState({});
     const [password, setPassword] = useState("");
+
+const theme= useTheme();
 
   const handleConfirm = () => {
     navigation.goBack(); // Navigate back one page
@@ -61,7 +63,7 @@ const EditAccountScreen = () => {
         }
 
         const userDocRef = collection(FIRESTORE_DB, "Users");
-        
+
         const querySnapshot = await getDocs(userDocRef);
         const userData = querySnapshot.docs
           .map((doc) => ({
@@ -142,8 +144,8 @@ const EditAccountScreen = () => {
   }
 
   return (
-    
-      <View style={{ paddingTop: 75 }}>
+
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <List.Section style={styles.listSection}>
@@ -176,13 +178,13 @@ const EditAccountScreen = () => {
                 description={currentPassword}
                 left={() => <List.Icon icon="phone" />}
               />
-              
+
               {/* <TextInput  secureTextEntry
         placeholder="New Password"
         value={newPassword}
         onChangeText={setNewPassword} />
          <TextInput
-         
+
         secureTextEntry
         placeholder="Confirm New Password"
         value={confirmPassword}
@@ -297,7 +299,7 @@ const EditAccountScreen = () => {
           </View> */}
         </ScrollView>
       </View>
-    
+
   );
 };
 

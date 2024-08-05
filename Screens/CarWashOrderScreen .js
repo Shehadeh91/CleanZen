@@ -21,6 +21,7 @@ import {
   Portal,
   PaperProvider,
   Icon,
+  useTheme
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -106,6 +107,7 @@ setUserID,
 
   const auth = FIREBASE_AUTH;
 
+  const theme = useTheme();
   //////////////////////////////////////////////////
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   // const [selectedDate, setSelectedDate] = useState(null);
@@ -222,7 +224,7 @@ setUserID,
   }, [currentColor]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1}}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={
@@ -234,7 +236,7 @@ setUserID,
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
           {/* Car Location Card */}
           <TouchableOpacity onPress={() => navigation.navigate("map")}>
           <Card style={styles.card}>
@@ -424,7 +426,7 @@ setUserID,
                   marginLeft: 10,
                 }}
               >
-                <RadioButton.Item label="Standard" value="Standard" />
+                {/* <RadioButton.Item label="Standard" value="Standard" />
                 <Text
                   style={{
                     fontSize: 13,
@@ -441,7 +443,7 @@ setUserID,
                     value="Schedule"
                     disabled
                   /> */}
-                <RadioButton.Item label="Priority" value="Priority" />
+                {/* <RadioButton.Item label="Priority" value="Priority" />
                 <Text
                   style={{
                     fontSize: 13,
@@ -463,13 +465,13 @@ setUserID,
                   }}
                 >
                   {"25 - 45 min"}
-                </Text>
+                </Text>  */}
                 <RadioButton.Item label="Schedule" value="Schedule" />
                 <Text
                   style={{
                     fontSize: 13,
                     left: 17,
-                    top: 145,
+                    top: 40,
                     color: "grey",
                     position: "absolute",
                   }}

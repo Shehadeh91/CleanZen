@@ -3,13 +3,16 @@ import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity, Dimensions }
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import useAppStore from "../useAppStore";
-import { Card } from "react-native-paper";
+import { Card, useTheme } from "react-native-paper";
+
 
 const { width, height } = Dimensions.get('window');
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { setVisible } = useAppStore();
+
+  const theme = useTheme();
 
   useFocusEffect(
     useCallback(() => {
@@ -20,13 +23,13 @@ const HomeScreen = () => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.cardContainer}
+      style={[styles.cardContainer, {backgroundColor: theme.colors.background}]}
       onPress={() => {
         navigation.navigate(item.screen);
         setVisible(false);
       }}
     >
-      <Card style={styles.card}>
+       <Card style={[styles.card, { backgroundColor: theme.colors.primary }]}>
         <Card.Title title={item.title} />
         <Card.Content>
           <Text variant="displayLarge">{item.description}</Text>
@@ -34,7 +37,7 @@ const HomeScreen = () => {
         <Card.Cover
           source={item.image}
           resizeMode="cover"
-          style={styles.cardImage}
+          style={[styles.cardImage, {backgroundColor: theme.colors.onBackground}]}
         />
       </Card>
     </TouchableOpacity>
@@ -62,15 +65,19 @@ const HomeScreen = () => {
   ];
 
   return (
-    <View style={styles.container}>
+    <View style={{backgroundColor: theme.colors.secondary, flex: 1}}>
+
+
+
       <Text style={styles.title}>PureCare</Text>
       <Text style={styles.subTitle}>Anywhere, Anytime</Text>
       <Image
-        style={styles.logo}
+        style={[styles.logo, {tintColor: theme.colors.onBackground}]}
         resizeMode="center"
         resizeMethod="auto"
         source={require("./PureCare.png")}
       />
+       <View  style={[styles.cardContainer, {backgroundColor: theme.colors.background}]}>
       <FlatList
         style={styles.flatList}
         data={data}
@@ -79,43 +86,49 @@ const HomeScreen = () => {
         numColumns={1}
       />
     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "white",
-    padding: 10,
+
+
   },
   cardContainer: {
-    marginBottom: 35,
+
 
   },
   card: {
-    backgroundColor: "#F3E9F9",
+   // backgroundColor: "#F3E9F9",
     borderRadius: 15,
     height: 250, // Adjusted height for the card
+    margin: 10,
+   // justifyContent: 'center', // Center items vertically
+   // alignItems: 'center', // Center items horizontally
 
   },
   cardImage: {
-    backgroundColor: "#F3E9F9",
+    margin: 10,
+    borderRadius: 15,
+   borderBottomEndRadius: 15,
+top: -35
   },
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "black",
+
     marginTop: 25,
     paddingLeft: 10,
   },
   subTitle: {
     fontSize: 20,
-    color: "black",
+
     paddingLeft: 10,
     letterSpacing: 4,
   },
   logo: {
-    tintColor: "black",
+
     height: height * 0.1, // Adjusts height relative to screen height
     width: width * 0.25,  // Adjusts width relative to screen width
     alignSelf: "center",
@@ -123,7 +136,8 @@ const styles = StyleSheet.create({
     bottom: height * 0.1125,
   },
   flatList: {
-    marginBottom: 5,
+margin: 10,
+
   },
 });
 

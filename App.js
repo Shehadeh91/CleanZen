@@ -13,6 +13,7 @@ import DryCleanOrderScreen from "./Screens/DryCleanOrderScreen";
 import BottomNavagationComponent from "./Components/BottomNavagationComponent";
 
 
+import { lightTheme, darkTheme } from "./Components/Themes";
 
 import LocationSearchScreen from "./Screens/LocationSearchScreen";
 import EditAccountScreen from "./Screens/EditAccountScreen";
@@ -33,15 +34,25 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
 import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
+import { useColorScheme } from "react-native";
+
+
+
+
+
+
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
 
-
+  const colorScheme = useColorScheme();
+   // Select the theme based on the color scheme
+   const theme = colorScheme === 'light' ? lightTheme : darkTheme;
+   console.log('Applying theme:', colorScheme);
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
           <NavigationContainer>

@@ -4,10 +4,11 @@
     "slug": "CleanZen",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./Screens/PureCareBG.png",
+
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./Screens/PureCare.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
 
@@ -30,6 +31,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "userInterfaceStyle": "automatic",
       "package": "com.muhannad37.CleanZen",
       "versionCode": 3,
       "permissions": [

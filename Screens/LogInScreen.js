@@ -7,7 +7,7 @@ import {
   View,
   Platform,
 } from "react-native";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator, Button, useTheme } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth} from "firebase/auth"; // Corrected import
@@ -19,12 +19,12 @@ import useAppStore from "../useAppStore";
 const LogInScreen = () => {
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
    const [password, setPassword] = useState("");
-    
+
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
   const navigation = useNavigation(); // Added navigation
+const theme = useTheme();
 
- 
   useFocusEffect(
     React.useCallback(() => {
       setVisible(true); // Ensure bottom navigation is visible when HomeScreen is focused
@@ -53,17 +53,17 @@ const LogInScreen = () => {
             navigation.navigate('home');
             setIndexBottom(0);
             setVisible(true)
-          } 
+          }
           else  if (userData && userData.Role === "Admin") {
             navigation.navigate('admin');
             setVisible(false)
-          } 
+          }
           else  if (userData && userData.Role === "Agent") {
             navigation.navigate('agent');
             setVisible(false)
           }
-          
-          
+
+
           else {
             Alert.alert(
               "Access Denied",
@@ -99,11 +99,11 @@ const LogInScreen = () => {
     }
   };
 
-  
+
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      style={styles.container}
+      style={[styles.container, {backgroundColor: theme.colors.secondary}]}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500}
     >
       <Text style={styles.title}>Log In</Text>

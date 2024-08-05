@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
-import { TextInput, Button } from "react-native-paper";
+import { TextInput, Button, useTheme } from "react-native-paper";
 import { sendPasswordResetEmail, getAuth } from "firebase/auth";
 
 const ForgetPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState(""); // State to store the email
 
   const auth = getAuth(); // Get the authentication instance
-
+const theme = useTheme();
   const handleSendEmail = async () => {
     try {
       await sendPasswordResetEmail(auth, email); // Function to send password reset email
@@ -20,7 +20,7 @@ const ForgetPasswordScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
       <TextInput
         label="Email"
         value={email}

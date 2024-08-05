@@ -25,6 +25,7 @@ import {
   Portal,
   PaperProvider,
   Icon,
+  useTheme
 } from "react-native-paper";
 import useCarWashStore from "../useCarWashStore";
 import useAppStore from "../useAppStore";
@@ -63,7 +64,7 @@ const CheckOutScreen = () => {
 
     const [loading, setLoading] = useState(false);
     //
-
+const theme = useTheme();
 
     // payment handler api
     const initializePaymentSheet = async (price) => {
@@ -273,7 +274,7 @@ const CheckOutScreen = () => {
       </Appbar.Header>
 
       <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
 
           <Card style={styles.card}>
             <Card.Title

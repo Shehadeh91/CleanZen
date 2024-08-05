@@ -24,6 +24,7 @@ import {
   Modal,
   Portal,
   PaperProvider,
+  useTheme
 } from "react-native-paper";
 
 import useRoomCleanCart from "../useRoomCleanStore";
@@ -74,7 +75,7 @@ const RoomCleanCheckOutScreen = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
+const theme = useTheme();
   ///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
 
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -257,7 +258,7 @@ const RoomCleanCheckOutScreen = () => {
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
           {/* Car Location Card */}
 
           <Card style={styles.card}>

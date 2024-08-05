@@ -1,79 +1,9 @@
 [
-    {
+   {
       "id": 1,
-      "title": "Small Room",
-      "price": "36.65"
-    },
-    {
-      "id": 2,
-      "title": "Medium Room",
-      "price": "47.95"
-    },
-    {
-      "id": 3,
-      "title": "Big Room",
-      "price": "12.09"
-    },
-    {
-      "id": 4,
-      "title": "Small Kitchen",
-      "price": "15.80"
-    },
-    {
-      "id": 5,
-      "title": "Medium Kitchen",
-      "price": "19.32"
-    },
-    {
-      "id": 6,
-      "title": "Big Kitchen",
-      "price": "56.91"
-    },
-    {
-      "id": 7,
-      "title": "Small Bathroom",
-      "price": "64.66"
-    },
-    {
-      "id": 8,
-      "title": "Medium Bathroom",
-      "price": "31.71"
-    },
-    {
-      "id": 9,
-      "title": "Big Bathroom",
-      "price": "18.98"
-    },
-    {
-      "id": 10,
-      "title": "Small Balcony",
-      "price": "22.64"
-    },
-    {
-      "id": 11,
-      "title": "Medium Balcony",
-      "price": "16.56"
-    },
-    {
-      "id": 12,
-      "title": "Big Balcony",
-      "price": "20.00"
-    },
-    {
-      "id": 13,
-      "title": "Small Yard",
-      "price": "47.67"
-    },
-    {
-      "id": 14,
-      "title": "Medium Yard",
-      "price": "5.74"
-    },
-    {
-      "id": 15,
-      "title": "Big Yard",
-      "price": "0.79"
-    }
-   
+      "title": "Select how many hr ($50/hr)",
+      "price": "50"
+     }
+
+
   ]
-  

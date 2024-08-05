@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Alert, Text } from "react-native";
-import { List, Divider, Button, TextInput } from "react-native-paper";
+import { List, Divider, Button, TextInput, useTheme } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { updatePassword, reauthenticateWithCredential, getAuth, EmailAuthProvider } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -10,8 +10,8 @@ const ChangePasswordScreen = ({  }) => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigation = useNavigation();
-
-  const auth = getAuth(); 
+const theme = useTheme();
+  const auth = getAuth();
 
   const handleChangePassword = async () => {
   try {
@@ -34,8 +34,8 @@ const ChangePasswordScreen = ({  }) => {
 };
 
   return (
-    
-      <View style={styles.container}>
+
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <List.Section style={styles.listSection}>
             <List.Item
@@ -52,7 +52,7 @@ const ChangePasswordScreen = ({  }) => {
             <Divider />
             <List.Item
               title="New Password"
-              
+
               left={() => <List.Icon icon="lock" />}
             />
             <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
@@ -85,7 +85,7 @@ const ChangePasswordScreen = ({  }) => {
           </Button>
         </ScrollView>
       </View>
-   
+
   );
 };
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 75 
+    paddingTop: 75
   },
   scrollViewContent: {
     flexGrow: 1,

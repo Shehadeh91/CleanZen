@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet, ScrollView, View } from 'react-native';
-import { Text, Title, Paragraph } from 'react-native-paper';
+import { Text, Title, Paragraph, useTheme } from 'react-native-paper';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 
 const PrivacyControlScreen = () => {
+
+  const theme = useTheme();
+
   return (
-   
-      <View style={{ paddingTop: 75 }}>
+
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1  }}>
     <ScrollView contentContainerStyle={styles.container}>
       <Title style={styles.title}>Privacy Policy</Title>
       <Paragraph style={styles.paragraph}>
@@ -29,7 +32,7 @@ const PrivacyControlScreen = () => {
       {/* Add more content about cookies and analytics */}
     </ScrollView>
     </View>
- 
+
   );
 };
 

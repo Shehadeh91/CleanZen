@@ -10,7 +10,7 @@ import {
 
 
 } from "react-native";
-import { Button, Icon, MD3Colors, Divider } from "react-native-paper";
+import { Button, Icon, MD3Colors, Divider, useTheme } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
@@ -35,7 +35,7 @@ const OrderScreen = () => {
   const [completedOrders, setCompletedOrders] = useState([]);
 
   const swipeableRef = useRef(null);
-
+const theme = useTheme();
   // const filterOrders = (status) => {
   //   const filteredInProgressOrders = inProgressOrders.filter((serviceOrder) => serviceOrder.Status === status);
   //   const filteredDryCleanOrders = inProgressOrders.filter((dryCleanOrder) => dryCleanOrder.Status === status);
@@ -293,7 +293,7 @@ setCompletedOrders(userCompletedOrders);
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"

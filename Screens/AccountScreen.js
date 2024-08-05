@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, BackHandler, ScrollView } from "react-native";
-import { List, Divider, Button } from "react-native-paper";
+import { List, Divider, Button, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDocs, setDoc, collection } from "firebase/firestore";
@@ -14,9 +14,9 @@ const AccountScreen = () => {
 
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
 
-  
+
   const [userInfo, setUserInfo] = useState({});
-  
+  const theme = useTheme();
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -78,8 +78,8 @@ const AccountScreen = () => {
   }
 
   return (
-    
-      <View style={{ paddingTop: 75 }}>
+
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <List.Section style={styles.listSection}>
@@ -118,7 +118,7 @@ const AccountScreen = () => {
                 onPress={() => {navigation.navigate("notificationSettings")}}
               />
               <Divider /> */}
-             
+
               {/* <List.Item
                 title="Saved Addresses"
                 left={() => <List.Icon icon="map-marker" />}
@@ -167,16 +167,16 @@ const AccountScreen = () => {
           </View>
         </ScrollView>
       </View>
-   
+
   );
 };
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    flexGrow: 1,
+    //flexGrow: 1,
   },
   container: {
-    flex: 1,
+   // flex: 1,
     paddingHorizontal: 16,
   },
   listSection: {
@@ -187,7 +187,8 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: "column",
     //alignSelf: 'flex-start',
-    //paddingHorizontal: 16,
+    //flexGrow: 1,
+    paddingHorizontal: 16,
   },
 });
 
