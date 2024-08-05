@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   Avatar,
+  useTheme
 } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
@@ -46,6 +47,7 @@ const AgentEarningOverviewScreen = () => {
       console.error("Error fetching agent's data:", error);
     }
   };
+const theme = useTheme();
 
   const formatDate = (date) => {
     return date.toLocaleDateString(undefined, {
@@ -57,7 +59,7 @@ const AgentEarningOverviewScreen = () => {
   };
 
   return (
-    <View style={{ paddingTop: 75 }}>
+    <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary }}>
 <ScrollView >
       <View
         style={{

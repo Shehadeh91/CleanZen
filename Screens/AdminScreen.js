@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   Avatar,
+  useTheme
 } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -16,6 +17,7 @@ const AdminScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
 
+  const theme = useTheme();
   const handleLogout = () => {
     auth
       .signOut()
@@ -24,7 +26,7 @@ const AdminScreen = () => {
   };
 
   return (
-    <View style={{ paddingTop: 75 }}>
+    <View style={{ paddingTop: 75, flex: 1, backgroundColor: theme.colors.secondary }}>
     <ScrollView>
       <View style={{ margin: 15, flexDirection: 'column', justifyContent: 'space-between', gap: 25 }}>
       <Card style={{borderRadius: 15 }}>

@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { Button, Icon, MD3Colors } from "react-native-paper";
+import { Button, Icon, MD3Colors, useTheme } from "react-native-paper";
 import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
@@ -59,6 +59,7 @@ const AgentOrdersScreen = () => {
 
   // const filterOrders = (status) =>
   //   availableOrders.filter((carWashOrder) => carWashOrder.Status === status);
+const theme = useTheme();
 
   const handleButtonPress = (status) => {
     setShowAvailable(status === "Available");
@@ -565,7 +566,7 @@ const AgentOrdersScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"

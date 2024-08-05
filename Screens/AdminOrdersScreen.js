@@ -9,7 +9,7 @@ import {
   BackHandler,
   Linking,
 } from "react-native";
-import { Button, Icon, MD3Colors } from "react-native-paper";
+import { Button, Icon, MD3Colors, useTheme } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
@@ -61,6 +61,8 @@ const AdminOrdersScreen = () => {
     setShowAssigned(status === "Assigned");
     setShowCanceled(status === "Canceled");
     setHighlightedButton(status);
+
+
 
     const fetchOrders = async () => {
       try {
@@ -149,7 +151,7 @@ const AdminOrdersScreen = () => {
     };
     fetchOrders();
   };
-
+  const theme = useTheme();
 
   useEffect(() => {
     //setVisible(true); // Call setVisible(false) when the component mounts
@@ -332,7 +334,7 @@ const AdminOrdersScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"

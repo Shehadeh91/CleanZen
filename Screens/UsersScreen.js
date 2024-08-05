@@ -8,7 +8,7 @@ import {
   FlatList,
   BackHandler,
 } from "react-native";
-import { Button, Icon, MD3Colors } from "react-native-paper";
+import { Button, Icon, MD3Colors, useTheme } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
@@ -91,6 +91,7 @@ const UsersScreen = () => {
       isMounted = false; // Cleanup function to set isMounted to false on unmount
     };
   }, [user]);
+const theme = useTheme();
 
   const changeToAgent = async (orderId) => {
     try {
@@ -104,7 +105,7 @@ const UsersScreen = () => {
       setAgent((prevOrders) => [...prevOrders, ...client]);
       setClient([]); // Clear the client array after moving all users to agent
 
-      
+
     } catch (error) {
       //console.error("Error marking users as Agent:", error);
     }
@@ -122,7 +123,7 @@ const UsersScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
@@ -224,7 +225,7 @@ const UsersScreen = () => {
           {agent.map((users) => (
             <View key={users.id}>
               <View style={styles.orderItem}>
-                
+
                 <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
                 <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
                 <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
