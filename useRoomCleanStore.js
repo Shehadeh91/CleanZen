@@ -11,9 +11,13 @@ const useRoomCleanCart = create((set, get) => ({
   itemCounts: { ...initialItemCounts }, // Track item counts
   deliveryCost: 0,
   setDeliveryCost: (cost) => set({ deliveryCost: cost }),
-
+  supplyCost: 0,
+  setSupplyCost: (supplyCost) => set({ supplyCost: supplyCost }),
   deliveryOption: "",
   setDeliveryOption: (option) => set({ deliveryOption: option }),
+
+  supplyOption: "I provide",
+  setSupplyOption: (supply) => set({ supplyOption: supply }),
 
   date: '', // Initial value for deliveryOption
   setDate: (value) => set({ date: value }),
@@ -86,7 +90,7 @@ const useRoomCleanCart = create((set, get) => ({
     } else {
       const currentDate = new Date();
       const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
-  
+
       // Format the new time
       const formattedTime = newTime.toLocaleString('default', {
         weekday: 'short',
@@ -96,11 +100,11 @@ const useRoomCleanCart = create((set, get) => ({
         minute: 'numeric',
         hour12: true,
       });
-  
+
       set({ serviceTime: formattedTime });
     }
   },
-  
+
 }));
 
 export default useRoomCleanCart;

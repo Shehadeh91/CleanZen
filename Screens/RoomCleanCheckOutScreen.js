@@ -58,6 +58,10 @@ const RoomCleanCheckOutScreen = () => {
   const {
     clearCart,
     getTotalPrice,
+    supplyCost,
+    supplyOption,
+    setSupplyCost,
+    setSupplyOption,
     deliveryCost,
     deliveryOption,
     setDeliveryCost,
@@ -188,7 +192,7 @@ const theme = useTheme();
   const handleCardPayment = async () => {
     setPaymentLoading(true);
     try {
-      const price = (getTotalPrice()+ deliveryCost + 4 + 1.5).toFixed(2);
+      const price = (getTotalPrice()+ deliveryCost + supplyCost + 4 + 1.5).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
       console.error('Error initiating checkout session:', error);
@@ -247,6 +251,10 @@ const theme = useTheme();
       goToLogIn();
     }
   }, [user]);
+
+  if (!user || !user.emailVerified) {
+    return <LogInScreen />;
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -344,6 +352,24 @@ const theme = useTheme();
                 </Text>
               ))}
             </View>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title
+              title={"Cleaning Supply"}
+              titleStyle={{ fontSize: 18, marginTop: 10 }}
+              subtitle={supplyOption}
+              subtitleStyle={{fontSize: 12, letterSpacing: 3}}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="basket"
+                  size={55}
+                  left={-10}
+                />
+              )}
+            />
+
+
           </Card>
 
           <Card style={styles.card}>

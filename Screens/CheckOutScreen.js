@@ -262,6 +262,10 @@ const theme = useTheme();
     }
   }, [user]);
 
+  if (!user || !user.emailVerified) {
+    return <LogInScreen />;
+  }
+
   return (
     <View style={{ flex: 1 }}>
 

@@ -119,6 +119,13 @@ setUserID,
     setDatePickerVisibility(true);
   };
 
+  const now = new Date();
+  useEffect(() => {
+   setDate();
+ }, []);
+ useEffect(() => {
+  setDeliveryOption();
+}, []);
   const showTimePicker = () => {
     setMode("time");
     setDatePickerVisibility(true);
@@ -137,8 +144,17 @@ setUserID,
       minute: "numeric",
       hour12: true,
     });
-    setDate(formattedDate);
-    hideDatePicker();
+
+    if (dateTime <= now) {
+      Alert.alert("Invalid Date", "Please select a future date.");
+      setDate();
+      hideDatePicker();
+    }
+    else{
+      setDate(formattedDate);
+      hideDatePicker();
+    }
+
     //bottomSheetRef.current?.close();
   };
   ////////////////////////////////////////
@@ -343,17 +359,7 @@ setUserID,
               )}
             />
             {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
-            <Text
-              style={{
-                fontSize: 15,
-                left: 240,
-                top: 60,
-                color: "green",
-                position: "absolute",
-              }}
-            >
-              {"+$" + bodyStyleCost * 0.75}
-            </Text>
+
             <RadioButton.Group
               onValueChange={(newValue) => {
                 setPrefrenceOption(newValue);
@@ -370,8 +376,41 @@ setUserID,
             >
               <View style={styles.radioContainer}>
                 <RadioButton.Item label="Exterior" value="Exterior" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"$"+bodyStyleCost}
+                </Text>
                 <RadioButton.Item label="Interior" value="Interior" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                 {"$"+bodyStyleCost}
+                </Text>
                 <RadioButton.Item label="Int/Ext" value="Int/Ext" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 143,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"$"+bodyStyleCost * 0.75}
+                </Text>
               </View>
             </RadioButton.Group>
           </Card>
@@ -493,6 +532,13 @@ setUserID,
                 );
                 return;
               }
+              if (!date) { // Check if date is not set
+      Alert.alert(
+        "Error",
+        "Please select a date before confirming."
+      );
+      return;
+    }
               if (carPlate.trim().length > 0) {
                 navigation.navigate("checkOut", {
                   addCarWashOrder: addCarWashOrder,
@@ -1120,10 +1166,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   radioContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingHorizontal: 20,
+   flexDirection: "column",
+                  justifyContent: "flex-start",
+                  //alignItems: "center",
+                  bottom: 13,
+                  marginBottom: 8,
+                  marginLeft: 10,
   },
   radioContainerDeliverey: {
     //flexDirection: "row",

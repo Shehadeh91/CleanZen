@@ -429,7 +429,7 @@ setCompletedOrders(userCompletedOrders);
               {serviceOrder.Preference}{" "}
             </Text>
           </View>
-          <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+          {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
       )}
@@ -450,7 +450,7 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+                    {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
 
@@ -472,7 +472,8 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-                    <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text>
+
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
 
@@ -579,7 +580,7 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
-
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
             </View>
           )}
           </View>
@@ -677,6 +678,7 @@ setCompletedOrders(userCompletedOrders);
                         x{item.count}
                       </Text>
                     ))}
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
             </View>
           )}
           </View>

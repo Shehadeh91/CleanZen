@@ -44,9 +44,13 @@ const RoomCleanOrderScreen = () => {
     clearCart,
     getTotalPrice,
     deliveryCost,
+    supplyCost,
     deliveryOption,
+    supplyOption,
     setDeliveryCost,
+    setSupplyCost,
     setDeliveryOption,
+    setSupplyOption,
     itemCounts,
     paymentOption,
     setPaymentOption,
@@ -101,9 +105,17 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
    setDatePickerVisibility(false);
  };
 
+ const now = new Date();
+ useEffect(() => {
+  setDate();
+}, []);
 
-
+useEffect(() => {
+  setDeliveryOption();
+}, []);
  const handleConfirm = (dateTime) => {
+
+
    const formattedDate = dateTime.toLocaleString('default', {
      weekday: 'short',
      month: 'short',
@@ -112,8 +124,16 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
      minute: 'numeric',
      hour12: true,
    });
-   setDate(formattedDate);
-   hideDatePicker();
+
+   if (dateTime <= now) {
+    Alert.alert("Invalid Date", "Please select a future date.");
+    setDate();
+    hideDatePicker();
+  }
+  else{
+    setDate(formattedDate);
+    hideDatePicker();
+  }
    //bottomSheetRef.current?.close();
  };
 ////////////////////////////////////////
@@ -163,7 +183,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: (getTotalPrice() + deliveryCost).toFixed(2),
+        Supply: supplyOption,
+        Total: (getTotalPrice() + deliveryCost + supplyCost+ 4 + 1.5).toFixed(2),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Room Clean",
@@ -229,7 +250,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     <View style={{ flex: 1, backgroundColor: theme.colors.secondary }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Subtotal: $" + (getTotalPrice() + deliveryCost).toFixed(2)}
+          title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
           titleStyle={{ fontSize: 15 }}
         />
@@ -295,7 +316,87 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
             </Card.Content>
           </Card>
           {/* Preference Card */}
+          <Card style={styles.card}>
+            <Card.Title
+              title="Cleaning Supplies"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon
+                  {...props}
+                  icon="basket"
+                  size={40}
+                />
+              )}
+            />
 
+<RadioButton.Group
+              onValueChange={(newValue) => {
+                setSupplyOption(newValue);
+                if (newValue === "I provide") {
+                  setSupplyCost(0);
+
+
+                } else if (newValue === "You provide") {
+                  setSupplyCost(15);
+
+
+                }
+              }}
+              value={supplyOption}
+            >
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  //alignItems: "center",
+                  bottom: 13,
+                  marginBottom: 8,
+                  marginLeft: 10,
+                }}
+              >
+                <RadioButton.Item label="I provide" value="I provide"  />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  { "+$0"}
+                </Text>
+
+                <RadioButton.Item label="You provide" value="You provide" />
+
+                {/* <Text
+                  style={{
+                    fontSize: 13,
+                    left: 80,
+                    top: 69,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"(+$3.99)"}
+                </Text> */}
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  { "+$15"}
+                </Text>
+
+
+
+              </View>
+            </RadioButton.Group>
+          </Card>
           <Card style={styles.card}>
             <Card.Title
               title="Service Time"
@@ -400,7 +501,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           </Card>
 
           <Button
-            style={{ marginBottom: 75, bottom: -75 }}
+            style={{ marginBottom: 50, bottom: -25 }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {
@@ -410,6 +511,14 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 );
                 return;
               }
+              if (!date) { // Check if date is not set
+      Alert.alert(
+        "Error",
+        "Please select a date before confirming."
+      );
+      return;
+    }
+
               if (getTotalItemCount() > 0) {
                 navigation.navigate("roomCleanCheckOut", {
                   addRoomCleanOrder: addRoomCleanOrder,
@@ -419,7 +528,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                 // Add code to handle the case when there's no input in the TextInput
                 alert("Please select how many hours.");
 
-                console.log(getTotalItemCount())
+
               }
             }}
 

@@ -755,7 +755,7 @@ const theme = useTheme();
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -765,7 +765,7 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       marginTop: 5,
@@ -816,7 +816,7 @@ const theme = useTheme();
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -826,7 +826,7 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       marginTop: 5,
@@ -863,6 +863,7 @@ const theme = useTheme();
                         {item.title.padEnd(30)} x{item.count}
                       </Text>
                     ))}
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
                     {serviceOrder.Note}
                   </Text>
@@ -877,7 +878,7 @@ const theme = useTheme();
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -887,7 +888,8 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
+
                   <Text
                     style={{
                       marginTop: 5,
@@ -1051,6 +1053,7 @@ const theme = useTheme();
                         {item.title.padEnd(30)} x{item.count}
                       </Text>
                     ))}
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
                   <Text
                     style={{
                       fontSize: 13,
@@ -1176,7 +1179,7 @@ const theme = useTheme();
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -1186,7 +1189,7 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       marginTop: 5,
@@ -1237,7 +1240,7 @@ const theme = useTheme();
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -1247,7 +1250,7 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       marginTop: 5,
@@ -1284,6 +1287,7 @@ const theme = useTheme();
                         {item.title.padEnd(30)} x{item.count}
                       </Text>
                     ))}
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
                     {serviceOrder.Note}
                   </Text>
@@ -1298,7 +1302,7 @@ const theme = useTheme();
                   >
                     {serviceOrder.Address}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       marginTop: 5,
                       fontSize: 12,
@@ -1308,7 +1312,7 @@ const theme = useTheme();
                   >
                     {" "}
                     Estimated Service Time: {serviceOrder.EstimateTime}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={{
                       marginTop: 5,
