@@ -5,12 +5,20 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const stripe = require('stripe');
 const { readFileSync } = require('fs');
+const twilio = require('twilio');
 
 // Load environment variables from a .env file
 dotenv.config({ path: './env/.env.local' });
 
 const stripeSecretKey = process.env.STRIPE_SK;
 const stripeClient = stripe(stripeSecretKey);
+
+// Twilio configuration
+const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+const myPhoneNumber = process.env.MY_PHONE_NUMBER;
+const twilioClient = twilio(twilioAccountSid, twilioAuthToken);
 
 // Read the contents of the JSON file synchronously
 const serviceAccount = JSON.parse(readFileSync('./config/config.json', 'utf-8'));
@@ -20,81 +28,64 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-// Create a Firestore instance
-const db = admin.firestore();
-//
 // Create Express application
 const testing01 = express();
 
 // Middleware
 testing01.use(cors());
-
 testing01.use(express.json());
 
-// Function to send push notifications
-const sendPushNotification = async (registrationToken, notification) => {
-  const message = {
-    notification: notification,
-    token: registrationToken
-  };
-
+// Function to send SMS notifications
+const sendSmsNotification = async (message) => {
   try {
-    const response = await admin.messaging().send(message);
-    console.log('Successfully sent message:', response);
+    await twilioClient.messages.create({
+      body: message,
+      from: twilioPhoneNumber, // Your Twilio phone number
+      to: myPhoneNumber // Your personal phone number
+    });
+    console.log('SMS sent successfully!');
   } catch (error) {
-    console.log('Error sending message:', error);
+    console.error('Error sending SMS:', error);
   }
 };
 
-//react native api for onetime payment event
+// React Native API for one-time payment event
 testing01.post('/payment-sheet-onetime', async (req, res) => {
-  // Get data from front end
-  const {
-    amount, customerId
-  } = req.body;
-  console.log(amount);
+  const { amount, customerId } = req.body;
 
+  try {
+    // Create ephemeral key
+    const ephemeralKey = await stripeClient.ephemeralKeys.create(
+      { customer: customerId },
+      { apiVersion: '2022-11-15' }
+    );
 
+    // Create payment intent
+    const paymentIntent = await stripeClient.paymentIntents.create({
+      amount: amount * 100,
+      currency: 'cad',
+      setup_future_usage: 'off_session',
+      customer: customerId,
+      payment_method_types: ['card'],
+    });
 
-  const ephemeralKey = await stripeClient.ephemeralKeys.create(
-    { customer: customerId },
-    { apiVersion: '2022-11-15' }
-  );
+    // Send SMS notification
+    const smsMessage = `Order Completed: Your payment of $${amount} was successful!`;
+    await sendSmsNotification(smsMessage);
 
-  // Create paymentIntent with or without transfer data and application fee
-  let paymentIntentParams = {
-    amount: amount * 100,
-    currency: 'cad',
-    setup_future_usage: 'off_session', //enable to save payment method by default
-    customer: customerId,
-    payment_method_types: ['card'],
-    // automatic_payment_methods: {
-    //     enabled: true,
-    // },
-    metadata: {
-
-    },
-  };
-
-
-
-  const paymentIntent = await stripeClient.paymentIntents.create(paymentIntentParams);
-
-  console.log({
-    paymentIntent: paymentIntent.client_secret,
-    ephemeralKey: ephemeralKey.secret,
-    customer: customerId,
-  });
-
-  res.json({
-    paymentIntent: paymentIntent.client_secret,
-    ephemeralKey: ephemeralKey.secret,
-    customer: customerId,
-  });
+    // Respond with payment information
+    res.json({
+      paymentIntent: paymentIntent.client_secret,
+      ephemeralKey: ephemeralKey.secret,
+      customer: customerId,
+    });
+  } catch (error) {
+    console.error('Error processing payment:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-
-//retrieve or create customer for stripe for user end
+// Retrieve or create customer for Stripe
 testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
   const { email } = req.body;
 
@@ -103,13 +94,10 @@ testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
     let customer = await stripeClient.customers.list({ email, limit: 1 });
 
     if (customer.data.length > 0) {
-      // Customer already exists, return existing customer id
       res.json({ customerId: customer.data[0].id });
     } else {
       // Create a new customer
       customer = await stripeClient.customers.create({ email });
-
-      // Return the new customer id
       res.json({ customerId: customer.id });
     }
   } catch (error) {
@@ -118,30 +106,10 @@ testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
+// Health check endpoint
 testing01.get('/', (req, res) => {
-  res.send({
-    message: 'server is running'
-  });
+  res.send({ message: 'server is running' });
 });
 
+// Export the Express app as a Firebase Cloud Function
 exports.stripeApiEndPoint = functions.onRequest(testing01);
-
-//Firestore trigger to send push notifications
-exports.paymentIntentSucceeded = functions.firestore.document('payments/{paymentId}').onUpdate(async (change, context) => {
-  const payment = change.after.data();
-  if (payment.status === 'succeeded') {
-    const registrationToken = payment.userToken; // Assumes you store the user's FCM token in the payment document
-    const notification = {
-      title: 'Payment Success',
-      body: `Your payment of $${payment.amount / 100} was successful!`
-    };
-
-    await sendPushNotification(registrationToken, notification);
-  }
-});
