@@ -22,7 +22,7 @@ const useCarWashStore = create((set, get) => ({
   currentColor: "", // Initial value for Color
   setCurrentColor: (value) => set({ currentColor: value }),
 
-  paymentOption: "Cash", // Initial value for paymentOption
+  paymentOption: "Card", // Initial value for paymentOption
   setPaymentOption: (value) => set({ paymentOption: value }),
 
   deliveryOption: "", // Initial value for deliveryOption
@@ -54,7 +54,7 @@ const useCarWashStore = create((set, get) => ({
     } else {
       const currentDate = new Date();
       const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
-  
+
       // Format the new time
       const formattedTime = newTime.toLocaleString('default', {
         weekday: 'short',
@@ -64,11 +64,11 @@ const useCarWashStore = create((set, get) => ({
         minute: 'numeric',
         hour12: true,
       });
-  
+
       set({ serviceTime: formattedTime });
     }
   },
-  
+
 
 }));
 export default useCarWashStore;

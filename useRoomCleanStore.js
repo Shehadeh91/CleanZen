@@ -25,7 +25,7 @@ const useRoomCleanCart = create((set, get) => ({
   note: "", // Initial value for Note
   setNote: (value) => set({ note: value }),
 
-  paymentOption: "Cash", // Initial value for paymentOption
+  paymentOption: "Card", // Initial value for paymentOption
   setPaymentOption: (value) => set({ paymentOption: value }),
 
   addToCart: (itemId) =>

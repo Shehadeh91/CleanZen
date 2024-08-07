@@ -472,7 +472,7 @@ const theme = useTheme();
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" disabled={isLoading} />
+                <RadioButton.Item label="Cash" value="Cash" disabled={true} />
                 <RadioButton.Item label="Card" value="Card" disabled={isLoading} />
               </View>
             </RadioButton.Group>

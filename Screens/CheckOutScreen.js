@@ -487,7 +487,7 @@ const theme = useTheme();
                 <RadioButton.Item
                   label="Cash"
                   value="Cash"
-                  disabled={isLoading}
+                  disabled={true}
                 />
                 <RadioButton.Item
                   label="Card"
