@@ -293,7 +293,7 @@ setCompletedOrders(userCompletedOrders);
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
@@ -372,8 +372,10 @@ setCompletedOrders(userCompletedOrders);
               style={{
                 flex: 1,
                 justifyContent: "center",
-                backgroundColor: "#C6373C",
+                backgroundColor: theme.colors.error,
                 borderRadius: 0,
+                marginVertical: 1,
+                borderWidth: 0.5
               }}
             >
               Cancel
@@ -384,7 +386,7 @@ setCompletedOrders(userCompletedOrders);
         )}
       >
        {serviceOrder.Service === 'Car Wash' && (
-        <View style={styles.orderItem}>
+        <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -434,7 +436,7 @@ setCompletedOrders(userCompletedOrders);
         </View>
       )}
       {serviceOrder.Service === 'Dry Clean' && (
-        <View style={styles.orderItem}>
+        <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -456,7 +458,7 @@ setCompletedOrders(userCompletedOrders);
 
       )}
       {serviceOrder.Service === 'Room Clean' && (
-        <View style={styles.orderItem}>
+        <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -481,7 +483,7 @@ setCompletedOrders(userCompletedOrders);
       </Swipeable>
 
     ))}
-    <Text style={{ fontStyle: 'italic', fontSize: 12 }}>To cancel an order, swipe on the card</Text>
+    <Text style={{ fontStyle: 'italic', fontSize: 12, color: theme.colors.onBackground }}>To cancel an order, swipe on the card</Text>
 
   </ScrollView>
 
@@ -493,7 +495,7 @@ setCompletedOrders(userCompletedOrders);
           {completedOrders.map((serviceOrder) => (
             <View key={serviceOrder.id}>
             {serviceOrder.Service === 'Car Wash' && (
-              <View style={styles.orderItem}>
+              <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(20) + "$"+serviceOrder.Total}
                 </Text>
@@ -544,7 +546,7 @@ setCompletedOrders(userCompletedOrders);
               </View>
               )}
                {serviceOrder.Service === 'Dry Clean' && (
-        <View style={styles.orderItem}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -564,7 +566,7 @@ setCompletedOrders(userCompletedOrders);
             </View>
           )}
           {serviceOrder.Service === 'Room Clean' && (
-        <View style={styles.orderItem}>
+            <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -592,7 +594,7 @@ setCompletedOrders(userCompletedOrders);
           {canceledOrders.map((serviceOrder) => (
             <View key={serviceOrder.id}>
             {serviceOrder.Service === 'Car Wash' && (
-              <View style={styles.orderItem}>
+              <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
               <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(20) + "$"+serviceOrder.Total}
                 </Text>
@@ -643,7 +645,7 @@ setCompletedOrders(userCompletedOrders);
               </View>
               )}
                {serviceOrder.Service === 'Dry Clean' && (
-        <View style={styles.orderItem}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -662,7 +664,7 @@ setCompletedOrders(userCompletedOrders);
             </View>
           )}
           {serviceOrder.Service === 'Room Clean' && (
-        <View style={styles.orderItem}>
+            <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
           <Text style={{ fontSize: 20, fontFamily: "monospace" }}>
             {(serviceOrder.Service).padEnd(20)+ "$"+serviceOrder.Total}
@@ -698,6 +700,8 @@ const styles = StyleSheet.create({
     paddingTop: 75,
     paddingHorizontal: 10,
     paddingBottom: 10,
+
+
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -715,22 +719,27 @@ const styles = StyleSheet.create({
 
   },
   highlightedButton: {
-    backgroundColor: "black",
+   // backgroundColor: "black",
   },
   ordersList: {
     width: "100%",
     height: "70%",
     // borderWidth: 2,
-    borderColor: "black",
+    //borderColor: "black",
     // marginBottom: -20,
     // backgroundColor: "#D8BFD8",
+
   },
   orderItem: {
     //padding: 3,
+ //backgroundColor: '#4FC3F7',
+    borderBottomWidth: 0,
+marginVertical: 1,
+borderWidth:0.5
 
-    borderBottomWidth: 3,
-    borderBottomColor: "#DDDDDD",
-    backgroundColor: "#F3E9F9",
+   // borderRadius: 30
+    //borderBottomColor: "#DDDDDD",
+   // backgroundColor: "#F3E9F9",
   },
 });
 

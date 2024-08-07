@@ -119,41 +119,45 @@ await sendEmailVerification(auth.currentUser);
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      style={[styles.container, {backgroundColor: theme.colors.secondary}]}
+      style={[styles.container, {backgroundColor: theme.colors.background}]}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500} // Adjust the offset as needed
     >
-      <Text style={styles.title}>Sign Up</Text>
+      <Text style={[styles.title, {color: theme.colors.onBackground}]}>Sign Up</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Full Name"
         value={name}
         onChangeText={setName}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Email"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Phone#"
         keyboardType="numeric" // Set keyboardType to "numeric"
         value={phone}
         onChangeText={setPhone}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
       />
-<Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "80%"}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
+<Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "80%", color: theme.colors.onBackground}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Password"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
       />
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "black",
+    //color: "black",
   },
   input: {
     width: "80%",

@@ -103,31 +103,34 @@ const theme = useTheme();
   return (
     <KeyboardAvoidingView
       behavior="padding"
-      style={[styles.container, {backgroundColor: theme.colors.secondary}]}
+      style={[styles.container, {backgroundColor: theme.colors.background}]}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : -500}
     >
-      <Text style={styles.title}>Log In</Text>
+      <Text style={[styles.title, {color: theme.colors.onBackground}]} >Log In</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Email"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
+
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Password"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
         autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
       />
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
       ) : (
         <>
-          <Button style={styles.button} mode="contained" onPress={signIn}>
+          <Button style={[styles.button, {backgroundColor: theme.colors.primary}]} mode="contained" onPress={signIn}>
             Log In
           </Button>
           <Button style={styles.button} mode="text" onPress={() => {navigation.navigate('forgetPassword')}}>
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+   // backgroundColor: "#fff",
     height: "100%",
     paddingTop: 100
   },
@@ -157,13 +160,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "black",
+   // color: "black",
   },
   input: {
     width: "80%",
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    //borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,

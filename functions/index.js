@@ -132,16 +132,16 @@ testing01.get('/', (req, res) => {
 
 exports.stripeApiEndPoint = functions.onRequest(testing01);
 
-// Firestore trigger to send push notifications
-// exports.paymentIntentSucceeded = functions.firestore.document('payments/{paymentId}').onUpdate(async (change, context) => {
-//   const payment = change.after.data();
-//   if (payment.status === 'succeeded') {
-//     const registrationToken = payment.userToken; // Assumes you store the user's FCM token in the payment document
-//     const notification = {
-//       title: 'Payment Success',
-//       body: `Your payment of $${payment.amount / 100} was successful!`
-//     };
+//Firestore trigger to send push notifications
+exports.paymentIntentSucceeded = functions.firestore.document('payments/{paymentId}').onUpdate(async (change, context) => {
+  const payment = change.after.data();
+  if (payment.status === 'succeeded') {
+    const registrationToken = payment.userToken; // Assumes you store the user's FCM token in the payment document
+    const notification = {
+      title: 'Payment Success',
+      body: `Your payment of $${payment.amount / 100} was successful!`
+    };
 
-//     await sendPushNotification(registrationToken, notification);
-//   }
-// });
+    await sendPushNotification(registrationToken, notification);
+  }
+});

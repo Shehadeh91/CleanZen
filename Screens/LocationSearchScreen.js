@@ -47,7 +47,7 @@ const LocationSearch = () => {
 
 
   return (
-    <View style={{ flex: 1, marginTop: 75, borderWidth: 0.5 }}>
+    <View style={{ flex: 1, borderWidth: 0.5, backgroundColor: theme.colors.background }}>
       <GooglePlacesAutocomplete
         ref={ref}
 
@@ -69,23 +69,29 @@ const LocationSearch = () => {
         styles={{
           container: {
             flex: 0,
+
           },
           textInput: {
-            backgroundColor: theme.colors.outlineVariant,
+           // backgroundColor: theme.colors.onBackground,
+borderWidth: 1,
+            borderColor: theme.colors.onBackground,
             paddingLeft: 35,
             borderRadius: 15,
+            color: theme.colors.onBackground
           },
           textInputContainer: {
-            backgroundColor: "white",
+            backgroundColor: theme.colors.background,
             padding: 8,
+top:75
           },
         }}
       />
       <MapView
       provider= {PROVIDER_GOOGLE}
         showsUserLocation={true}
-        style={styles.map}
+        style={[styles.map, {backgroundColor: theme.colors.background}]}
         region={location}
+
         //showsBuildings={true}
         // showsMyLocationButton={true}
         // showsPointsOfInterest={true}
@@ -98,7 +104,7 @@ const LocationSearch = () => {
         {/* Show Marker at the selected location */}
         <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude,  }} />
       </MapView>
-      <View style={styles.absoluteBox}>
+      <View style={[styles.absoluteBox, { backgroundColor: theme.colors.primary}]}>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -107,16 +113,17 @@ const LocationSearch = () => {
           }}
         >
           <Text style={{ backgroundColor: theme.colors.primary,
-    padding: 16,
-    margin: 16,
-    fontSize: 25,
+   // padding: 16,
+    margin: 15,
+   //fontSize: 25,
     textAlign: 'center',
     alignItems: "center",
-    borderRadius: 15,
-    fontSize: 20,
-                textAlignVertical: "center",
-                letterSpacing: 5,
-    color: 'white'}}>Confirm Location</Text>
+   // borderRadius: 15,
+   //fontSize: 20,
+               // textAlignVertical: "center",
+                color: theme.colors.onBackground
+               // letterSpacing: 5,
+    }}>Confirm Location</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -128,13 +135,20 @@ export default LocationSearch;
 const styles = StyleSheet.create({
   map: {
     flex: 1,
+    margin: 5,
+    marginTop: 75
+
   },
   absoluteBox: {
-    position: "absolute",
+    //position: "absolute",
     //bottom: -20,
-    height: 100,
-    width: "100%",
-    marginTop: 600, // This marginTop may need adjustment based on your layout
+   // height: 100,
+    //width: "100%",
+  // marginTop: 600, // This marginTop may need adjustment based on your layout
+   // padding:-50
+borderRadius:25,
+width:'auto',
+height: 'auto'
   },
 
   buttonText: {

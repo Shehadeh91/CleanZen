@@ -10,7 +10,7 @@ const PrivacyControlScreen = () => {
 
   return (
 
-      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1  }}>
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.background, flex: 1  }}>
     <ScrollView contentContainerStyle={styles.container}>
       <Title style={styles.title}>Privacy Policy</Title>
       <Paragraph style={styles.paragraph}>

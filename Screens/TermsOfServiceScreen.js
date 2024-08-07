@@ -8,7 +8,7 @@ const TermsOfServiceScreen = () => {
   const theme = useTheme();
   return (
 
-      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1 }}>
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.background, flex: 1 }}>
   <ScrollView contentContainerStyle={styles.container}>
 
      <Paragraph style={styles.paragraph}>

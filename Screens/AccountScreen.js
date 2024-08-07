@@ -79,7 +79,7 @@ const AccountScreen = () => {
 
   return (
 
-      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1 }}>
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.background, flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <List.Section style={styles.listSection}>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   listSection: {
-    backgroundColor: "#f5f5f5",
+   // backgroundColor: "#f5f5f5",
     borderRadius: 10,
     marginBottom: 16,
   },

@@ -123,7 +123,7 @@ const theme = useTheme();
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
@@ -202,8 +202,10 @@ const theme = useTheme();
                     style={{
                       flex: 1,
                       justifyContent: "center",
-                      backgroundColor: "#C6373C",
+                      backgroundColor: theme.colors.error,
                       borderRadius: 0,
+                      marginVertical: 1,
+borderWidth:0.5
                     }}
                   >
                     Become An Agent
@@ -211,8 +213,8 @@ const theme = useTheme();
                 </View>
               )}
             >
-              <View style={styles.orderItem}>
-                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+            <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+            <Text style={{ fontSize: 13 }}>Email: {users.Email}</Text>
                 <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
                 <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
@@ -224,9 +226,9 @@ const theme = useTheme();
         <ScrollView style={styles.ordersList}>
           {agent.map((users) => (
             <View key={users.id}>
-              <View style={styles.orderItem}>
+            <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
-                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+                <Text style={{ fontSize: 13 }}>Email: {users.Email}</Text>
                 <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
                 <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
@@ -238,8 +240,8 @@ const theme = useTheme();
         <ScrollView style={styles.ordersList}>
           {admin.map((users) => (
             <View key={users.id}>
-              <View style={styles.orderItem}>
-                <Text style={{ fontSize: 13, color: 'red' }}>Email: {users.Email}</Text>
+            <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 13}}>Email: {users.Email}</Text>
                 <Text style={{ fontSize: 13 }}>Name: {users.Name}</Text>
                 <Text style={{ fontSize: 13 }}>Number: {users.Phone}</Text>
               </View>
@@ -258,38 +260,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 75,
     paddingHorizontal: 10,
-    paddingBottom: 25,
+    paddingBottom: 10,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 10,
 
-    width: 350,
+    width: 375,
+    gap: 25,
   },
   button: {
-    width: 100,
+    width: 110,
     textAlign: "center",
     borderRadius: 0,
   },
   highlightedButton: {
-    backgroundColor: "black",
+   // backgroundColor: "black",
   },
   ordersList: {
     width: "100%",
     height: "70%",
     // borderWidth: 2,
-    borderColor: "black",
+   // borderColor: "black",
     // marginBottom: 10,
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
     //padding: 3,
-    flexDirection: "column",
-    gap: 5,
-    borderBottomWidth: 3,
-    borderBottomColor: "#DDDDDD",
-    backgroundColor: "#F3E9F9",
+   //backgroundColor: '#b3e0ff',
+    borderBottomWidth: 0,
+marginVertical: 1,
+borderWidth:0.5
   },
 });
 

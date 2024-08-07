@@ -20,7 +20,7 @@ const theme = useTheme();
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <TextInput
         label="Email"
         value={email}
@@ -32,6 +32,7 @@ const theme = useTheme();
         mode="contained"
         onPress={handleSendEmail}
         style={styles.button}
+        background={theme.colors.primary}
       >
         Send Reset Password
       </Button>

@@ -26,7 +26,7 @@ const AdminScreen = () => {
   };
 
   return (
-    <View style={{ paddingTop: 75, flex: 1, backgroundColor: theme.colors.secondary }}>
+    <View style={{ paddingTop: 75, flex: 1, backgroundColor: theme.colors.background }}>
     <ScrollView>
       <View style={{ margin: 15, flexDirection: 'column', justifyContent: 'space-between', gap: 25 }}>
       <Card style={{borderRadius: 15 }}>

@@ -145,7 +145,7 @@ const theme= useTheme();
 
   return (
 
-      <View style={{ paddingTop: 75, backgroundColor: theme.colors.secondary, flex: 1 }}>
+      <View style={{ paddingTop: 75, backgroundColor: theme.colors.background, flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <List.Section style={styles.listSection}>
@@ -155,7 +155,10 @@ const theme= useTheme();
                 left={() => <List.Icon icon="account-circle" />}
               />
               <TextInput
+              style={{ color: theme.colors.onBackground}}
+              placeholderTextColor={theme.colors.onBackground}
                 placeholder="Enter new name"
+
                 inputMode="text"
                 onChangeText={(text) => setName(text)}
                 onBlur={updateUserProfile} // Update the user profile when the input field loses focus
@@ -167,6 +170,8 @@ const theme= useTheme();
                 left={() => <List.Icon icon="phone" />}
               />
               <TextInput
+               style={{ color: theme.colors.onBackground}}
+               placeholderTextColor={theme.colors.onBackground}
                 placeholder="Enter new phone"
                 inputMode="numeric"
                 onChangeText={(text) => setPhone(text)}
@@ -192,7 +197,7 @@ const theme= useTheme();
       /> */}
               <Button
                 style={{ marginHorizontal: 50, alignSelf: 'center', right: 110, bottom: -10, marginTop: -25 }}
-                contentStyle={{ color: "white" }} // Use contentStyle to style the text of the button
+               // contentStyle={{ color: "white" }} // Use contentStyle to style the text of the button
                 onPress={ () => navigation.navigate("changePassword")}
                 mode="text"
               >
@@ -210,7 +215,7 @@ const theme= useTheme();
 
               <Divider />
             </List.Section>
-            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "90%"}}>Please allow some time for updated information to appear on your account.</Text>
+            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "90%", color: theme.colors.onBackground}}>Please allow some time for updated information to appear on your account.</Text>
             <Button
               labelStyle={{
                 fontSize: 20,
@@ -312,7 +317,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   listSection: {
-    backgroundColor: "#f5f5f5",
+    //backgroundColor: "#f5f5f5",
     borderRadius: 10,
     marginBottom: 16,
   },

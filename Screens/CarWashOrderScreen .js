@@ -252,10 +252,10 @@ setUserID,
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
           {/* Car Location Card */}
           <TouchableOpacity onPress={() => navigation.navigate("map")}>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Car Location"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -271,7 +271,7 @@ setUserID,
                   fontSize: 13,
                   paddingHorizontal: 10,
                   // position: "absolute",
-                  color: "blue",
+                 // color: "blue",
                 }}
                 multiline={true}
                 onPress={() => navigation.navigate("map")}
@@ -281,7 +281,7 @@ setUserID,
             </View>
           </Card>
           </TouchableOpacity>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Car Description"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -350,7 +350,7 @@ setUserID,
             />
           </Card>
           {/* Preference Card */}
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Preference"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -415,7 +415,7 @@ setUserID,
             </RadioButton.Group>
           </Card>
 
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -511,7 +511,7 @@ setUserID,
                     fontSize: 13,
                     left: 17,
                     top: 40,
-                    color: "grey",
+                   // color: "grey",
                     position: "absolute",
                   }}
                 >
@@ -522,7 +522,7 @@ setUserID,
           </Card>
 
           <Button
-            style={{ marginBottom: 28, bottom: -10 }}
+            style={{ marginBottom: 28, bottom: -10, backgroundColor: theme.colors.primary }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {
@@ -552,7 +552,7 @@ setUserID,
             labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
-              letterSpacing: 10,
+              //letterSpacing: 10,
             }}
           >
             Confirm
@@ -566,17 +566,18 @@ setUserID,
         index={-1}
         snapPoints={["25%", "25%"]}
         enablePanDownToClose={true}
-        backgroundStyle={{ borderWidth: 2, borderRadius: 25 }}
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25, backgroundColor: theme.colors.surfaceVariant,  borderColor: theme.colors.onBackground}}
+
       >
         <View style={{ margin: 15, gap: 10, marginTop: 10 }}>
           {date && <Text> {date.toString()}</Text>}
           {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
 
-          <Button onPress={showDatePicker} mode="contained-tonal">
+          <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
             Select Date
           </Button>
 
-          <Button onPress={showTimePicker} mode="contained-tonal">
+          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
             Select Time
           </Button>
         </View>
@@ -592,7 +593,7 @@ setUserID,
         <Modal
           visible={visibleBrand}
           onDismiss={hideModalBrand}
-          contentContainerStyle={styles.modalContainer}
+          contentContainerStyle={[styles.modalContainer,{backgroundColor: theme.colors.surfaceVariant}, , {borderColor: theme.colors.onBackground}] }
         >
           <ScrollView>
             <Text style={styles.modalHeader}>Choose Your Car Brand</Text>
@@ -832,10 +833,12 @@ setUserID,
             //flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "white",
+           // backgroundColor: "white",
+           backgroundColor: theme.colors.surfaceVariant,
+           borderColor: theme.colors.onBackground,
             // margin: 0,
             height: "50%",
-            borderWidth: 3,
+            borderWidth: 1,
             margin: 25,
           }}
         >
@@ -864,6 +867,7 @@ setUserID,
                   width: 130,
                   height: 50,
                   justifyContent: "center",
+                  backgroundColor: theme.colors.primary
                   // alignItems: "center",
                   //paddingLeft: 15,
                   //borderWidth: 1,
@@ -874,7 +878,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -908,7 +913,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -942,7 +948,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -978,7 +985,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -1012,7 +1020,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -1046,7 +1055,8 @@ setUserID,
                   style={{
                     fontSize: 20,
                     textAlign: "center",
-                    color: "white",
+                   // color: "white",
+                   color: theme.colors.background,
                     alignContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
@@ -1081,7 +1091,7 @@ setUserID,
         <Modal
           visible={visibleColorWheel}
           onDismiss={hideModalColorWheel}
-          contentContainerStyle={styles.modalContainerColorWheel}
+          contentContainerStyle={[styles.modalContainerColorWheel, {backgroundColor: theme.colors.surfaceVariant}, {borderColor: theme.colors.onBackground}]}
         >
           <View style={styles.colorPickerContainer}>
             <Text style={styles.modalHeader}>Choose Your Car Color</Text>
@@ -1124,7 +1134,7 @@ setUserID,
               ]}
             ></View>
             <Button
-              style={{ marginBottom: 10 }}
+              style={{ marginBottom: 10, backgroundColor: theme.colors.primary }}
               mode="contained-tonal"
               onPress={() => {
                 hideModalColorWheel();
@@ -1132,7 +1142,8 @@ setUserID,
               labelStyle={{
                 fontSize: 20,
                 textAlignVertical: "center",
-                letterSpacing: 2,
+                color: theme.colors.background
+                //letterSpacing: 2,
               }}
             >
               Confirm Color
@@ -1151,7 +1162,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 16,
-    backgroundColor: "white",
+    //backgroundColor: "white",
     paddingTop: 15,
   },
   card: {
@@ -1163,7 +1174,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     height: 50,
     width: 300,
-    backgroundColor: "white",
+   // backgroundColor: "white",
   },
   radioContainer: {
    flexDirection: "column",
@@ -1200,8 +1211,8 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
-    borderWidth: 3,
+   // backgroundColor: "white",
+    borderWidth: 1,
     height: "80%",
     margin: 25,
   },
@@ -1209,12 +1220,12 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
 
     margin: 25,
-    borderWidth: 3,
+    borderWidth: 1,
   },
   modalHeader: {
     fontSize: 15,

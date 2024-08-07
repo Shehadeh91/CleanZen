@@ -247,7 +247,7 @@ useEffect(() => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.secondary }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
@@ -256,10 +256,10 @@ useEffect(() => {
         />
       </Appbar.Header>
       <ScrollView  style={styles.scrollView}>
-        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
           {/* Car Location Card */}
           <TouchableOpacity onPress={() => navigation.navigate("map")}>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Location"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -276,7 +276,8 @@ useEffect(() => {
                   fontSize: 13,
                   paddingHorizontal: 15,
                   // position: "absolute",
-                  color: "blue",
+                  color: theme.colors.onBackground
+
                 }}
                 multiline={true}
                 onPress={() => navigation.navigate("map")}
@@ -286,9 +287,9 @@ useEffect(() => {
             </View>
           </Card>
           </TouchableOpacity>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
-              title="Rooms"
+              title="Cleaning"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
               left={(props) => (
                 <Avatar.Icon {...props} icon="home-city" size={40} />
@@ -316,7 +317,7 @@ useEffect(() => {
             </Card.Content>
           </Card>
           {/* Preference Card */}
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Cleaning Supplies"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -332,11 +333,11 @@ useEffect(() => {
 <RadioButton.Group
               onValueChange={(newValue) => {
                 setSupplyOption(newValue);
-                if (newValue === "I provide") {
+                if (newValue === "Yes, I have") {
                   setSupplyCost(0);
 
 
-                } else if (newValue === "You provide") {
+                } else if (newValue === "No, I don't have") {
                   setSupplyCost(15);
 
 
@@ -354,7 +355,7 @@ useEffect(() => {
                   marginLeft: 10,
                 }}
               >
-                <RadioButton.Item label="I provide" value="I provide"  />
+                <RadioButton.Item label="Yes, I have" value="Yes, I have"  />
                 <Text
                   style={{
                     fontSize: 13,
@@ -367,7 +368,7 @@ useEffect(() => {
                   { "+$0"}
                 </Text>
 
-                <RadioButton.Item label="You provide" value="You provide" />
+                <RadioButton.Item label="No, I don't have" value="No, I don't have" />
 
                 {/* <Text
                   style={{
@@ -397,7 +398,7 @@ useEffect(() => {
               </View>
             </RadioButton.Group>
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -488,7 +489,7 @@ useEffect(() => {
                     fontSize: 13,
                     left: 17,
                     top: 40,
-                    color: "grey",
+                   // color: "grey",
                     position: "absolute",
                   }}
                 >
@@ -501,7 +502,7 @@ useEffect(() => {
           </Card>
 
           <Button
-            style={{ marginBottom: 50, bottom: -25 }}
+            style={{ marginBottom: 50, bottom: -25, backgroundColor: theme.colors.primary }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {
@@ -537,7 +538,8 @@ useEffect(() => {
             labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
-              letterSpacing: 10,
+
+             // letterSpacing: 10,
             }}
           >
             Confirm
@@ -551,16 +553,21 @@ useEffect(() => {
         index={-1}
         snapPoints={['25%', '25%']}
         enablePanDownToClose={true}
-        backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25, backgroundColor: theme.colors.surfaceVariant,  borderColor: theme.colors.onBackground}}
+
 
              >
         <View style={{margin: 15, gap: 10, marginTop: 10}} >
         {date && <Text> {date.toString()}</Text>}
         {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
 
-          <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
+        <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+            Select Date
+          </Button>
 
-          <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
+          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+            Select Time
+          </Button>
 
         </View>
       </BottomSheet>
@@ -597,7 +604,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     height: 50,
     width: 300,
-    backgroundColor: "white",
+    //backgroundColor: "white",
   },
   radioContainer: {
     flexDirection: "row",
@@ -632,7 +639,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     borderWidth: 3,
     height: "80%",
     margin: 25,
@@ -641,7 +648,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
 

@@ -34,11 +34,7 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
 import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { useColorScheme } from "react-native";
-
-
-
-
+import { useColorScheme, StatusBar, View, StyleSheet, Platform} from "react-native";
 
 
 
@@ -55,6 +51,12 @@ export default function App() {
     <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
+    <View style={styles.container}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="transparent"
+            translucent={true}
+          />
           <NavigationContainer>
         <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
@@ -70,7 +72,7 @@ export default function App() {
               headerTitle: "Account Settings", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
             }}
           />
@@ -82,7 +84,7 @@ export default function App() {
               headerTitle: "Admin", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
             }}
           />
@@ -93,7 +95,7 @@ export default function App() {
               headerTitle: "Users", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -104,7 +106,7 @@ export default function App() {
               headerTitle: "All Orders", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -115,7 +117,7 @@ export default function App() {
               headerTitle: "Agent", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -126,7 +128,7 @@ export default function App() {
               headerTitle: "Orders", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -137,7 +139,7 @@ export default function App() {
               headerTitle: "Earning Overview", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -148,7 +150,7 @@ export default function App() {
               headerTitle: "Edit Account", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
             }}
           />
@@ -159,7 +161,7 @@ export default function App() {
               headerTitle: "Change Password", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               //headerLeft: null, // Remove the back button
             }}
           />
@@ -170,7 +172,7 @@ export default function App() {
               headerTitle: "Recover Password", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               //headerLeft: null, // Remove the back button
             }}
           />
@@ -203,7 +205,7 @@ export default function App() {
               headerTitle: "Terms of Service", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -214,7 +216,7 @@ export default function App() {
               headerTitle: "Privacy Control", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
             }}
           />
@@ -225,7 +227,7 @@ export default function App() {
               headerTitle: "", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
              // headerLeft: null, // Remove the back button
              headerRight: () => null, // Remove the right component (like BottomNavagationComponent)
             }}
@@ -237,7 +239,7 @@ export default function App() {
               headerTitle: "", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
               headerRight: null, // Remove the right component (like BottomNavagationComponent)
             }}
@@ -249,7 +251,7 @@ export default function App() {
               headerTitle: "Order History", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
             }}
           />
@@ -260,7 +262,7 @@ export default function App() {
               headerTitle: "Car Wash", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -271,7 +273,7 @@ export default function App() {
               headerTitle: "Dry Clean", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -282,7 +284,7 @@ export default function App() {
               headerTitle: "Room Clean", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -293,7 +295,7 @@ export default function App() {
               headerTitle: "Check Out", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -304,7 +306,7 @@ export default function App() {
               headerTitle: "Check Out", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -315,7 +317,7 @@ export default function App() {
               headerTitle: "Location", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerRight: null
             }}
           />
@@ -326,7 +328,7 @@ export default function App() {
               headerTitle: "Check Out", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
             }}
           />
           <Stack.Screen
@@ -336,7 +338,7 @@ export default function App() {
               headerTitle: "", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
-              headerTintColor: "black", // Set back button color
+              headerTintColor: theme.colors.onBackground, // Set back button color
               headerLeft: null, // Remove the back button
             }}
           />
@@ -344,8 +346,15 @@ export default function App() {
         {/* BottomNavagationComponent inside NavigationContainer */}
         <BottomNavagationComponent />
       </NavigationContainer>
+      </View>
       </StripeProvider>
     </PaperProvider>
 
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
+});

@@ -38,10 +38,10 @@ const theme = useTheme();
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.secondary }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
     <Image  style={{tintColor: 'black', height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
       <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
-        Your Order Is Complete
+        We are on the way!
       </Text>
       <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10 }}>
         Home

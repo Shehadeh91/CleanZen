@@ -35,7 +35,7 @@ const theme = useTheme();
 
   return (
 
-    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <List.Section style={styles.listSection}>
             <List.Item
@@ -55,7 +55,7 @@ const theme = useTheme();
 
               left={() => <List.Icon icon="lock" />}
             />
-            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
+            <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, color: theme.colors.onBackground}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
             <TextInput
               secureTextEntry
               placeholder="New Password"
@@ -77,7 +77,7 @@ const theme = useTheme();
           </List.Section>
           <Button
             style={{ margin: 15 }}
-            contentStyle={{ color: "white" }}
+           // contentStyle={{ color: "white" }}
             onPress={handleChangePassword}
             mode="contained"
           >

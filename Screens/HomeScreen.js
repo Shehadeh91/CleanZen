@@ -29,7 +29,7 @@ const HomeScreen = () => {
         setVisible(false);
       }}
     >
-       <Card style={[styles.card, { backgroundColor: theme.colors.primary }]}>
+       <Card style={[styles.card, { backgroundColor: theme.colors.background, borderColor: theme.colors.onBackground }]}>
         <Card.Title title={item.title} />
         <Card.Content>
           <Text variant="displayLarge">{item.description}</Text>
@@ -37,7 +37,7 @@ const HomeScreen = () => {
         <Card.Cover
           source={item.image}
           resizeMode="cover"
-          style={[styles.cardImage, {backgroundColor: theme.colors.onBackground}]}
+          style={[styles.cardImage, {backgroundColor: theme.colors.background}]}
         />
       </Card>
     </TouchableOpacity>
@@ -65,14 +65,14 @@ const HomeScreen = () => {
   ];
 
   return (
-    <View style={{backgroundColor: theme.colors.secondary, flex: 1}}>
+    <View style={{backgroundColor: theme.colors.background, flex: 1}}>
 
 
 
-      <Text style={styles.title}>PureCare</Text>
-      <Text style={styles.subTitle}>Anywhere, Anytime</Text>
+      <Text style={[styles.title, {color: theme.colors.onBackground}]}>PureCare</Text>
+      <Text style={[styles.subTitle , {color: theme.colors.onBackground}]}>Anywhere, Anytime</Text>
       <Image
-        style={[styles.logo, {tintColor: theme.colors.onBackground}]}
+        style={[styles.logo, {tintColor: theme.colors.background}]}
         resizeMode="center"
         resizeMethod="auto"
         source={require("./PureCare.png")}
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 250, // Adjusted height for the card
     margin: 10,
+    borderWidth: 0.5
    // justifyContent: 'center', // Center items vertically
    // alignItems: 'center', // Center items horizontally
 

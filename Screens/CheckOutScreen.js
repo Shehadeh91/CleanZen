@@ -278,7 +278,7 @@ const theme = useTheme();
       </Appbar.Header>
 
       <ScrollView style={styles.scrollView}>
-        <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+        <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
 
           <Card style={styles.card}>
             <Card.Title
@@ -311,7 +311,7 @@ const theme = useTheme();
               subtitle={
                 deliveryOption === "Schedule" ? date?.toString() : serviceTime
               }
-              subtitleStyle={{ fontSize: 12, color: "grey", letterSpacing: 3 }}
+              subtitleStyle={{ fontSize: 12, letterSpacing: 3 }}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -403,7 +403,7 @@ const theme = useTheme();
                 //label="Address"
                 value={note}
                 mode="outlined"
-                borderColor="red"
+               // borderColor="red"
                 // borderWidth = {2}
                 onChangeText={(text) => setNote(text)}
                 // width={200}
@@ -481,7 +481,7 @@ const theme = useTheme();
                   justifyContent: "space-around",
                   marginTop: -30,
                   marginHorizontal: 50,
-                  borderColor: "red",
+                 // borderColor: "red",
                 }}
               >
                 <RadioButton.Item
@@ -524,7 +524,7 @@ const theme = useTheme();
   }}            labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
-              letterSpacing: 10,
+             // letterSpacing: 10,
             }}
             disabled={isLoading} // Disable the button while loading
           >
@@ -548,21 +548,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: "white",
+   // backgroundColor: "white",
     paddingTop: 15,
     // borderWidth: 2
   },
   card: {
     marginBottom: 16,
-    borderWidth: 3,
-    backgroundColor: "#F3E9F9",
+    borderWidth: 1,
+   // backgroundColor: "#F3E9F9",
   },
   input: {
     marginLeft: 20,
     bottom: 10,
     height: 50,
     width: 300,
-    backgroundColor: "white",
+   // backgroundColor: "white",
   },
   radioContainer: {
     flexDirection: "row",
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
     margin: 25,
@@ -606,7 +606,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
     margin: 25,

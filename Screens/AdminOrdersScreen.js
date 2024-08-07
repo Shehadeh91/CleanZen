@@ -334,7 +334,7 @@ const AdminOrdersScreen = () => {
   }
 
   return (
-    <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+    <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
       <View style={styles.buttonsContainer}>
         <Button
           mode="text"
@@ -421,8 +421,8 @@ const AdminOrdersScreen = () => {
               key={serviceOrder.id} // Add key prop here
             >
               {serviceOrder.Service === "Car Wash" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
                   <View style={{ flexDirection: "row", gap: 5 }}>
@@ -481,7 +481,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                      //color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -496,8 +496,8 @@ const AdminOrdersScreen = () => {
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -521,7 +521,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -535,8 +535,8 @@ const AdminOrdersScreen = () => {
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -560,7 +560,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -582,8 +582,8 @@ const AdminOrdersScreen = () => {
           {completedOrders.map((serviceOrder) => (
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -642,7 +642,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                      //color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -651,12 +651,12 @@ const AdminOrdersScreen = () => {
                      {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -676,7 +676,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -685,12 +685,12 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -711,7 +711,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -720,7 +720,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>
@@ -732,8 +732,8 @@ const AdminOrdersScreen = () => {
           {canceledOrders.map((serviceOrder) => (
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -792,7 +792,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -801,12 +801,12 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -835,12 +835,12 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -861,7 +861,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -870,7 +870,7 @@ const AdminOrdersScreen = () => {
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>
@@ -882,8 +882,8 @@ const AdminOrdersScreen = () => {
           {assignedOrders.map((serviceOrder) => (
             <View key={serviceOrder.id}>
               {serviceOrder.Service === "Car Wash" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -945,7 +945,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -958,12 +958,12 @@ const AdminOrdersScreen = () => {
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
-          <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+          <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -986,7 +986,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -999,12 +999,12 @@ const AdminOrdersScreen = () => {
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
-          <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+          <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
-                <View style={styles.orderItem}>
-                  <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
+                <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
+                <Text style={{ fontSize: 18, fontFamily: "monospace" }}>
                   {serviceOrder.Service.padEnd(15) + "$".padStart(3)+serviceOrder.Total + "("+serviceOrder.Payment+")"}
                   </Text>
 
@@ -1028,7 +1028,7 @@ const AdminOrdersScreen = () => {
                   <Text
                     style={{
                       fontSize: 13,
-                      color: "blue",
+                     // color: "blue",
                       textDecorationLine: "underline",
                       paddingHorizontal: 5
                     }}
@@ -1041,7 +1041,7 @@ const AdminOrdersScreen = () => {
                   <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 2}}> Name: {serviceOrder.Name}   Phone: ({serviceOrder.Phone})</Text>
                   {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
-                  <Text style={{ fontSize: 13, color: "red" }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
                 </View>
               )}
             </View>
@@ -1059,39 +1059,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 75,
     paddingHorizontal: 10,
-    paddingBottom: 25,
+    paddingBottom: 10,
   },
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     marginBottom: 10,
 
-    width: 350,
+    width: 375,
 
     gap: 25,
   },
   button: {
-    width: 90,
+    width: 110,
     textAlign: "center",
     borderRadius: 0,
   },
   highlightedButton: {
-    backgroundColor: "black",
+   // backgroundColor: "black",
   },
   ordersList: {
     width: "100%",
     height: "70%",
     // borderWidth: 2,
-    borderColor: "black",
+   // borderColor: "black",
     // marginBottom: 10,
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
     //padding: 3,
 
-    borderBottomWidth: 3,
-    borderBottomColor: "#DDDDDD",
-    backgroundColor: "#F3E9F9",
+   // backgroundColor: '#b3e0ff',
+    borderBottomWidth: 0,
+marginVertical: 1,
+borderWidth:0.5
+   // borderBottomColor: "#DDDDDD",
+   // backgroundColor: "#F3E9F9",
   },
 });
 

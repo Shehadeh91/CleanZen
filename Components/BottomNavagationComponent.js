@@ -56,11 +56,13 @@ const BottomNavagationComponent = ({ onIndexChange }) => {
       navigationState={{ index: indexBottom, routes }}
       onIndexChange={handleNavigation}
       renderScene={renderScene}
-      activeColor='purple'
-      barStyle={{ backgroundColor: theme.colors.tertiary }}
+      activeColor='#6953A4'
+      inactiveColor= {{ backgroundColor: theme.colors.onBackground }}
+
+      barStyle={{ backgroundColor: theme.colors.background }}
       safeAreaInsets={{ bottom: 20 }}
       compact={true}
-      style={{ flex: 0.1, marginBottom: 0, borderWidth: 1, borderColor: 'black' }}
+      style={[{ flex: 0.1, marginBottom: 0, borderWidth: 0.1 },{borderColor: theme.colors.onBackground}] }
     />
   );
 };

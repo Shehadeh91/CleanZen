@@ -266,7 +266,7 @@ const theme = useTheme();
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-      <View style={[styles.container, {backgroundColor: theme.colors.secondary}]}>
+      <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
           {/* Car Location Card */}
 
           <Card style={styles.card}>
@@ -298,7 +298,7 @@ const theme = useTheme();
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
               subtitle={deliveryOption === "Schedule" ? date?.toString() : serviceTime}
-              subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
+              subtitleStyle={{fontSize: 12, letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -318,7 +318,7 @@ const theme = useTheme();
 
           <Card style={styles.card}>
             <Card.Title
-              title={"Room Clean"}
+              title={"Cleaning"}
               titleStyle={{ fontSize: 18 }}
               left={(props) => (
                 <Avatar.Icon
@@ -505,7 +505,7 @@ if (paymentOption === "Card") {
 }}            labelStyle={{
           fontSize: 20,
           textAlignVertical: "center",
-          letterSpacing: 10,
+         // letterSpacing: 10,
         }}
         disabled={isLoading} // Disable the button while loading
       >
