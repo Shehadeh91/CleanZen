@@ -10,7 +10,7 @@ const useAppStore = create((set, get) => ({
   email: "", // Initial value for emailr
   setEmail: (value) => set({ email: value }),
 
- 
+
   phone: "", // Initial value for phone
   setPhone: (value) => set({ phone: value }),
 

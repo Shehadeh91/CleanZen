@@ -836,6 +836,7 @@ setUserID,
            backgroundColor: theme.colors.surfaceVariant,
            borderColor: theme.colors.onBackground,
             // margin: 0,
+            borderRadius: 15,
             height: "50%",
             borderWidth: 1,
             margin: 25,
@@ -1214,6 +1215,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: "80%",
     margin: 25,
+    borderRadius: 15
   },
   modalContainerColorWheel: {
     //flex: 1,
@@ -1222,25 +1224,24 @@ const styles = StyleSheet.create({
    // backgroundColor: "white",
     // margin: 0,
     height: "80%",
-
+borderRadius:15,
     margin: 25,
     borderWidth: 1,
   },
   modalHeader: {
     fontSize: 15,
-    fontWeight: "bold",
-    marginBottom: 35, // Add margin bottom for spacing
+   // fontWeight: "bold",
+    marginBottom: 25, // Add margin bottom for spacing
+    marginLeft: 25,
+    marginTop: 15
   },
   colorBox: {
-    // marginTop: -30,
-    //
+
     width: 100,
     height: 75,
-    borderRadius: 15,
-
-    alignSelf: "center",
-    bottom: 450,
-    left: 95,
+borderRadius: 15,
+    bottom: 410,
+    left: 200,
   },
   column: {
     flex: 1,

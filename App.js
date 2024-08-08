@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
@@ -38,15 +38,17 @@ import { useColorScheme, StatusBar, View, StyleSheet, Platform} from "react-nati
 
 
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
 
+
+
+
   const colorScheme = useColorScheme();
    // Select the theme based on the color scheme
    const theme = colorScheme === 'light' ? lightTheme : darkTheme;
-   console.log('Applying theme:', colorScheme);
+  // console.log('Applying theme:', colorScheme);
   return (
     <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"

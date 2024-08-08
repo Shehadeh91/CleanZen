@@ -29,6 +29,8 @@ const AccountScreen = () => {
     return () => backHandler.remove(); // Clean up the event listener
   }, []);
 
+
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser); // Update user state based on authentication status
