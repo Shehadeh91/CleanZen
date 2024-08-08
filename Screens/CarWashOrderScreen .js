@@ -119,7 +119,7 @@ setUserID,
     setDatePickerVisibility(true);
   };
 
-  const now = new Date();
+
   useEffect(() => {
    setDate();
  }, []);
@@ -136,6 +136,8 @@ setUserID,
   };
 
   const handleConfirm = (dateTime) => {
+    const now = new Date();
+
     const formattedDate = dateTime.toLocaleString("default", {
       weekday: "short",
       month: "short",
@@ -145,15 +147,10 @@ setUserID,
       hour12: true,
     });
 
-    if (dateTime <= now) {
-      Alert.alert("Invalid Date", "Please select a future date.");
-      setDate();
-      hideDatePicker();
-    }
-    else{
+
       setDate(formattedDate);
       hideDatePicker();
-    }
+
 
     //bottomSheetRef.current?.close();
   };
@@ -163,7 +160,7 @@ setUserID,
     try {
       const user = auth.currentUser;
       if (!user || !user.emailVerified) {
-        console.error("Error: User is not authenticated.");
+       // console.error("Error: User is not authenticated.");
         navigation.navigate("login");
 
         return;
@@ -171,7 +168,7 @@ setUserID,
 
       const userId = user?.email || "UnknownUser";
       if (!userId) {
-        console.error("Error: User email is null or undefined.");
+      //  console.error("Error: User email is null or undefined.");
         return;
       }
 
@@ -225,7 +222,7 @@ setUserID,
 
       navigation.navigate("orderComplete");
     } catch (error) {
-      console.error("Error adding car wash order:", error);
+     // console.error("Error adding car wash order:", error);
     }
   };
   const onColorChange = (color) => {
@@ -409,7 +406,7 @@ setUserID,
                     position: "absolute",
                   }}
                 >
-                  {"$"+bodyStyleCost * 0.75}
+                  {"$"+(bodyStyleCost + (bodyStyleCost * 0.75))}
                 </Text>
               </View>
             </RadioButton.Group>
@@ -587,7 +584,9 @@ setUserID,
         mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+
       />
+
       {/* Modal */}
       <Portal>
         <Modal

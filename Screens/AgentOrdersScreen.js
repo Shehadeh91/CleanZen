@@ -496,7 +496,7 @@ const theme = useTheme();
       });
 
     } catch (error) {
-      console.error("Error adding Agents Doc:", error);
+     // console.error("Error adding Agents Doc:", error);
     }
 
       };

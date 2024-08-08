@@ -44,7 +44,7 @@ const AgentEarningOverviewScreen = () => {
         console.log("Agent document does not exist");
       }
     } catch (error) {
-      console.error("Error fetching agent's data:", error);
+     // console.error("Error fetching agent's data:", error);
     }
   };
 const theme = useTheme();

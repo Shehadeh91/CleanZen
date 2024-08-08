@@ -98,7 +98,7 @@ const DryCleanCheckOutScreen = () => {
         }
       }
     } catch (error) {
-      console.error('Error initializing payment sheet:', error);
+     // console.error('Error initializing payment sheet:', error);
     } finally {
       setLoading(false);
       setIsLoading(false); // Show activity indicator
@@ -151,7 +151,7 @@ const DryCleanCheckOutScreen = () => {
       const price = (getTotalPrice()+ deliveryCost + 4 + 1.5).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
-      console.error('Error initiating checkout session:', error);
+     // console.error('Error initiating checkout session:', error);
       // Handle unexpected errors
     }
     setPaymentLoading(false);

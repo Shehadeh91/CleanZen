@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Alert, Text } from "react-native";
-import { List, Divider, Button, TextInput, useTheme } from "react-native-paper";
+import { View, StyleSheet, ScrollView, Alert, Text, Platform,
+  TouchableOpacity } from "react-native";
+import { List, Divider, Button, TextInput, useTheme, IconButton } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { updatePassword, reauthenticateWithCredential, getAuth, EmailAuthProvider } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
 const ChangePasswordScreen = ({  }) => {
   const [currentPassword, setCurrentPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigation = useNavigation();
@@ -57,22 +60,45 @@ const theme = useTheme();
             />
             <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, color: theme.colors.onBackground}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
             <TextInput
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
               placeholder="New Password"
               value={newPassword}
               onChangeText={setNewPassword}
             />
+             <TouchableOpacity
+         style={styles.icon}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+         <IconButton
+            icon={passwordVisible ? "eye" : "eye-off"}
+            color={theme.colors.onBackground}
+            size={20}
+          />
+        </TouchableOpacity>
             <Divider />
             <List.Item
               title="Confirm New Password"
               left={() => <List.Icon icon="lock" />}
             />
             <TextInput
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
               placeholder="Confirm New Password"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
+             <TouchableOpacity
+         style={{position: "absolute",
+    right: 10,
+    height: "185%",
+    justifyContent: "center",}}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+         <IconButton
+            icon={passwordVisible ? "eye" : "eye-off"}
+            color={theme.colors.onBackground}
+            size={20}
+          />
+        </TouchableOpacity>
             <Divider />
           </List.Section>
           <Button
@@ -100,6 +126,12 @@ const styles = StyleSheet.create({
   },
   listSection: {
     marginBottom: 16,
+  },
+  icon: {
+    position: "absolute",
+    right: 10,
+    height: "125%",
+    justifyContent: "center",
   },
 });
 

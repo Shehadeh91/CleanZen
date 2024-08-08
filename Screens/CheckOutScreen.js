@@ -115,7 +115,7 @@ const theme = useTheme();
           }
         }
       } catch (error) {
-        console.error('Error initializing payment sheet:', error);
+       // console.error('Error initializing payment sheet:', error);
       } finally {
         setLoading(false);
         setIsLoading(false); // Show activity indicator
@@ -168,7 +168,7 @@ const theme = useTheme();
         const price = totalCost;
         await initializePaymentSheet(price);
       } catch (error) {
-        console.error('Error initiating checkout session:', error);
+       // console.error('Error initiating checkout session:', error);
         // Handle unexpected errors
       }
       setPaymentLoading(false);
@@ -487,7 +487,7 @@ const theme = useTheme();
                 <RadioButton.Item
                   label="Cash"
                   value="Cash"
-                  disabled={true}
+                  disabled={isLoading}
                 />
                 <RadioButton.Item
                   label="Card"

@@ -39,8 +39,8 @@ const theme = useTheme();
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
-    <Image  style={{tintColor: 'black', height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>
+    <Image  style={{tintColor: theme.colors.onBackground, height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
+      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: theme.colors.onBackground }}>
         We are on the way!
       </Text>
       <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10 }}>

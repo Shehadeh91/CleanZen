@@ -105,7 +105,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
    setDatePickerVisibility(false);
  };
 
- const now = new Date();
+
  useEffect(() => {
   setDate();
 }, []);
@@ -114,7 +114,7 @@ useEffect(() => {
   setDeliveryOption();
 }, []);
  const handleConfirm = (dateTime) => {
-
+  const now = new Date();
 
    const formattedDate = dateTime.toLocaleString('default', {
      weekday: 'short',
@@ -125,15 +125,10 @@ useEffect(() => {
      hour12: true,
    });
 
-   if (dateTime <= now) {
-    Alert.alert("Invalid Date", "Please select a future date.");
-    setDate();
-    hideDatePicker();
-  }
-  else{
+
     setDate(formattedDate);
     hideDatePicker();
-  }
+
    //bottomSheetRef.current?.close();
  };
 ////////////////////////////////////////

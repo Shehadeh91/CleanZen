@@ -6,8 +6,9 @@ import {
   TextInput,
   View,
   Platform,
+  TouchableOpacity
 } from "react-native";
-import { ActivityIndicator, Button, useTheme } from "react-native-paper";
+import { ActivityIndicator, Button, useTheme, IconButton  } from "react-native-paper";
 import { useEffect, useState } from "react";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth} from "firebase/auth"; // Corrected import
@@ -19,7 +20,7 @@ import useAppStore from "../useAppStore";
 const LogInScreen = () => {
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
    const [password, setPassword] = useState("");
-
+   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
   const navigation = useNavigation(); // Added navigation
@@ -91,7 +92,7 @@ const theme = useTheme();
       }
     } catch (error) {
       //console.log(error);
-      alert("Sign in failed: " + error.message);
+      alert("Sign-In Failed: Check your email and password or verify your email address.");
     } finally {
       setLoading(false);
       //navigation.navigate('account');
@@ -117,15 +118,27 @@ const theme = useTheme();
         placeholderTextColor={theme.colors.onBackground}
 
       />
+       <View style={styles.passwordContainer}>
       <TextInput
         style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Password"
-        secureTextEntry={true}
+        secureTextEntry={!passwordVisible}
         value={password}
         onChangeText={setPassword}
         autoCapitalize="none"
         placeholderTextColor={theme.colors.onBackground}
       />
+       <TouchableOpacity
+         style={styles.icon}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+         <IconButton
+            icon={passwordVisible ? "eye" : "eye-off"}
+            color={theme.colors.onBackground}
+            size={20}
+          />
+        </TouchableOpacity>
+      </View>
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
       ) : (
@@ -175,5 +188,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "80%",
     paddingVertical: -25,
+  },
+  passwordContainer: {
+    width: "80%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    position: "absolute",
+    right: 10,
+    height: "100%",
+    justifyContent: "center",
   },
 });

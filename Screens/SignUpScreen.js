@@ -6,11 +6,12 @@ import {
   TextInput,
   View,
   Platform,
+  TouchableOpacity
 } from "react-native";
 import { useEffect, useState } from "react"; // Import useEffect
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { collection, addDoc } from "firebase/firestore";
-import { ActivityIndicator, Button, useTheme } from "react-native-paper";
+import { ActivityIndicator, Button, useTheme, IconButton } from "react-native-paper";
 
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -20,7 +21,7 @@ import useAppStore from "../useAppStore";
 
 const SignupScreen = ({ navigation }) => {
   //const [fullName, setFullName] = React.useState("");
-
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
 const theme = useTheme();
@@ -108,7 +109,7 @@ await sendEmailVerification(auth.currentUser);
       alert("Check your emails!");
     } catch (error) {
      // console.log(error);
-      alert("Sign up failed: " + error.message);
+      alert("Sign-Up Failed: Please check your details and try again.");
     } finally {
       setLoading(false);
       navigation.navigate("home");
@@ -150,15 +151,27 @@ await sendEmailVerification(auth.currentUser);
         placeholderTextColor={theme.colors.onBackground}
       />
 <Text style={{fontSize: 10, fontStyle: 'italic', marginBottom: 10, width: "80%", color: theme.colors.onBackground}}>Password must be at least 7 characters long and include at least one number, one uppercase letter, and one special character (!@#$%^&*). Example: Passw0rd!</Text>
+<View style={styles.passwordContainer}>
       <TextInput
         style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
         placeholder="Password"
-        secureTextEntry={true}
+        secureTextEntry={!passwordVisible}
         value={password}
         onChangeText={setPassword}
         autoCapitalize="none"
         placeholderTextColor={theme.colors.onBackground}
       />
+       <TouchableOpacity
+         style={styles.icon}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+         <IconButton
+            icon={passwordVisible ? "eye" : "eye-off"}
+            color={theme.colors.onBackground}
+            size={20}
+          />
+        </TouchableOpacity>
+      </View>
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
       ) : (
@@ -204,5 +217,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "80%",
     paddingVertical: 10,
+  },
+  passwordContainer: {
+    width: "80%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    position: "absolute",
+    right: 10,
+    height: "100%",
+    justifyContent: "center",
   },
 });
