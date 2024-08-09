@@ -27,7 +27,7 @@ const SignupScreen = ({ navigation }) => {
 const theme = useTheme();
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
   const [password, setPassword] = useState("");
-
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useFocusEffect(
     React.useCallback(() => {
@@ -74,6 +74,11 @@ const theme = useTheme();
     if (!/^\d{10}$/.test(phone)) {
       alert("Please enter a valid 10-digit phone number.");
       return; // Exit the function if phone number is invalid
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      return;
     }
 
     setLoading(true);
@@ -171,6 +176,29 @@ await sendEmailVerification(auth.currentUser);
             size={20}
           />
         </TouchableOpacity>
+
+      </View>
+      <View style={styles.passwordContainer}>
+      <TextInput
+        style={[styles.input, {color: theme.colors.onBackground}, {borderColor: theme.colors.onBackground}]}
+        placeholder="Confirm Password"
+        secureTextEntry={!passwordVisible}
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        autoCapitalize="none"
+        placeholderTextColor={theme.colors.onBackground}
+      />
+       <TouchableOpacity
+         style={styles.icon}
+          onPress={() => setPasswordVisible(!passwordVisible)}
+        >
+         <IconButton
+            icon={passwordVisible ? "eye" : "eye-off"}
+            color={theme.colors.onBackground}
+            size={20}
+          />
+        </TouchableOpacity>
+
       </View>
       {loading ? (
         <ActivityIndicator size="large" color="blue" />
