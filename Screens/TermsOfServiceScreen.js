@@ -88,6 +88,11 @@ const TermsOfServiceScreen = () => {
       <Text style={styles.sectionTitle}>11. Amendments </Text>
       PureCare Tech reserves the right to update or amend these terms and conditions at any time. Clients will be notified of any changes, and continued use of our services will constitute acceptance of the updated terms.
     </Paragraph>
+    <Paragraph style={styles.paragraph}>
+  <Text style={styles.sectionTitle}>12. Independent Contractors </Text>
+  We work with independent third-party contractors to provide cleaning services. While we strive to partner with reputable and professional contractors, PureCare Tech does not assume responsibility for the actions, conduct, or performance of these independent contractors. This includes, but is not limited to, any damage, theft, or loss that may occur during the provision of services. We encourage clients to take appropriate precautions and communicate any specific concerns directly with the contractor at the time of service.
+</Paragraph>
+
      {/* Add more paragraphs as needed */}
    </ScrollView>
     </View>

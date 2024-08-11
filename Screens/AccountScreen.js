@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, BackHandler, ScrollView } from "react-native";
+import { View, StyleSheet, BackHandler, ScrollView, Text } from "react-native";
 import { List, Divider, Button, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
@@ -174,6 +174,13 @@ const AccountScreen = () => {
             >
               Privacy Control
             </Button>
+            <Text style={{
+  fontSize: 10,
+  color: theme.colors.tertiary, // Adjust color if needed
+  marginTop: 15,
+}}>
+  To delete your account, please email admin@purecaretech.com with your registered email address.
+</Text>
             {/* <Button
               style={{ alignSelf: "flex-start" }}
               icon="help-circle-outline"
@@ -208,6 +215,7 @@ const styles = StyleSheet.create({
     //flexGrow: 1,
     paddingHorizontal: 16,
   },
+
 });
 
 export default AccountScreen;
