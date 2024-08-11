@@ -7,12 +7,20 @@ import { doc, getDocs, setDoc, collection } from "firebase/firestore";
 import useAppStore from "../useAppStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LogInScreen from "./LogInScreen";
+import useCarWashStore from "../useCarWashStore";
 
 const AccountScreen = () => {
   const navigation = useNavigation();
   const auth = FIREBASE_AUTH;
 
   const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const {
+    setCarBrand,
+    setBodyStyle,
+    setCurrentColor,
+    setCarPlate,
+    setBodyStyleCost,
+  } = useCarWashStore();
 
 
   const [userInfo, setUserInfo] = useState({});
@@ -31,6 +39,7 @@ const AccountScreen = () => {
 
 
 
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser); // Update user state based on authentication status
@@ -41,7 +50,14 @@ const AccountScreen = () => {
   const handleLogout = () => {
     auth
       .signOut()
-      .then(() => navigation.navigate("login")) // Navigate to SignUpScreen after logout
+      .then(() => navigation.navigate("login"))
+
+      setAddress("Winnipeg, MB, Canada")
+      setCarPlate("");
+      setCarBrand("Mazda");
+      setBodyStyle("Sedan");
+      setCurrentColor("")
+      // Navigate to SignUpScreen after logout
       //.catch((error) => console.error("Logout failed:", error));
   };
 

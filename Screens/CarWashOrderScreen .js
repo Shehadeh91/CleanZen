@@ -6,6 +6,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  Dimensions,
+  FlatList
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -26,13 +28,21 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
 import BottomSheet from "@gorhom/bottom-sheet";
 import useAppStore from "../useAppStore";
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+
+
+const { width, height } = Dimensions.get('window');
+const commonColors = [
+  "#000000", "#888888", "#ed1c24", "#d11cd5", "#1633e6", "#00aeef", "#00c85d", "#57ff0a",
+  "#ffde17", "#FFFFFF", "#FFC0CB", "#FFD700", "#ADFF2F", "#00FFFF", "#FF1493", "#C71585",
+  "#D2691E", "#FF4500", "#32CD32", "#8A2BE2"
+];
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -107,6 +117,8 @@ setUserID,
 
   const auth = FIREBASE_AUTH;
 
+
+
   const theme = useTheme();
   //////////////////////////////////////////////////
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -117,11 +129,114 @@ setUserID,
   const showDatePicker = () => {
     setMode("date");
     setDatePickerVisibility(true);
+
+  };
+  const carBrandIcons = {
+    Mazda: require('../assets/Icons/mazda.png'),
+    Mercedes: require('../assets/Icons/mercedes.png'),
+    BMW: require('../assets/Icons/bmw.png'),
+    Honda: require('../assets/Icons/honda.png'),
+    Hyundai: require('../assets/Icons/hyundai.png'),
+    Ford: require('../assets/Icons/ford.png'),
+    Chevrolet: require('../assets/Icons/chevrolet.png'),
+    Toyota: require('../assets/Icons/toyota.png'),
+    GMC: require('../assets/Icons/gmc.png'),
+    Dodge: require('../assets/Icons/dodge.png'),
+    Jeep: require('../assets/Icons/jeep.png'),
+    Nissan: require('../assets/Icons/nissan.png'),
+    KIA: require('../assets/Icons/kia.png'),
+    Subaru: require('../assets/Icons/subaru.png'),
+    Volkswagen: require('../assets/Icons/volkswagen.png'),
+    Audi: require('../assets/Icons/audi.png'),
+    Chrysler: require('../assets/Icons/chrysler.png'),
+    Lexus: require('../assets/Icons/lexus.png'),
+    Cadilac: require('../assets/Icons/cadilac.png'),
+    Buick: require('../assets/Icons/buick.png'),
+  };
+
+  const bodyTypeIcons = {
+    Sedan: require("../assets/Icons/Sedan.png"),
+    Coupe: require("../assets/Icons/Coupe.png"),
+    Hatchback: require("../assets/Icons/Hatchback.png"),
+    PickupTruck: require("../assets/Icons/PickupTruck.png"),
+    SUV: require("../assets/Icons/SUV.png"),
+    MiniVan: require("../assets/Icons/MiniVan.png"),
+  };
+
+  const bodyStyleCosts = {
+    Sedan: 25,
+    Coupe: 25,
+    Hatchback: 30,
+    PickupTruck: 40,
+    SUV: 50,
+    MiniVan: 65,
   };
 
 
+const user = auth.currentUser;
+  useEffect(() => {
+    const fetchUserData = async () => {
+
+      if (user && user.email) {
+        try {
+          const docRef = doc(FIRESTORE_DB, 'Users', user.email); // Get the document reference
+          const docSnap = await getDoc(docRef); // Fetch the document
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            //setUserData(data); // Set user data
+           setAddress(data.Address); // Set address state
+           setCarPlate(data.PlateNumber);
+           setBodyStyle(data.CarBody);
+           setCarBrand(data.CarBrand);
+
+             //setBodyStyle(data.CarBody);
+             //setIconBodyStyle(data.CarBodyIcon);
+            // setCarBrand(data.CarBrand);
+             setCurrentColor(data.CarColor);
+          } else {
+            console.log('No such document!');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  useEffect(() => {
+    // Update iconBrand, bodyStyleCost, and iconBodyStyle based on carBrand and bodyStyle
+    setIconBrand(carBrandIcons[carBrand] || require('../assets/Icons/mazda.png')); // Default icon for car brand
+    setBodyStyleCost(bodyStyleCosts[bodyStyle] || 25); // Default cost for body style
+    setIconBodyStyle(bodyTypeIcons[bodyStyle] || require('../assets/Icons/Sedan.png')); // Default icon for body style
+  }, [carBrand, bodyStyle]);
+
+  const handleUpdateInfo = async () => {
+
+    const user = auth.currentUser;
+
+    try {
+
+      const userDocRef = doc(FIRESTORE_DB, "Users", user.email );
+
+      await updateDoc(userDocRef, {
+        PlateNumber: carPlate,
+        CarColor: currentColor,
+        CarBody: bodyStyle,
+        CarBrand:carBrand
+
+       });
+     // console.log('User address updated successfully');
+    } catch (error) {
+     // console.error('Error updating user address: ', error);
+    }
+  };
+
   useEffect(() => {
    setDate();
+   setVisible(false);
  }, []);
  useEffect(() => {
   setDeliveryOption();
@@ -235,6 +350,19 @@ setUserID,
     // console.log('Current Color:', currentColor); // Debug logging
     // Any other logic related to color change
   }, [currentColor]);
+
+
+  const handleColorSelect = (color) => {
+    setCurrentColor(color);
+    hideModalColorWheel();
+  };
+
+  const renderColorItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.colorCircle, { backgroundColor: item }]}
+      onPress={() => handleColorSelect(item)}
+    />
+  );
 
   return (
     <View style={{ flex: 1}}>
@@ -541,6 +669,7 @@ setUserID,
                   addCarWashOrder: addCarWashOrder,
                 });
                 updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost);
+                handleUpdateInfo();
               } else {
                 // Add code to handle the case when there's no input in the TextInput
                 alert("Please enter a car plate number.");
@@ -570,11 +699,11 @@ setUserID,
           {date && <Text> {date.toString()}</Text>}
           {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
 
-          <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+          <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
             Select Date
           </Button>
 
-          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
             Select Time
           </Button>
         </View>
@@ -850,6 +979,7 @@ setUserID,
                 justifyContent: "space-around",
                 alignItems: "center",
                 flexWrap: "wrap",
+                paddingTop: 25
               }}
             >
               <Button
@@ -1091,50 +1221,26 @@ setUserID,
         <Modal
           visible={visibleColorWheel}
           onDismiss={hideModalColorWheel}
-          contentContainerStyle={[styles.modalContainerColorWheel, {backgroundColor: theme.colors.surfaceVariant}, {borderColor: theme.colors.onBackground}]}
+          contentContainerStyle={[styles.modalContainerColorWheel,{backgroundColor: theme.colors.surfaceVariant}, {borderColor: theme.colors.onBackground}] }
         >
-          <View style={styles.colorPickerContainer}>
-            <Text style={styles.modalHeader}>Choose Your Car Color</Text>
+
+            <Text style={{fontSize: 15,
+   right: 70,
+    marginBottom: 25, // Add margin bottom for spacing
+    marginLeft: 25,
+    marginTop: 15}}>Choose Your Car Color</Text>
             {/* Updated ColorPicker component */}
-            <ColorPicker
-              style={{ width: 300, top: 50 }}
-              color={currentColor} // Use currentColor state as the color value
-              onColorChange={onColorChange} // Pass the onColorChange function
-              thumbSize={25}
-              sliderSize={40}
-              row={false}
-              useNativeDriver={false}
-              useNativeLayout={false}
-              shadeWheelThumb={false}
-              //shadeSliderThumb={false}
 
-              swatches={true}
-              sliderHidden={true}
-              discretes={true}
-              // noSnap={true}
+            <FlatList
+          data={commonColors}
+          renderItem={renderColorItem}
+          keyExtractor={(item) => item}
+          numColumns={4} // Adjust the number of columns based on your design preference
+          contentContainerStyle={styles.colorList}
+        />
 
-              palette={[
-                "#000000",
-                "#888888",
-                "#ed1c24",
-                "#d11cd5",
-                "#1633e6",
-                "#00aeef",
-                "#00c85d",
-                "#57ff0a",
-                "#ffde17",
-                "#FFFFFF"
-              ]}
-            />
-
-            <View
-              style={[
-                styles.colorBox,
-                { backgroundColor: currentColor }, // Set background color dynamically
-              ]}
-            ></View>
-            <Button
-              style={{ marginBottom: 10, backgroundColor: theme.colors.primary }}
+            {/* <Button
+              style={{ marginBottom: 25, backgroundColor: theme.colors.primary, bottom: 45 }}
               mode="contained-tonal"
               onPress={() => {
                 hideModalColorWheel();
@@ -1147,8 +1253,9 @@ setUserID,
               }}
             >
               Confirm Color
-            </Button>
-          </View>
+            </Button> */}
+
+
         </Modal>
       </Portal>
     </View>
@@ -1223,7 +1330,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
    // backgroundColor: "white",
     // margin: 0,
-    height: "80%",
+    height: "60%",
 borderRadius:15,
     margin: 25,
     borderWidth: 1,
@@ -1237,11 +1344,13 @@ borderRadius:15,
   },
   colorBox: {
 
-    width: 100,
-    height: 75,
-borderRadius: 15,
-    bottom: 410,
-    left: 200,
+    width: width * 0.25, // 40% of the screen width
+    height: height * 0.1, // 30% of the screen height
+    backgroundColor: 'blue', // Replace with your desired color
+    borderRadius: 15,
+    position: 'absolute',
+    bottom: height * 0.60, // 10% from the bottom
+    left: width * 0.45, // 30% from the left
   },
   column: {
     flex: 1,
@@ -1250,9 +1359,22 @@ borderRadius: 15,
   },
   text: {
     fontSize: 13,
-    marginBottom: 10,
+    textAlign: 'center',
 
-    marginVertical: 50,
+    marginVertical: 30,
+    top: 18
+  },
+  colorCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    margin: 10,
+    borderWidth: 2,
+    borderColor: '#ccc',
+  },
+  colorList: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default CarWashOrderScreen;

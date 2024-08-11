@@ -25,7 +25,7 @@ const SignupScreen = ({ navigation }) => {
   const [loading, setLoading] = React.useState(false);
   const auth = FIREBASE_AUTH;
 const theme = useTheme();
-  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail} = useAppStore();
+  const {name, setName, phone, setPhone, address, setAddress, indexBottom  , setIndexBottom, user, setUser, visible, setVisible, email, setEmail,setCarPlate,carPlate,setCarBrand,carBrand,setBodyStyle,bodyStyle,setIconBodyStyle,iconBodyStyle,setCurrentColor,currentColor} = useAppStore();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -101,6 +101,12 @@ await sendEmailVerification(auth.currentUser);
         userId: user.uid, // Assuming you want to save the user's UID
         Name: name,
         Email: email,
+        Address: address,
+        CarBrand: carBrand,
+        CarBody: bodyStyle,
+       // BodyTypeIcon: iconBodyStyle,
+        CarColor: currentColor,
+        PlateNumber: carPlate,
         Phone: phone,
         Password: password,
         Role: "Client"

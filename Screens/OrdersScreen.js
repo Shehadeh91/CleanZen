@@ -120,7 +120,7 @@ setCompletedOrders(userCompletedOrders);
 
 
   useEffect(() => {
-    //setVisible(true); // Call setVisible(false) when the component mounts
+    setVisible(true); // Call setVisible(false) when the component mounts
     const backAction = () => true; // Prevent going back when on AccountScreen
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -697,7 +697,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //padding: 10,
     alignItems: "center",
-    paddingTop: 75,
+    paddingTop: 100,
     paddingHorizontal: 10,
     paddingBottom: 10,
 

@@ -22,6 +22,28 @@ const useAppStore = create((set, get) => ({
 
   visible: true, // Initial value for visibility
   setVisible: (value) => set({ visible: value }), // Function to set visibility
+
+
+
+  carPlate: "", // Initial value for carPlate
+  setCarPlate: (value) => set({ carPlate: value }),
+
+  carBrand: "Mazda", // Initial value for CarBrand
+  setCarBrand: (value) => set({ carBrand: value }),
+
+  iconBrand: require("./assets/Icons/ford.png"), // Initial icon source
+  setIconBrand: (value) => set({ iconBrand: value }),
+
+  bodyStyle: "Sedan", // Initial value for BodyType
+  setBodyStyle: (value) => set({ bodyStyle: value }),
+
+  iconBodyStyle: require("./assets/Icons/Sedan.png"), // Initial icon source
+  setIconBodyStyle: (value) => set({ iconBodyStyle: value }),
+
+
+
+  currentColor: "", // Initial value for Color
+  setCurrentColor: (value) => set({ currentColor: value }),
 }));
 
 export default useAppStore;

@@ -2,29 +2,26 @@
   "expo": {
     "name": "PureCare Tech",
     "slug": "CleanZen",
-    "version": "1.0.5",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./Screens/PureCareBG.png",
-
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./Screens/PureCare.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-
     },
     "plugins": [
       [
         "@stripe/stripe-react-native",
         {
-
           "enableGooglePay": true
         }
       ]
-
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.muhannad37.CleanZen"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,12 +30,11 @@
       },
       "userInterfaceStyle": "automatic",
       "package": "com.muhannad37.CleanZen",
-      "versionCode": 5,
+      "versionCode": 8,
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
       ]
-
     },
     "web": {
       "bundler": "metro",
@@ -48,9 +44,7 @@
       "eas": {
         "projectId": "e2c578f4-8f3b-4d8b-80ba-4fd36961e135"
       },
-        "EXPO_PUBLIC_GOOGLE_API_KEY":"AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk"
-
-
+      "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk"
     }
   }
 }

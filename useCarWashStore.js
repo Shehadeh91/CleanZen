@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
 const useCarWashStore = create((set, get) => ({
+
+
   carPlate: "", // Initial value for carPlate
   setCarPlate: (value) => set({ carPlate: value }),
 

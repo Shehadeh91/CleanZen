@@ -5,7 +5,9 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  Alert
+  Alert,
+  Platform,
+  StatusBar
 } from "react-native";
 
 import {
@@ -134,6 +136,37 @@ useEffect(() => {
 ////////////////////////////////////////
 
 
+
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    const fetchUserData = async () => {
+
+      if (user && user.email) {
+        try {
+          const docRef = doc(FIRESTORE_DB, 'Users', user.email); // Get the document reference
+          const docSnap = await getDoc(docRef); // Fetch the document
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            //setUserData(data); // Set user data
+           setAddress(data.Address); // Set address state
+
+
+          } else {
+            console.log('No such document!');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+
+
   const addRoomCleanOrder = async () => {
     try {
       const user = auth.currentUser;
@@ -212,7 +245,7 @@ useEffect(() => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginVertical: 15,
+            marginVertical: 10,
 
           }}
         >
@@ -243,11 +276,11 @@ useEffect(() => {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <Appbar.Header style={{ height: 50, top: 5 }}>
+      <Appbar.Header style={{  height: Platform.OS === 'ios' ? 44 : 56,  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, top: Platform.OS === 'ios' ? 0 : 5 }}>
         <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
-          titleStyle={{ fontSize: 15 }}
+          titleStyle={{ fontSize: 15, textAlign: 'center' }}
         />
       </Appbar.Header>
       <ScrollView  style={styles.scrollView}>
@@ -556,11 +589,11 @@ useEffect(() => {
         {date && <Text> {date.toString()}</Text>}
         {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
 
-        <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+        <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
             Select Date
           </Button>
 
-          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}}>
+          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
             Select Time
           </Button>
 

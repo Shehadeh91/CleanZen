@@ -34,7 +34,9 @@ import LogInScreen from "./LogInScreen";
 
 const RoomCleanCheckOutScreen = () => {
   const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState({});
   const route = useRoute();
+  const auth = FIREBASE_AUTH;
 
   const {
     name,
@@ -240,16 +242,42 @@ const theme = useTheme();
     }
   };
 
-  const goToLogIn = () => {
-    navigation.navigate("login");
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser); // Update user state based on authentication status
+    });
+    return unsubscribe; // Clean up the subscription
+  }, [auth]);
 
-    setIndexBottom(1);
-  };
 
   useEffect(() => {
-    if (!user) {
-      goToLogIn();
-    }
+    const fetchUserInfo = async () => {
+      try {
+        if (!user || !user.emailVerified) {
+          // If user is not logged in or email is not verified, return early
+          return;
+        }
+
+        const userDocRef = collection(FIRESTORE_DB, "Users");
+        const querySnapshot = await getDocs(userDocRef);
+        const userData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .find((data) => data.userId === user.uid); // Assuming userId field in Firestore
+       // console.log(userData);
+        if (userData) {
+          setUserInfo(userData);
+        } else {
+         // console.log("User data not found.");
+        }
+      } catch (error) {
+       // console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
   }, [user]);
 
   if (!user || !user.emailVerified) {
@@ -260,7 +288,7 @@ const theme = useTheme();
     <View style={{ flex: 1 }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice()+ deliveryCost + 4 + 1.5).toFixed(2)}
+          title={"Total: $" + (getTotalPrice()+ deliveryCost + supplyCost + 4 + 1.5).toFixed(2)}
           style={{ position: "absolute", left: 220 }}
           titleStyle={{ fontSize: 20 }}
         />
@@ -433,11 +461,16 @@ const theme = useTheme();
                   <Text>Subtotal</Text>
                   <Text>Service Fee</Text>
                   <Text>Taxes & Other Fees</Text>
+                  <Text style={{fontWeight: "bold"}}>Total</Text>
                 </View>
                 <View style={{ alignItems: "flex-start", left: 10 }}>
-                  <Text> ${(getTotalPrice() + deliveryCost).toFixed(2)}</Text>
+                  <Text> ${(getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
                   <Text> $1.50</Text>
+                  <Text style={{fontWeight: "bold"}}>
+                    {" "}
+                    ${(getTotalPrice() + deliveryCost + supplyCost + 4 + 1.5).toFixed(2)}
+                  </Text>
                 </View>
               </View>
             </Card.Content>

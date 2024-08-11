@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, BackHandler, Image } from 'react-native';
+import { View, Text, BackHandler, Image, StyleSheet, Dimensions } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; // Added import
 import useAppStore from '../useAppStore';
+
+
+const { width, height } = Dimensions.get('window');
 
 const OrderCompleteScreen = () => {
   const navigation = useNavigation();
@@ -40,9 +43,11 @@ const theme = useTheme();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
     <Image  style={{tintColor: theme.colors.onBackground, height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: theme.colors.onBackground }}>
-        We are on the way!
-      </Text>
+    <Text style={[styles.text, { color: theme.colors.onBackground }]}>
+  Thank you for choosing PureCare Tech!{'\n'}
+  Your order has been successfully placed and is now being processed.{'\n'}
+  We’ll keep you informed with updates.
+</Text>
       <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10 }}>
         Home
       </Button>
@@ -53,4 +58,16 @@ const theme = useTheme();
   );
 };
 
+
+const styles = StyleSheet.create({
+
+  text: {
+    fontSize: 18,        // Adjusted font size for readability
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,   // Space between the text and buttons
+    paddingHorizontal: 20, // Padding for better text readability on small screens
+    lineHeight: 28, // Adjust this value to add space between lines
+  },
+});
 export default OrderCompleteScreen;

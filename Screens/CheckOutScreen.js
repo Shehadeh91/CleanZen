@@ -36,6 +36,8 @@ import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
 const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const [userInfo, setUserInfo] = useState({});
+  const auth = FIREBASE_AUTH;
 
   const {
     name,
@@ -222,6 +224,7 @@ const theme = useTheme();
 
   useEffect(() => {
     updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5);
+    setVisible(false);
   }, []); // Empty dependency array to run the effect once on mount
 
   const handleConfirmOrder = async () => {
@@ -250,21 +253,53 @@ const theme = useTheme();
     }
   };
 
-  const goToLogIn = () => {
-    navigation.navigate("login");
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser); // Update user state based on authentication status
+    });
+    return unsubscribe; // Clean up the subscription
+  }, [auth]);
 
-    setIndexBottom(1);
-  };
 
   useEffect(() => {
-    if (!user) {
-      goToLogIn();
-    }
+    const fetchUserInfo = async () => {
+      try {
+        if (!user || !user.emailVerified) {
+          // If user is not logged in or email is not verified, return early
+          return;
+        }
+
+        const userDocRef = collection(FIRESTORE_DB, "Users");
+        const querySnapshot = await getDocs(userDocRef);
+        const userData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .find((data) => data.userId === user.uid); // Assuming userId field in Firestore
+       // console.log(userData);
+        if (userData) {
+          setUserInfo(userData);
+        } else {
+         // console.log("User data not found.");
+        }
+      } catch (error) {
+       // console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
   }, [user]);
 
   if (!user || !user.emailVerified) {
     return <LogInScreen />;
   }
+
+
+
+
+
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -441,6 +476,7 @@ const theme = useTheme();
                   <Text>Subtotal</Text>
                   <Text>Service Fee</Text>
                   <Text>Taxes & Other Fees</Text>
+                  <Text style={{fontWeight: "bold"}}>Total</Text>
                 </View>
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text>
@@ -449,6 +485,10 @@ const theme = useTheme();
                   </Text>
                   <Text> $4.00</Text>
                   <Text> $1.50</Text>
+                  <Text style={{fontWeight: "bold"}}>
+                    {" "}
+                    ${(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5).toFixed(2)}
+                  </Text>
                 </View>
               </View>
             </Card.Content>

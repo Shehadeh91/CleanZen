@@ -8,9 +8,12 @@ import Geolocation from 'react-native-geolocation-service';
 import useAppStore from "../useAppStore";
 import { ThemeProvider, useTheme } from 'react-native-paper';
 import { PROVIDER_GOOGLE } from 'react-native-maps';
-
+import { updateDoc, doc } from "firebase/firestore";
+import { FIREBASE_AUTH } from "../FirebaseConfig";
+import { FIRESTORE_DB } from "../FirebaseConfig";
 
 const LocationSearch = () => {
+  const auth = FIREBASE_AUTH;
   const navigation = useNavigation();
   const [location, setLocation] = useState({
     latitude: 49.8951,
@@ -18,6 +21,8 @@ const LocationSearch = () => {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+
+
 
 
 
@@ -29,6 +34,8 @@ const LocationSearch = () => {
   // useEffect(() => {
   //   ref.current?.setAddressText(address);
   // }, [address]);
+
+
 
   const handlePlaceSelect = (data, details) => {
 
@@ -44,10 +51,26 @@ const LocationSearch = () => {
 
 
   };
+  const handleAddressSelection = async (details) => {
 
+    const user = auth.currentUser;
+
+
+    try {
+
+
+      const userDocRef = doc(FIRESTORE_DB, "Users", user.email );
+
+
+      await updateDoc(userDocRef, { Address: address });
+     // console.log('User address updated successfully');
+    } catch (error) {
+     // console.error('Error updating user address: ', error);
+    }
+  };
 
   return (
-    <View style={{ flex: 1, borderWidth: 0.5, backgroundColor: theme.colors.background }}>
+    <View style={{ flex: 1, borderWidth: 0.5, backgroundColor: theme.colors.background, paddingTop: 25 }}>
       <GooglePlacesAutocomplete
         ref={ref}
 
@@ -109,19 +132,20 @@ top:75
           style={styles.button}
           onPress={() => {
             navigation.goBack();
+            handleAddressSelection();
            // console.log( address);
           }}
         >
           <Text style={{ backgroundColor: theme.colors.primary,
    // padding: 16,
-    margin: 15,
+    margin: 10,
    //fontSize: 25,
     textAlign: 'center',
     alignItems: "center",
    // borderRadius: 15,
-   //fontSize: 20,
+   fontSize: 20,
                // textAlignVertical: "center",
-                color: theme.colors.onBackground
+                color: theme.colors.background
                // letterSpacing: 5,
     }}>Confirm Location</Text>
         </TouchableOpacity>

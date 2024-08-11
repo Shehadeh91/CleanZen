@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack";
 import HomeScreen from "./Screens/HomeScreen";
@@ -12,7 +12,7 @@ import OrderCompleteScreen from "./Screens/OrderCompleteScreen";
 import DryCleanOrderScreen from "./Screens/DryCleanOrderScreen";
 import BottomNavagationComponent from "./Components/BottomNavagationComponent";
 
-
+import { SafeAreaView } from "react-native";
 import { lightTheme, darkTheme } from "./Components/Themes";
 
 import LocationSearchScreen from "./Screens/LocationSearchScreen";
@@ -34,7 +34,8 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
 import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { useColorScheme, StatusBar, View, StyleSheet, Platform} from "react-native";
+import { useColorScheme, StatusBar, View, StyleSheet, Platform, ActivityIndicator} from "react-native";
+
 
 
 
@@ -43,17 +44,16 @@ const Stack = createStackNavigator();
 export default function App() {
 
 
-
-
   const colorScheme = useColorScheme();
    // Select the theme based on the color scheme
    const theme = colorScheme === 'light' ? lightTheme : darkTheme;
   // console.log('Applying theme:', colorScheme);
   return (
+
     <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
-    <View style={styles.container}>
+    <SafeAreaView  style={styles.container}>
           <StatusBar
             barStyle="dark-content"
             backgroundColor="transparent"
@@ -348,7 +348,7 @@ export default function App() {
         {/* BottomNavagationComponent inside NavigationContainer */}
         <BottomNavagationComponent />
       </NavigationContainer>
-      </View>
+      </SafeAreaView>
       </StripeProvider>
     </PaperProvider>
 

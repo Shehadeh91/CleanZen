@@ -10,24 +10,77 @@ const PrivacyControlScreen = () => {
 
   return (
 
-      <View style={{ paddingTop: 75, backgroundColor: theme.colors.background, flex: 1  }}>
+      <View style={{ paddingTop: 100, backgroundColor: theme.colors.background, flex: 1  }}>
     <ScrollView contentContainerStyle={styles.container}>
-      <Title style={styles.title}>Privacy Policy</Title>
-      <Paragraph style={styles.paragraph}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec
-        lorem id orci maximus feugiat. Phasellus congue enim non urna commodo,
-        vel fermentum nisi ultricies. Fusce vel ante nec felis vestibulum
-        fringilla. Nullam cursus magna non sapien commodo, eget commodo libero
-        ultricies. Integer consequat lacus a ligula consequat, ut mollis justo
-        aliquam.
+    <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>1. Privacy Commitment</Text>
+        {"\n"}
+        At PureCare Tech, we prioritize your privacy and are committed to protecting your personal information. This Privacy Control section outlines how we collect, use, and safeguard your data.
       </Paragraph>
-      {/* Add more paragraphs for the privacy policy */}
 
-      <Title style={styles.title}>Cookies and Analytics</Title>
       <Paragraph style={styles.paragraph}>
-        Our application uses cookies to enhance user experience and analyze site
-        traffic. By continuing to use this site, you consent to the use of
-        cookies in accordance with our privacy policy.
+        <Text style={styles.sectionTitle}>2. Information Collection</Text>
+        {"\n"}
+        We collect personal information you provide directly, such as your name, contact details, and service preferences when you book our services or interact with our app. We may also collect usage data and device information to improve our services and app performance.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>3. Use of Information</Text>
+        {"\n"}
+        Your personal information is used to:
+        {"\n"}- Provide and manage the services you request.
+        {"\n"}- Process payments and handle customer support.
+        {"\n"}- Send notifications and updates related to our services.
+        {"\n"}- Improve and personalize your experience with our app.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>4. Data Security</Text>
+        {"\n"}
+        We implement robust security measures to protect your data from unauthorized access, alteration, or disclosure. However, no method of transmission over the internet or electronic storage is completely secure, so we cannot guarantee absolute security.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>5. Third-Party Services</Text>
+        {"\n"}
+        We use third-party services to facilitate and enhance our app's functionality:
+        {"\n"}- <Text style={styles.link} onPress={() => Linking.openURL('https://firebase.google.com/support/privacy')}>Firebase</Text>: We use Firebase for authentication, data storage, and analytics. Firebase's privacy practices can be reviewed at their privacy policy.
+        {"\n"}- <Text style={styles.link} onPress={() => Linking.openURL('https://stripe.com/privacy')}>Stripe</Text>: We use Stripe to process payments. Stripe's privacy practices can be reviewed at their privacy policy.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>6. Data Sharing</Text>
+        {"\n"}
+        We do not share your personal information with third parties except:
+        {"\n"}- With service providers who assist us in operating our app and providing services (e.g., Firebase, Stripe).
+        {"\n"}- When required by law or to protect our rights and safety.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>7. Your Rights</Text>
+        {"\n"}
+        You have the right to:
+        {"\n"}- Access and update your personal information.
+        {"\n"}- Request deletion of your data, subject to applicable legal requirements.
+        {"\n"}- Opt out of receiving marketing communications.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>8. Cookies and Tracking Technologies</Text>
+        {"\n"}
+        We use cookies and similar technologies to enhance your experience, analyze app usage, and deliver personalized content. You can manage your cookie preferences through your device settings.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>9. Changes to Privacy Control</Text>
+        {"\n"}
+        We may update this Privacy Control section periodically. Any changes will be posted on this page, and continued use of our app constitutes acceptance of the revised terms.
+      </Paragraph>
+
+      <Paragraph style={styles.paragraph}>
+        <Text style={styles.sectionTitle}>10. Contact Us</Text>
+        {"\n"}
+        For any questions or concerns regarding our Privacy Control practices, please contact us at <Text style={styles.link} onPress={() => Linking.openURL('mailto:admin@purecaretech.com')}>admin@purecaretech.com</Text>.
       </Paragraph>
       {/* Add more content about cookies and analytics */}
     </ScrollView>
