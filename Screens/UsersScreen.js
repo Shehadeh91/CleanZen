@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //padding: 10,
     alignItems: "center",
-    paddingTop: 75,
+    paddingTop: 50,
     paddingHorizontal: 10,
     paddingBottom: 10,
   },

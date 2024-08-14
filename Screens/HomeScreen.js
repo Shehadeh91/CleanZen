@@ -4,11 +4,13 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import useAppStore from "../useAppStore";
 import { Card, useTheme } from "react-native-paper";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width, height } = Dimensions.get('window');
 
 const HomeScreen = () => {
+
+
   const navigation = useNavigation();
   const { setVisible } = useAppStore();
 
@@ -20,6 +22,7 @@ const HomeScreen = () => {
       return () => {};
     }, [])
   );
+
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -65,6 +68,7 @@ const HomeScreen = () => {
   ];
 
   return (
+
     <View style={{backgroundColor: theme.colors.background, flex: 1}}>
 
 
@@ -87,6 +91,7 @@ const HomeScreen = () => {
       />
     </View>
     </View>
+
   );
 };
 
@@ -119,7 +124,7 @@ top: -35
     fontSize: 30,
     fontWeight: "bold",
 
-    marginTop: 25,
+    marginTop: 0,
     paddingLeft: 10,
   },
   subTitle: {

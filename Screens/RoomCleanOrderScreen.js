@@ -29,7 +29,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { count, doc, getDoc, setDoc } from "firebase/firestore";
 import BottomSheet from '@gorhom/bottom-sheet';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import roomCleanData from "../assets/roomCleanData.json";
@@ -108,9 +108,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
  };
 
 
- useEffect(() => {
-  setDate();
-}, []);
+
 
 useEffect(() => {
   setDeliveryOption();
@@ -135,7 +133,10 @@ useEffect(() => {
  };
 ////////////////////////////////////////
 
-
+useEffect(() => {
+  setDate();
+  setVisible(false);
+}, []);
 
 
   useEffect(() => {
@@ -212,7 +213,7 @@ useEffect(() => {
         Note: note,
         Delivery: deliveryOption,
         Supply: supplyOption,
-        Total: (getTotalPrice() + deliveryCost + supplyCost+ 4 + 1.5).toFixed(2),
+        Total: ((getTotalPrice() + deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Room Clean",
@@ -251,7 +252,7 @@ useEffect(() => {
         >
           <View style={{ flex: 1, bottom: -7 }}>
             <Text>{item?.title}</Text>
-            <Text style={{ color: "green" }}>${item?.price}</Text>
+            <Text style={{ color: "green" }}>${(getTotalPrice())}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -279,7 +280,7 @@ useEffect(() => {
       <Appbar.Header style={{  height: Platform.OS === 'ios' ? 44 : 56,  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, top: Platform.OS === 'ios' ? 0 : 5 }}>
         <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
-          style={{ position: "absolute", left: 220 }}
+          style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 15, textAlign: 'center' }}
         />
       </Appbar.Header>
@@ -428,6 +429,32 @@ useEffect(() => {
           </Card>
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
+               title="Add Additional Note"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="note" size={40} />
+              )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
+
+            <Card.Content
+              style={{ marginHorizontal: 50, marginTop: -15 }}
+            >
+              <TextInput
+                //label="Address"
+                value={note}
+                mode="outlined"
+               // borderColor="red"
+                // borderWidth = {2}
+                style={{width: 250 }}
+
+                onChangeText={(text) => setNote(text)}
+                // width={200}
+              />
+            </Card.Content>
+          </Card>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+            <Card.Title
               title="Service Time"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
               left={(props) => (
@@ -530,7 +557,7 @@ useEffect(() => {
           </Card>
 
           <Button
-            style={{ marginBottom: 50, bottom: -25, backgroundColor: theme.colors.primary }}
+            style={{ marginBottom: 50, top: 25, backgroundColor: theme.colors.primary }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {

@@ -39,10 +39,21 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const { width, height } = Dimensions.get('window');
 const commonColors = [
-  "#000000", "#888888", "#ed1c24", "#d11cd5", "#1633e6", "#00aeef", "#00c85d", "#57ff0a",
-  "#ffde17", "#FFFFFF", "#FFC0CB", "#FFD700", "#ADFF2F", "#00FFFF", "#FF1493", "#C71585",
-  "#D2691E", "#FF4500", "#32CD32", "#8A2BE2"
+  "#FFFFFF", // White
+  "#000000", // Black
+  "#808080", // Gray
+  "#C0C0C0", // Silver
+  "#0000FF", // Blue
+  "#FF0000", // Red
+  "#8B4513", // Brown
+  "#008000", // Green
+  "#FFA500", // Orange
+  "#A52A2A", // Maroon
+  "#FFD700", // Gold
+  "#00FFFF"  // Cyan
 ];
+
+
 
 const CarWashOrderScreen = () => {
   const navigation = useNavigation();
@@ -152,6 +163,7 @@ setUserID,
     Lexus: require('../assets/Icons/lexus.png'),
     Cadilac: require('../assets/Icons/cadilac.png'),
     Buick: require('../assets/Icons/buick.png'),
+    Tesla: require('../assets/Icons/tesla.png'),
   };
 
   const bodyTypeIcons = {
@@ -321,7 +333,7 @@ const user = auth.currentUser;
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: totalCost,
+        Total: (bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4)* 0.05)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Car Wash",
@@ -372,7 +384,7 @@ const user = auth.currentUser;
             "Subtotal: $" +
             (bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)
           }
-          style={{ position: "absolute", left: 225 }}
+          style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 15 }}
         />
       </Appbar.Header>
@@ -539,7 +551,32 @@ const user = auth.currentUser;
               </View>
             </RadioButton.Group>
           </Card>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+            <Card.Title
+               title="Add Additional Note"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="note" size={40} />
+              )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
 
+            <Card.Content
+              style={{ marginHorizontal: 50, marginTop: -15 }}
+            >
+              <TextInput
+                //label="Address"
+                value={note}
+                mode="outlined"
+               // borderColor="red"
+                // borderWidth = {2}
+                style={{width: 250 }}
+
+                onChangeText={(text) => setNote(text)}
+                // width={200}
+              />
+            </Card.Content>
+          </Card>
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
@@ -647,7 +684,7 @@ const user = auth.currentUser;
           </Card>
 
           <Button
-            style={{ marginBottom: 28, bottom: -10, backgroundColor: theme.colors.primary }}
+            style={{ marginBottom: 50, top: 25, backgroundColor: theme.colors.primary }}
             mode="contained"
             onPress={() => {
               if (!deliveryOption) {
@@ -732,7 +769,7 @@ const user = auth.currentUser;
                 alignItems: "center",
                 flexWrap: "wrap",
 
-                gap: 15,
+                gap: 25,
               }}
             >
               <TouchableOpacity
@@ -949,6 +986,24 @@ const user = auth.currentUser;
               >
                 <Icon source={require("../assets/Icons/mazda.png")} size={75} />
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Tesla"),
+                    setIconBrand(require("../assets/Icons/tesla.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/tesla.png")} size={75} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  hideModalBrand(),
+                    setCarBrand("Buick"),
+                    setIconBrand(require("../assets/Icons/buick.png"));
+                }}
+              >
+                <Icon source={require("../assets/Icons/buick.png")} size={75} />
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </Modal>
@@ -979,7 +1034,8 @@ const user = auth.currentUser;
                 justifyContent: "space-around",
                 alignItems: "center",
                 flexWrap: "wrap",
-                paddingTop: 25
+                paddingTop: 0,
+                gap: 10
               }}
             >
               <Button
@@ -1017,6 +1073,7 @@ const user = auth.currentUser;
                 >
                   $25
                 </Text>
+
               </Button>
               <Button
                 icon={require("../assets/Icons/Coupe.png")}
@@ -1330,7 +1387,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
    // backgroundColor: "white",
     // margin: 0,
-    height: "60%",
+    height: "40%",
 borderRadius:15,
     margin: 25,
     borderWidth: 1,
@@ -1361,20 +1418,23 @@ borderRadius:15,
     fontSize: 13,
     textAlign: 'center',
 
-    marginVertical: 30,
-    top: 18
+    marginBottom: 75,
+    top: 35,
+
   },
   colorCircle: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    margin: 10,
+    margin: 15,
     borderWidth: 2,
     borderColor: '#ccc',
+
   },
   colorList: {
     justifyContent: 'center',
     alignItems: 'center',
+   // gap: 25
   },
 });
 export default CarWashOrderScreen;

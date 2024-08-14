@@ -4,7 +4,9 @@ import { View, StyleSheet, ScrollView, Alert, Text, Platform,
 import { List, Divider, Button, TextInput, useTheme, IconButton } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { updatePassword, reauthenticateWithCredential, getAuth, EmailAuthProvider } from "firebase/auth";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
+import { updateDoc, doc } from "firebase/firestore";
 
 const ChangePasswordScreen = ({  }) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -27,12 +29,27 @@ const theme = useTheme();
     const credential = EmailAuthProvider.credential(user.email, currentPassword);
     await reauthenticateWithCredential(user, credential);
     await updatePassword(user, newPassword);
-
+    updateUserPassword();
     Alert.alert("Success", "Password changed successfully.");
     navigation.goBack(); // Navigate back on success
   } catch (error) {
     //console.error("Error changing password:", error);
     Alert.alert("Error", "Failed to change password.");
+  }
+};
+
+
+
+
+const updateUserPassword = async () => {
+  const user = auth.currentUser
+  try {
+    const userDocRef = doc(FIRESTORE_DB, "Users", user.email );
+    await updateDoc(userDocRef, { Password: newPassword });
+    console.log("the password changed to"+ newPassword );
+   // console.log('User address updated successfully');
+  } catch (error) {
+   // console.error('Error updating user Password: ', error);
   }
 };
 
@@ -119,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    paddingTop: 100
+    paddingTop: 50
   },
   scrollViewContent: {
     flexGrow: 1,

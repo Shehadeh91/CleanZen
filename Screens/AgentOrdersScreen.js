@@ -315,6 +315,7 @@ const theme = useTheme();
     Lexus: require("../assets/Icons/lexus.png"),
     Cadilac: require("../assets/Icons/cadilac.png"),
     Buick: require("../assets/Icons/buick.png"),
+    Tesla: require('../assets/Icons/tesla.png'),
   };
 
   const bodyTypeIcons = {
@@ -1343,7 +1344,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //padding: 10,
     alignItems: "center",
-    paddingTop: 75,
+    paddingTop: 50,
     paddingHorizontal: 10,
     paddingBottom: 10,
   },

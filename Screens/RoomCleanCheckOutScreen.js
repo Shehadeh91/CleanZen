@@ -187,14 +187,17 @@ const theme = useTheme();
   };
 
 
+  useEffect(() => {
 
+    setVisible(false);
+  }, []);
 
 
 
   const handleCardPayment = async () => {
     setPaymentLoading(true);
     try {
-      const price = (getTotalPrice()+ deliveryCost + supplyCost + 4 + 1.5).toFixed(2);
+      const price = (getTotalPrice()+ deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05) ).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
       console.error('Error initiating checkout session:', error);
@@ -285,11 +288,11 @@ const theme = useTheme();
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice()+ deliveryCost + supplyCost + 4 + 1.5).toFixed(2)}
-          style={{ position: "absolute", left: 220 }}
+          title={"Total: $" + (getTotalPrice()+ deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)}
+          style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
@@ -400,7 +403,7 @@ const theme = useTheme();
 
           </Card>
 
-          <Card style={styles.card}>
+          {/* <Card style={styles.card}>
             <Card.Title
                title="Add Additional Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -429,7 +432,7 @@ const theme = useTheme();
                 // width={200}
               />
             </Card.Content>
-          </Card>
+          </Card> */}
           <Card style={styles.card}>
             <Card.Title
               // title="Note"
@@ -466,10 +469,10 @@ const theme = useTheme();
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text> ${(getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
-                  <Text> $1.50</Text>
+                  <Text> ${((getTotalPrice() + deliveryCost + supplyCost + 4) * 0.05).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
                     {" "}
-                    ${(getTotalPrice() + deliveryCost + supplyCost + 4 + 1.5).toFixed(2)}
+                    ${(getTotalPrice() + deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -523,7 +526,7 @@ const theme = useTheme();
       )}
 
           <Button
-            style={{ marginBottom: 50, top: 10, borderWidth: 1 }}
+            style={{ marginBottom: 50, top: 25, borderWidth: 1 }}
             mode="contained"
             onPress={() => {
 

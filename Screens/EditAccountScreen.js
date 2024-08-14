@@ -145,7 +145,7 @@ const theme= useTheme();
 
   return (
 
-      <View style={{ paddingTop: 100, backgroundColor: theme.colors.background, flex: 1 }}>
+      <View style={{ paddingTop: 50, backgroundColor: theme.colors.background, flex: 1 }}>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.container}>
             <List.Section style={styles.listSection}>
@@ -196,7 +196,7 @@ const theme= useTheme();
         onChangeText={setConfirmPassword}
       /> */}
               <Button
-                style={{ marginHorizontal: 50, alignSelf: 'center', right: 110, bottom: -10, marginTop: -25 }}
+                style={{ marginHorizontal: 50, alignSelf: 'center', right: 100, bottom: -10, marginTop: -25 }}
                // contentStyle={{ color: "white" }} // Use contentStyle to style the text of the button
                 onPress={ () => navigation.navigate("changePassword")}
                 mode="text"

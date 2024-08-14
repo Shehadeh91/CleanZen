@@ -37,6 +37,8 @@ const CheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [userInfo, setUserInfo] = useState({});
+
+
   const auth = FIREBASE_AUTH;
 
   const {
@@ -223,7 +225,7 @@ const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5);
+    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4)* 0.05));
     setVisible(false);
   }, []); // Empty dependency array to run the effect once on mount
 
@@ -302,12 +304,12 @@ const theme = useTheme();
 
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
 
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={"Total: $" + totalCost.toFixed(2)}
-          style={{ position: "absolute", left: 220 }}
+          style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
@@ -415,7 +417,7 @@ const theme = useTheme();
             </View>
           </Card>
 
-          <Card style={styles.card}>
+          {/* <Card style={styles.card}>
             <Card.Title
               title="Add Additional Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -444,7 +446,7 @@ const theme = useTheme();
                 // width={200}
               />
             </Card.Content>
-          </Card>
+          </Card> */}
           <Card style={styles.card}>
             <Card.Title
               // title="Note"
@@ -480,14 +482,15 @@ const theme = useTheme();
                 </View>
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text>
-                    {" "}
+
                     ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}
                   </Text>
-                  <Text> $4.00</Text>
-                  <Text> $1.50</Text>
+                  <Text>$4.00</Text>
+                  <Text>
+                  ${((bodyStyleCost + prefrenceCost + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
-                    {" "}
-                    ${(bodyStyleCost + prefrenceCost + deliveryCost + 4 + 1.5).toFixed(2)}
+
+                    ${(bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4) * 0.05)).toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -527,7 +530,7 @@ const theme = useTheme();
                 <RadioButton.Item
                   label="Cash"
                   value="Cash"
-                  disabled={isLoading}
+                  disabled={true}
                 />
                 <RadioButton.Item
                   label="Card"
@@ -549,7 +552,7 @@ const theme = useTheme();
         </View>
       )}
           <Button
-            style={{ marginBottom: 50, top: 10, borderWidth: 1 }}
+            style={{ marginBottom: 50, top: 25, borderWidth: 1 }}
             mode="contained"
             onPress={() => {
 

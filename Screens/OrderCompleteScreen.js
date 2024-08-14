@@ -42,16 +42,32 @@ const theme = useTheme();
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
+
     <Image  style={{tintColor: theme.colors.onBackground, height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
-    <Text style={[styles.text, { color: theme.colors.onBackground }]}>
-  Thank you for choosing PureCare Tech!{'\n'}
-  Your order has been successfully placed and is now being processed.{'\n'}
-  We’ll keep you informed with updates.
-</Text>
-      <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10 }}>
+    <Text style={styles.text}>
+        Thank you for choosing PureCare Tech!
+      </Text>
+      <Text style={styles.text}>
+        Your order has been successfully placed and is now being processed.
+      </Text>
+      <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10, height: 50,
+                width: 150, justifyContent: "center", // Center the text horizontally
+                alignItems: "center", // Center the text vertically
+                alignSelf: "center", }} labelStyle={{
+                fontSize: 20,
+                alignSelf: "center",
+                textAlignVertical: "center",
+              }}>
         Home
       </Button>
-      <Button mode="contained" onPress={goToOrders}>
+      <Button mode="contained" onPress={goToOrders} style={{ marginBottom: 10, height: 50,
+                width: 150, justifyContent: "center", // Center the text horizontally
+                alignItems: "center", // Center the text vertically
+                alignSelf: "center", }} labelStyle={{
+                fontSize: 20,
+                alignSelf: "center",
+                textAlignVertical: "center",
+              }}>
         Orders
       </Button>
     </View>
@@ -65,9 +81,9 @@ const styles = StyleSheet.create({
     fontSize: 18,        // Adjusted font size for readability
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,   // Space between the text and buttons
-    paddingHorizontal: 20, // Padding for better text readability on small screens
-    lineHeight: 28, // Adjust this value to add space between lines
+    marginBottom: 50,   // Space between the text and buttons
+    paddingHorizontal: 35, // Padding for better text readability on small screens
+    lineHeight: 25, // Adjust this value to add space between lines
   },
 });
 export default OrderCompleteScreen;

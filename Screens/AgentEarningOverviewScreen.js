@@ -59,7 +59,7 @@ const theme = useTheme();
   };
 
   return (
-    <View style={{ paddingTop: 75, backgroundColor: theme.colors.background }}>
+    <View style={{ paddingTop: 50, backgroundColor: theme.colors.background }}>
 <ScrollView >
       <View
         style={{

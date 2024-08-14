@@ -12,7 +12,8 @@ import OrderCompleteScreen from "./Screens/OrderCompleteScreen";
 import DryCleanOrderScreen from "./Screens/DryCleanOrderScreen";
 import BottomNavagationComponent from "./Components/BottomNavagationComponent";
 
-import { SafeAreaView } from "react-native";
+//import { SafeAreaView } from "react-native";
+import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { lightTheme, darkTheme } from "./Components/Themes";
 
 import LocationSearchScreen from "./Screens/LocationSearchScreen";
@@ -36,31 +37,87 @@ import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
 import { useColorScheme, StatusBar, View, StyleSheet, Platform, ActivityIndicator} from "react-native";
 
-
-
+import { FIREBASE_AUTH, FIRESTORE_DB } from "./FirebaseConfig";
+import { getDoc, doc } from "firebase/firestore";
+import useAppStore from "./useAppStore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = useState("home");
+  const { setVisible } = useAppStore();
+  const [isLoading, setLoading] = useState(true);
+  const auth = FIREBASE_AUTH;
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user && user.emailVerified) {
+        try {
+          const userDocRef = doc(FIRESTORE_DB, "Users", user.email);
+          const docSnapshot = await getDoc(userDocRef);
+
+          if (docSnapshot.exists()) {
+            const userData = docSnapshot.data();
+            if (userData.Role === "Agent") {
+              setInitialRoute("agent");
+              setVisible(false);
+             // console.log("AGENT");
+            }  else if (userData.Role === "Admin") {
+              setInitialRoute("admin");
+              setVisible(false);
+             // console.log("ADMIN");
+            }
+             else {
+              setInitialRoute("home"); // Or another route based on the role
+             // console.log("HOME");
+            }
+          } else {
+            setInitialRoute("home");
+           // console.log("ELSE");
+          }
+        } catch (error) {
+         // console.error("Error fetching user role:", error);
+          setInitialRoute("home");
+         // console.log("CATCH");
+        }
+      } else {
+        setInitialRoute("home");
+       // console.log("ELSE ELSE");
+      }
+      setLoading(false); // End loading after processing user role
+    });
+
+    // Cleanup the subscription on component unmount
+    return () => unsubscribe();
+  }, [auth, setVisible]);
 
   const colorScheme = useColorScheme();
    // Select the theme based on the color scheme
    const theme = colorScheme === 'light' ? lightTheme : darkTheme;
   // console.log('Applying theme:', colorScheme);
-  return (
 
+
+  if (isLoading) {
+    return (
+      <View style={{ margin: 250, alignSelf: 'center'}}>
+        <ActivityIndicator size={75} color={theme.colors.primary} />
+      </View>
+    );
+  }
+  return (
+<SafeAreaView  style={styles.container}>
     <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
-    <SafeAreaView  style={styles.container}>
+
           <StatusBar
             barStyle="dark-content"
             backgroundColor="transparent"
             translucent={true}
           />
           <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home"  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
+        <Stack.Navigator  initialRouteName={initialRoute}  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
           <Stack.Screen
             name="home"
             component={HomeScreen}
@@ -114,13 +171,15 @@ export default function App() {
           />
               <Stack.Screen
             name="agent"
+
             component={AgentScreen}
             options={{
               headerTitle: "Agent", // Hide header title
               headerBackTitleVisible: false, // Hide back button title
               headerTransparent: true, // Make header transparent
               headerTintColor: theme.colors.onBackground, // Set back button color
-             // headerLeft: null, // Remove the back button
+              headerLeft: null, // Remove the back button
+
             }}
           />
             <Stack.Screen
@@ -348,15 +407,15 @@ export default function App() {
         {/* BottomNavagationComponent inside NavigationContainer */}
         <BottomNavagationComponent />
       </NavigationContainer>
-      </SafeAreaView>
+
       </StripeProvider>
     </PaperProvider>
-
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+   // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
 });
