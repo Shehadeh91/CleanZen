@@ -566,21 +566,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: "white",
+   // backgroundColor: "white",
     paddingTop: 15,
     // borderWidth: 2
   },
   card: {
     marginBottom: 16,
-    borderWidth: 3,
-    backgroundColor: "#F3E9F9",
+    borderWidth: 1,
+   // backgroundColor: "#F3E9F9",
   },
   input: {
     marginLeft: 20,
     bottom: 10,
     height: 50,
     width: 300,
-    backgroundColor: "white",
+   // backgroundColor: "white",
   },
   radioContainer: {
     flexDirection: "row",
@@ -620,16 +620,7 @@ const styles = StyleSheet.create({
     height: "80%",
     margin: 25,
   },
-  modalContainerColorWheel: {
-    //flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    // margin: 0,
-    height: "80%",
-    margin: 25,
-    borderWidth: 1,
-  },
+
   modalHeader: {
     fontSize: 20,
     fontWeight: "bold",

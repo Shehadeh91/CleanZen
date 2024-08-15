@@ -17,7 +17,6 @@ const stripeClient = stripe(stripeSecretKey);
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
-const myPhoneNumber = process.env.MY_PHONE_NUMBER;
 const twilioClient = twilio(twilioAccountSid, twilioAuthToken);
 
 // Read the contents of the JSON file synchronously
@@ -28,6 +27,9 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
+// Initialize Firestore
+const db = admin.firestore();
+
 // Create Express application
 const testing01 = express();
 
@@ -35,15 +37,24 @@ const testing01 = express();
 testing01.use(cors());
 testing01.use(express.json());
 
-// Function to send SMS notifications
+// Function to send SMS notifications to multiple phones
 const sendSmsNotification = async (message) => {
   try {
-    await twilioClient.messages.create({
-      body: message,
-      from: twilioPhoneNumber, // Your Twilio phone number
-      to: myPhoneNumber // Your personal phone number
-    });
-    console.log('SMS sent successfully!');
+    // Retrieve phone numbers from Firestore
+    const snapshot = await db.collection('smsRecipients').get();
+    const phoneNumbers = snapshot.docs.map(doc => doc.data().phoneNumber);
+
+    // Send SMS to each phone number
+    const promises = phoneNumbers.map(number =>
+      twilioClient.messages.create({
+        body: message,
+        from: twilioPhoneNumber,
+        to: number
+      })
+    );
+
+    await Promise.all(promises);
+    console.log('SMS sent successfully to all recipients!');
   } catch (error) {
     console.error('Error sending SMS:', error);
   }
