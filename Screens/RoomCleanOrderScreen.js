@@ -113,6 +113,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 useEffect(() => {
   setDeliveryOption();
 }, []);
+
  const handleConfirm = (dateTime) => {
   const now = new Date();
 
@@ -259,7 +260,7 @@ useEffect(() => {
               removeFromCart(item.id);
             }}
           >
-            <Icon source="minus-thick" size={35} />
+            <Icon source="minus-thick" size={25} />
           </TouchableOpacity>
           <Text style={{ marginHorizontal: 15, fontSize: 15 }}>{itemCounts[item.id]}</Text>
           <TouchableOpacity
@@ -267,7 +268,7 @@ useEffect(() => {
               addToCart(item?.id);
             }}
           >
-            <Icon source="plus-thick" size={35}  />
+            <Icon source="plus-thick" size={25}  />
           </TouchableOpacity>
         </View>
         {!lastItem && <Divider />}
@@ -640,7 +641,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   scrollView: {
     flexDirection: "column",
-
+flex: 1,
 
   },
   container: {

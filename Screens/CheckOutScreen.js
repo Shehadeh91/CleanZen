@@ -317,8 +317,8 @@ const theme = useTheme();
       <ScrollView style={styles.scrollView}>
         <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
 
-          <Card style={styles.card}>
-            <Card.Title
+        <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+        <Card.Title
               title={address}
               titleStyle={{
                 fontSize: 18,
@@ -341,7 +341,7 @@ const theme = useTheme();
               multiline={2}
             />
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -366,7 +366,7 @@ const theme = useTheme();
               </Text> */}
           </Card>
 
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title={prefrenceOption + " " + "Car Wash"}
               titleStyle={{ fontSize: 18 }}
@@ -447,7 +447,7 @@ const theme = useTheme();
               />
             </Card.Content>
           </Card> */}
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               // title="Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -496,7 +496,7 @@ const theme = useTheme();
               </View>
             </Card.Content>
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Payment"
               titleStyle={{ fontSize: 20, marginTop: 10 }}

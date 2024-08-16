@@ -5,6 +5,9 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
+  Platform,
+  StatusBar
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -21,6 +24,7 @@ import {
   PaperProvider,
   Icon,
   Divider,
+  useTheme
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -74,7 +78,7 @@ const DryCleanOrderScreen = () => {
     setEmail,
   } = useAppStore();
   //const [name, setName] = useState("");
-
+  const theme = useTheme();
 //////////////////////////////////////////////////
 const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 // const [selectedDate, setSelectedDate] = useState(null);
@@ -95,7 +99,13 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
    setDatePickerVisibility(false);
  };
 
- const handleConfirm = (dateTime) => {
+ useEffect(() => {
+  setDeliveryOption();
+}, []);
+
+  const handleConfirm = (dateTime) => {
+  const now = new Date();
+
    const formattedDate = dateTime.toLocaleString('default', {
      weekday: 'short',
      month: 'short',
@@ -104,12 +114,45 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
      minute: 'numeric',
      hour12: true,
    });
-   setDate(formattedDate);
-   hideDatePicker();
+
+
+    setDate(formattedDate);
+    hideDatePicker();
+
    //bottomSheetRef.current?.close();
  };
 ////////////////////////////////////////
+useEffect(() => {
+  setDate();
+  setVisible(false);
+}, []);
 
+useEffect(() => {
+  const user = auth.currentUser;
+  const fetchUserData = async () => {
+
+    if (user && user.email) {
+      try {
+        const docRef = doc(FIRESTORE_DB, 'Users', user.email); // Get the document reference
+        const docSnap = await getDoc(docRef); // Fetch the document
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          //setUserData(data); // Set user data
+         setAddress(data.Address); // Set address state
+
+
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+  };
+
+  fetchUserData();
+}, [user]);
 
 
   const addDryCleanOrder = async () => {
@@ -156,7 +199,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: (getTotalPrice() + deliveryCost).toFixed(2),
+        Total: ((getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.05)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Dry Clean",
@@ -189,10 +232,10 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginVertical: 5,
+            marginVertical: 10,
           }}
         >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, bottom: -7 }}>
             <Text>{item?.title}</Text>
             <Text style={{ color: "green" }}>${item?.price}</Text>
           </View>
@@ -201,15 +244,15 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
               removeFromCart(item.id);
             }}
           >
-            <Icon source="minus-thick" size={20} />
+            <Icon source="minus-thick" size={25} />
           </TouchableOpacity>
-          <Text style={{ marginHorizontal: 15 }}>{itemCounts[item.id]}</Text>
+          <Text style={{ marginHorizontal: 15, fontSize: 15 }}>{itemCounts[item.id]}</Text>
           <TouchableOpacity
             onPress={() => {
               addToCart(item?.id);
             }}
           >
-            <Icon source="plus-thick" size={20} />
+            <Icon source="plus-thick" size={25} />
           </TouchableOpacity>
         </View>
         {!lastItem && <Divider />}
@@ -218,19 +261,20 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Appbar.Header style={{ height: 50, top: 5 }}>
-        <Appbar.Content
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <Appbar.Header style={{  height: Platform.OS === 'ios' ? 44 : 56,  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, top: Platform.OS === 'ios' ? 0 : 5 }}>
+      <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost).toFixed(2)}
-          style={{ position: "absolute", left: 220 }}
-          titleStyle={{ fontSize: 15 }}
+          style={{ position: "absolute", left: 215 }}
+          titleStyle={{ fontSize: 15, textAlign: 'center' }}
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.container}>
-          {/* Car Location Card */}
-          <Card style={styles.card}>
-            <Card.Title
+      <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
+      {/* Car Location Card */}
+      <TouchableOpacity onPress={() => navigation.navigate("map")}>
+      <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+      <Card.Title
               title="Location"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
               left={(props) => (
@@ -246,7 +290,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   fontSize: 13,
                   paddingHorizontal: 15,
                   // position: "absolute",
-                  color: "blue",
+                  color: theme.colors.onBackground,
                 }}
                 multiline={true}
                 onPress={() => navigation.navigate("map")}
@@ -255,7 +299,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
               </Text>
             </View>
           </Card>
-          <Card style={styles.card}>
+          </TouchableOpacity>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Clothes"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -285,8 +330,33 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
             </Card.Content>
           </Card>
           {/* Preference Card */}
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+            <Card.Title
+               title="Add Additional Note"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="note" size={40} />
+              )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
 
-          <Card style={styles.card}>
+            <Card.Content
+              style={{ marginHorizontal: 50, marginTop: -15 }}
+            >
+              <TextInput
+                //label="Address"
+                value={note}
+                mode="outlined"
+               // borderColor="red"
+                // borderWidth = {2}
+                style={{width: 250 }}
+
+                onChangeText={(text) => setNote(text)}
+                // width={200}
+              />
+            </Card.Content>
+          </Card>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -330,7 +400,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   marginLeft: 10,
                 }}
               >
-                <RadioButton.Item label="Standard" value="Standard"  />
+                {/* <RadioButton.Item label="Standard" value="Standard"  />
                 <Text
                   style={{
                     fontSize: 13,
@@ -366,7 +436,7 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   }}
                 >
                   {"25 - 45 min"}
-                </Text>
+                </Text> */}
                 <RadioButton.Item
                     label="Schedule"
                     value="Schedule"
@@ -376,8 +446,8 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
                   style={{
                     fontSize: 13,
                     left: 17,
-                    top: 145,
-                    color: "grey",
+                    top: 40,
+                   // color: "grey",
                     position: "absolute",
                   }}
                 >
@@ -390,18 +460,40 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
           </Card>
 
           <Button
-            style={{ marginBottom: 28, bottom: -10 }}
+            style={{ marginBottom: 50, top: 25, backgroundColor: theme.colors.primary }}
             mode="contained"
             onPress={() => {
-              navigation.navigate("dryCleanCheckOut", {
-                addDryCleanOrder: addDryCleanOrder,
-              });
-              // updateTotalCost(2);
+              if (!deliveryOption) {
+                Alert.alert(
+                  "Error",
+                  "Please select a service time before confirming."
+                );
+                return;
+              }
+              if (!date) { // Check if date is not set
+      Alert.alert(
+        "Error",
+        "Please select a date before confirming."
+      );
+      return;
+    }
+ else {
+                // Add code to handle the case when there's no input in the TextInput
+                navigation.navigate("dryCleanCheckOut", {
+                  addDryCleanOrder: addDryCleanOrder,
+                });
+
+
+              }
             }}
+
+              // updateTotalCost(2);
+
             labelStyle={{
               fontSize: 20,
               textAlignVertical: "center",
-              letterSpacing: 10,
+
+             // letterSpacing: 10,
             }}
           >
             Confirm
@@ -415,17 +507,20 @@ const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
         index={-1}
         snapPoints={['25%', '25%']}
         enablePanDownToClose={true}
-        backgroundStyle={{ borderWidth: 2, borderRadius: 25, }}
+        backgroundStyle={{ borderWidth: 2, borderRadius: 25, backgroundColor: theme.colors.surfaceVariant,  borderColor: theme.colors.onBackground}}
 
              >
         <View style={{margin: 15, gap: 10, marginTop: 10}} >
         {date && <Text> {date.toString()}</Text>}
         {/* <Text style={styles.buttonText}>Choose Date & Time</Text> */}
 
-          <Button  onPress={showDatePicker} mode="contained-tonal">Select Date</Button>
+        <Button onPress={showDatePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
+            Select Date
+          </Button>
 
-          <Button  onPress={showTimePicker} mode="contained-tonal" >Select Time</Button>
-
+          <Button onPress={showTimePicker} mode="contained-tonal" style={{backgroundColor: theme.colors.primary}} labelStyle={{color: theme.colors.background}}>
+            Select Time
+          </Button>
         </View>
       </BottomSheet>
       <DateTimePickerModal
@@ -446,8 +541,9 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 16,
-    backgroundColor: "white",
+   // backgroundColor: "white",
     paddingTop: 15,
+    flex: 1,
   },
   card: {
     marginBottom: 16,
@@ -458,7 +554,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     height: 50,
     width: 300,
-    backgroundColor: "white",
+   // backgroundColor: "white",
   },
   radioContainer: {
     flexDirection: "row",
@@ -493,7 +589,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+    //backgroundColor: "white",
     borderWidth: 3,
     height: "80%",
     margin: 25,
@@ -502,7 +598,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
 

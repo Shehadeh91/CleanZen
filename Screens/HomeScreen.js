@@ -59,12 +59,12 @@ const HomeScreen = () => {
       image: require("./HouseClean.png"),
       screen: "roomClean",
     },
-    // {
-    //   id: "3",
-    //   title: "Dry Cleaning",
-    //   image: require("./DryClean.png"),
-    //   screen: "dryClean",
-    // },
+    {
+      id: "3",
+      title: "Dry Cleaning",
+      image: require("./DryClean.png"),
+      screen: "dryClean",
+    },
   ];
 
   return (

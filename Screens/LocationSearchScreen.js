@@ -92,6 +92,7 @@ const LocationSearch = () => {
         styles={{
           container: {
             flex: 0,
+padding: 10,
 
           },
           textInput: {
@@ -105,7 +106,8 @@ borderWidth: 1,
           textInputContainer: {
             backgroundColor: theme.colors.background,
             padding: 8,
-top:75
+            marginVertical: 10,
+top:15
           },
         }}
       />
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     margin: 5,
-    marginTop: 75
+    marginTop: 0
 
   },
   absoluteBox: {

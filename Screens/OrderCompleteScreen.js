@@ -3,6 +3,7 @@ import { View, Text, BackHandler, Image, StyleSheet, Dimensions } from 'react-na
 import { Button, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; // Added import
 import useAppStore from '../useAppStore';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 const { width, height } = Dimensions.get('window');
@@ -44,10 +45,10 @@ const theme = useTheme();
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: theme.colors.background }}>
 
     <Image  style={{tintColor: theme.colors.onBackground, height: 300, width: 300,  bottom: 100, marginBottom: -150}} resizeMode= 'cover' source={require("./PureCare.png")} />
-    <Text style={styles.text}>
-        Thank you for choosing PureCare Tech!
+    <Text style={[styles.text, {color: theme.colors.onBackground}]}>
+    Thank you for choosing PureCare Tech!
       </Text>
-      <Text style={styles.text}>
+      <Text style={[styles.text, {color: theme.colors.onBackground}]}>
         Your order has been successfully placed and is now being processed.
       </Text>
       <Button mode="contained" onPress={goToHome} style={{ marginBottom: 10, height: 50,

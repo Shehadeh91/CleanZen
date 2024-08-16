@@ -24,8 +24,9 @@ import {
   Modal,
   Portal,
   PaperProvider,
+  useTheme
 } from "react-native-paper";
-import useCarWashStore from "../useCarWashStore";
+
 import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 import useDryCleanCart from "../useDryCleanStore";
@@ -33,8 +34,8 @@ import useDryCleanCart from "../useDryCleanStore";
 const DryCleanCheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-
-
+  const [userInfo, setUserInfo] = useState({});
+  const auth = FIREBASE_AUTH;
 
   ///////////////////////////////////////////////////////////////////////////// Payment Stripe////////////////////////
 
@@ -209,6 +210,10 @@ const DryCleanCheckOutScreen = () => {
   } = useDryCleanCart();
 
   const [isLoading, setIsLoading] = useState(false);
+  const theme = useTheme();
+
+
+
 
   const maxWidth = getItemCountsWithTitles().reduce(
     (max, item) => Math.max(max, item.title.length),
@@ -241,32 +246,69 @@ const DryCleanCheckOutScreen = () => {
     }
   };
 
-  const goToLogIn = () => {
-    navigation.navigate("login");
 
-    setIndexBottom(1);
-  };
 
   useEffect(() => {
-    if (!user) {
-      goToLogIn();
-    }
+
+    setVisible(false);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser); // Update user state based on authentication status
+    });
+    return unsubscribe; // Clean up the subscription
+  }, [auth]);
+
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        if (!user || !user.emailVerified) {
+          // If user is not logged in or email is not verified, return early
+          return;
+        }
+
+        const userDocRef = collection(FIRESTORE_DB, "Users");
+        const querySnapshot = await getDocs(userDocRef);
+        const userData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .find((data) => data.userId === user.uid); // Assuming userId field in Firestore
+       // console.log(userData);
+        if (userData) {
+          setUserInfo(userData);
+        } else {
+         // console.log("User data not found.");
+        }
+      } catch (error) {
+       // console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
   }, [user]);
 
+  if (!user || !user.emailVerified) {
+    return <LogInScreen />;
+  }
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + 1.5).toFixed(2)}
-          style={{ position: "absolute", left: 220 }}
+          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
+          style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>
       <ScrollView style={styles.scrollView} >
-        <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.colors.background}]}>
           {/* Car Location Card */}
 
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title={address}
               titleStyle={{
@@ -290,12 +332,12 @@ const DryCleanCheckOutScreen = () => {
               multiline={2}
             />
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title={deliveryOption}
               titleStyle={{ fontSize: 18, marginTop: 10 }}
               subtitle={deliveryOption === "Schedule" ? date?.toString() : serviceTime}
-              subtitleStyle={{fontSize: 12, color: 'grey', letterSpacing: 3}}
+              subtitleStyle={{fontSize: 12, letterSpacing: 3}}
               left={(props) => (
                 <Avatar.Icon
                   {...props}
@@ -313,7 +355,7 @@ const DryCleanCheckOutScreen = () => {
               </Text> */}
           </Card>
 
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title={"Dry Clean"}
               titleStyle={{ fontSize: 18 }}
@@ -351,7 +393,7 @@ const DryCleanCheckOutScreen = () => {
             </View>
           </Card>
 
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
                title="Add Additional Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -381,7 +423,7 @@ const DryCleanCheckOutScreen = () => {
               />
             </Card.Content>
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               // title="Note"
               titleStyle={{ fontSize: 18, marginTop: 10 }}
@@ -412,16 +454,21 @@ const DryCleanCheckOutScreen = () => {
                   <Text>Subtotal</Text>
                   <Text>Service Fee</Text>
                   <Text>Taxes & Other Fees</Text>
+                  <Text style={{fontWeight: "bold"}}>Total</Text>
                 </View>
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text> ${(getTotalPrice() + deliveryCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
-                  <Text> $1.50</Text>
+                  <Text> ${((getTotalPrice() + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
+                  <Text style={{fontWeight: "bold"}}>
+                    {" "}
+                    ${(getTotalPrice() + deliveryCost  + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
+                  </Text>
                 </View>
               </View>
             </Card.Content>
           </Card>
-          <Card style={styles.card}>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Payment"
               titleStyle={{ fontSize: 20, marginTop: 10 }}
@@ -483,7 +530,7 @@ if (paymentOption === "Card") {
 }}            labelStyle={{
           fontSize: 20,
           textAlignVertical: "center",
-          letterSpacing: 10,
+         // letterSpacing: 10,
         }}
         disabled={isLoading} // Disable the button while loading
       >
@@ -509,14 +556,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: "white",
+   // backgroundColor: "white",
     paddingTop: 15,
     // borderWidth: 2
   },
   card: {
     marginBottom: 16,
-    borderWidth: 3,
-    backgroundColor: "#F3E9F9",
+    borderWidth: 1,
+    //backgroundColor: "#F3E9F9",
   },
   input: {
     marginLeft: 20,
@@ -567,11 +614,11 @@ const styles = StyleSheet.create({
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "white",
+   // backgroundColor: "white",
     // margin: 0,
     height: "80%",
     margin: 25,
-    borderWidth: 1,
+   // borderWidth: 1,
   },
   modalHeader: {
     fontSize: 20,
