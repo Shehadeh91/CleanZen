@@ -214,6 +214,10 @@ const theme = useTheme();
     setNote,
     deliveryOption,
     setDeliveryOption,
+    packageCost,
+    setPackageCost,
+    packageOption,
+    setPackageOption,
     prefrenceOption,
     setPrefrenceOption,
     paymentOption,
@@ -225,7 +229,7 @@ const theme = useTheme();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4)* 0.05));
+    updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost + packageCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + packageCost + 4)* 0.05));
     setVisible(false);
   }, []); // Empty dependency array to run the effect once on mount
 
@@ -368,7 +372,7 @@ const theme = useTheme();
 
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
-              title={prefrenceOption + " " + "Car Wash"}
+              title={packageOption + " " + prefrenceOption + " " + "Car Wash"  }
               titleStyle={{ fontSize: 18 }}
               left={(props) => (
                 <Avatar.Icon
@@ -483,14 +487,14 @@ const theme = useTheme();
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text>
 
-                    ${(bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)}
+                    ${(bodyStyleCost + prefrenceCost + packageCost + deliveryCost).toFixed(2)}
                   </Text>
                   <Text>$4.00</Text>
                   <Text>
-                  ${((bodyStyleCost + prefrenceCost + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
+                  ${((bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
 
-                    ${(bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4) * 0.05)).toFixed(2)}
+                    ${(bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4) * 0.05)).toFixed(2)}
                   </Text>
                 </View>
               </View>

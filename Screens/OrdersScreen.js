@@ -410,7 +410,7 @@ setCompletedOrders(userCompletedOrders);
             <Icon source="format-paint" color={serviceOrder.Color} size={35} />
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 15,
                 alignSelf: "center",
                 borderWidth: 1,
                 left: 5,
@@ -422,7 +422,7 @@ setCompletedOrders(userCompletedOrders);
             </Text>
             <Text
               style={{
-                fontSize: 20,
+                fontSize: 15,
                 alignSelf: "center",
                 //borderWidth: 1,
                 left: 5,
@@ -430,6 +430,17 @@ setCompletedOrders(userCompletedOrders);
             >
               {" "}
               {serviceOrder.Preference}{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Package}{" "}
             </Text>
           </View>
           {/* <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Estimated Service Time: {serviceOrder.EstimateTime}</Text> */}
@@ -449,7 +460,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}
@@ -471,7 +482,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}
@@ -520,7 +531,7 @@ setCompletedOrders(userCompletedOrders);
                   <Icon source="format-paint" color={serviceOrder.Color} size={35} />
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
                       alignSelf: "center",
                       borderWidth: 1,
                       left: 5,
@@ -532,7 +543,7 @@ setCompletedOrders(userCompletedOrders);
                   </Text>
                   <Text
               style={{
-                fontSize: 20,
+                fontSize: 15,
                 alignSelf: "center",
                 //borderWidth: 1,
                 left: 5,
@@ -540,6 +551,17 @@ setCompletedOrders(userCompletedOrders);
             >
               {" "}
               {serviceOrder.Preference}{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Package}{" "}
             </Text>
                 </View>
 
@@ -559,7 +581,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}
@@ -579,7 +601,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}
@@ -619,7 +641,7 @@ setCompletedOrders(userCompletedOrders);
                   <Icon source="format-paint" color={serviceOrder.Color} size={35} />
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 15,
                       alignSelf: "center",
                       borderWidth: 1,
                       left: 5,
@@ -631,7 +653,7 @@ setCompletedOrders(userCompletedOrders);
                   </Text>
                   <Text
               style={{
-                fontSize: 20,
+                fontSize: 15,
                 alignSelf: "center",
                 //borderWidth: 1,
                 left: 5,
@@ -639,6 +661,17 @@ setCompletedOrders(userCompletedOrders);
             >
               {" "}
               {serviceOrder.Preference}{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                alignSelf: "center",
+                //borderWidth: 1,
+                left: 5,
+              }}
+            >
+              {" "}
+              {serviceOrder.Package}{" "}
             </Text>
                 </View>
 
@@ -658,7 +691,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}
@@ -677,7 +710,7 @@ setCompletedOrders(userCompletedOrders);
                         key={index}
                         style={{ fontSize: 13, fontFamily: "monospace", marginVertical: 3 }}
                       >
-                        {item.title.padEnd( 30 )}{" "}
+                        {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
                     ))}

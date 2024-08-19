@@ -299,7 +299,7 @@ const DryCleanCheckOutScreen = () => {
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
+          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.025)).toFixed(2)}
           style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 20 }}
         />
@@ -459,10 +459,10 @@ const DryCleanCheckOutScreen = () => {
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text> ${(getTotalPrice() + deliveryCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
-                  <Text> ${((getTotalPrice() + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
+                  <Text> ${((getTotalPrice() + deliveryCost + 4) * 0.025).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
                     {" "}
-                    ${(getTotalPrice() + deliveryCost  + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
+                    ${(getTotalPrice() + deliveryCost  + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.025)).toFixed(2)}
                   </Text>
                 </View>
               </View>
@@ -498,7 +498,7 @@ const DryCleanCheckOutScreen = () => {
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" disabled={isLoading} />
+                <RadioButton.Item label="Cash" value="Cash" disabled={true} />
                 <RadioButton.Item label="Card" value="Card" disabled={isLoading} />
               </View>
             </RadioButton.Group>

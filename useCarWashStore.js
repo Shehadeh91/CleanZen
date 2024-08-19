@@ -36,16 +36,22 @@ const useCarWashStore = create((set, get) => ({
   prefrenceOption: "Exterior", // Initial value for prefrenceOption
   setPrefrenceOption: (value) => set({ prefrenceOption: value }),
 
+  packageOption: "Basic", // Initial value for prefrenceOption
+  setPackageOption: (value) => set({ packageOption: value }),
+
   deliveryCost: 0, // Initial value for deliveryCost
   setDeliveryCost: (value) => set({ deliveryCost: value }),
 
   prefrenceCost: 0, // Initial value for prefrenceCost
   setPrefrenceCost: (value) => set({ prefrenceCost: value }),
 
-  bodyStyleCost: 25, // Initial value for bodyStyleCost
+  packageCost: 0, // Initial value for prefrenceCost
+  setPackageCost: (value) => set({ packageCost: value }),
+
+  bodyStyleCost: 35, // Initial value for bodyStyleCost
   setBodyStyleCost: (value) => set({ bodyStyleCost: value }),
 
-  totalCost: 25, // Initial value for totalCost
+  totalCost: 35, // Initial value for totalCost
   updateTotalCost: (value) => set({ totalCost: value }),
 
   serviceTime: '',

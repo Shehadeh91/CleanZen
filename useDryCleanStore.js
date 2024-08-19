@@ -21,7 +21,7 @@ const useDryCleanCart = create((set, get) => ({
   note: "", // Initial value for Note
   setNote: (value) => set({ note: value }),
 
-  paymentOption: "Cash", // Initial value for paymentOption
+  paymentOption: "Card", // Initial value for paymentOption
   setPaymentOption: (value) => set({ paymentOption: value }),
 
   addToCart: (itemId) =>
@@ -77,7 +77,7 @@ const useDryCleanCart = create((set, get) => ({
     } else {
       const currentDate = new Date();
       const newTime = new Date(currentDate.getTime() + when * 60000); // Convert minutes to milliseconds
-  
+
       // Format the new time
       const formattedTime = newTime.toLocaleString('default', {
         weekday: 'short',
@@ -87,11 +87,11 @@ const useDryCleanCart = create((set, get) => ({
         minute: 'numeric',
         hour12: true,
       });
-  
+
       set({ serviceTime: formattedTime });
     }
   },
-  
+
 }));
 
 export default useDryCleanCart;

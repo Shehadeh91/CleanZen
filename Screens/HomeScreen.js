@@ -49,13 +49,13 @@ const HomeScreen = () => {
   const data = [
     {
       id: "1",
-      title: "Hand Car Wash",
+      title: "Mobile Car Wash",
       image: require("./CarClean.png"),
       screen: "carWash",
     },
     {
       id: "2",
-      title: "House Cleaning",
+      title: "Room Cleaning",
       image: require("./HouseClean.png"),
       screen: "roomClean",
     },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 
   },
   cardContainer: {
-
+flex: 1
 
   },
   card: {

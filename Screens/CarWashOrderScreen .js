@@ -23,6 +23,7 @@ import {
   Portal,
   PaperProvider,
   Icon,
+  Dialog,
   useTheme
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -80,6 +81,8 @@ const CarWashOrderScreen = () => {
     setCarPlate,
     deliveryCost,
     setDeliveryCost,
+    packageCost,
+    setPackageCost,
     prefrenceCost,
     setPrefrenceCost,
     bodyStyleCost,
@@ -90,6 +93,8 @@ const CarWashOrderScreen = () => {
     setNote,
     deliveryOption,
     setDeliveryOption,
+    packageOption,
+    setPackageOption,
     prefrenceOption,
     setPrefrenceOption,
     paymentOption,
@@ -128,7 +133,10 @@ setUserID,
 
   const auth = FIREBASE_AUTH;
 
+  const [visibleDialog, setVisibleDialog] = useState(false);
 
+  const showDialog = () => setVisibleDialog(true);
+  const hideDialog = () => setVisibleDialog(false);
 
   const theme = useTheme();
   //////////////////////////////////////////////////
@@ -176,12 +184,12 @@ setUserID,
   };
 
   const bodyStyleCosts = {
-    Sedan: 25,
-    Coupe: 25,
-    Hatchback: 30,
+    Sedan: 35,
+    Coupe: 35,
+    Hatchback: 35,
     PickupTruck: 40,
-    SUV: 50,
-    MiniVan: 65,
+    SUV: 40,
+    MiniVan: 50,
   };
 
 
@@ -249,6 +257,10 @@ const user = auth.currentUser;
   useEffect(() => {
    setDate();
    setVisible(false);
+   setPackageOption("Basic");
+    setPrefrenceOption("Exterior");
+    setPrefrenceCost(0);
+    setPackageCost(0);
  }, []);
  useEffect(() => {
   setDeliveryOption();
@@ -328,12 +340,13 @@ const user = auth.currentUser;
         CarBrand: carBrand,
         BodyType: bodyStyle,
         Preference: prefrenceOption, // Update Preference based on selected option
+        Package: packageOption, // Update Preference based on selected option
         Color: currentColor,
         PlateNumber: carPlate,
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: (bodyStyleCost + prefrenceCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + deliveryCost + 4)* 0.05)),
+        Total: ((bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4 + ((bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4)* 0.05)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Car Wash",
@@ -376,13 +389,44 @@ const user = auth.currentUser;
     />
   );
 
+
+  const handlePreferenceChange = (newValue) => {
+    let updatedPreferenceCost;
+
+    if (newValue === "Exterior" || newValue === "Interior") {
+      updatedPreferenceCost = 0;
+    } else if (newValue === "Int/Ext") {
+      updatedPreferenceCost = bodyStyleCost * 0.75;
+    }
+
+    setPrefrenceCost(updatedPreferenceCost);
+    updatePackageCost(packageOption, updatedPreferenceCost);
+  };
+  const handlePackageChange = (newValue) => {
+    setPackageOption(newValue);
+    updatePackageCost(newValue, prefrenceCost);
+  };
+  const updatePackageCost = (packageOption, preferenceCost) => {
+    let updatedPackageCost;
+
+    if (packageOption === "Basic") {
+      updatedPackageCost = 0;
+    } else if (packageOption === "Detailing") {
+      updatedPackageCost = (bodyStyleCost + preferenceCost) * 1.5;
+    }
+
+    setPackageCost(updatedPackageCost);
+  };
+
+
+
   return (
     <View style={{ flex: 1}}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
           title={
             "Subtotal: $" +
-            (bodyStyleCost + prefrenceCost + deliveryCost).toFixed(2)
+            (bodyStyleCost + prefrenceCost + packageCost + deliveryCost).toFixed(2)
           }
           style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 15 }}
@@ -457,8 +501,13 @@ const user = auth.currentUser;
                 contentStyle={{ left: 7 }}
                 icon={iconBodyStyle}
                 mode="text"
-                onPress={showModalBodyStyle}
-              >
+                onPress={() => {
+    showModalBodyStyle();
+    setPackageOption("Basic");
+    setPrefrenceOption("Exterior");
+    setPrefrenceCost(0);
+    setPackageCost(0);
+  }}              >
                 {/* Style */}
               </Button>
               <Button
@@ -486,6 +535,7 @@ const user = auth.currentUser;
               onChangeText={(text) => setCarPlate(text)}
             />
           </Card>
+
           {/* Preference Card */}
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
@@ -501,13 +551,7 @@ const user = auth.currentUser;
               onValueChange={(newValue) => {
                 setPrefrenceOption(newValue);
 
-                if (newValue === "Exterior") {
-                  setPrefrenceCost(0);
-                } else if (newValue === "Interior") {
-                  setPrefrenceCost(0);
-                } else {
-                  setPrefrenceCost(bodyStyleCost * 0.75);
-                }
+               handlePreferenceChange(newValue);
               }}
               value={prefrenceOption}
             >
@@ -522,7 +566,7 @@ const user = auth.currentUser;
                     position: "absolute",
                   }}
                 >
-                  {"$"+bodyStyleCost}
+                  {"+$"+0}
                 </Text>
                 <RadioButton.Item label="Interior" value="Interior" />
                 <Text
@@ -534,7 +578,7 @@ const user = auth.currentUser;
                     position: "absolute",
                   }}
                 >
-                 {"$"+bodyStyleCost}
+                 {"+$"+0}
                 </Text>
                 <RadioButton.Item label="Int/Ext" value="Int/Ext" />
                 <Text
@@ -546,8 +590,76 @@ const user = auth.currentUser;
                     position: "absolute",
                   }}
                 >
-                  {"$"+(bodyStyleCost + (bodyStyleCost * 0.75))}
+                  {"+$"+(bodyStyleCost * 0.75).toFixed(2)}
                 </Text>
+              </View>
+            </RadioButton.Group>
+          </Card>
+           {/* Package Card */}
+           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+            <Card.Title
+              title="Select Your Package"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="package" size={40} />
+              )}
+              right={() => (
+            <TouchableOpacity
+              style={styles.infoButton}
+              onPressIn={showDialog}
+              onPressOut={hideDialog}
+            >
+              <Avatar.Icon icon="information-variant" size={30} />
+            </TouchableOpacity>
+          )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
+
+            <RadioButton.Group
+              onValueChange={(newValue) => {
+                setPackageOption(newValue);
+
+                handlePackageChange(newValue);
+              }}
+              value={packageOption}
+            >
+              <View style={styles.radioContainer}>
+                <RadioButton.Item label="Basic Clean" value="Basic" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"+$"+0}
+                </Text>
+                <RadioButton.Item label="Premium Detailing" value="Detailing" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                 {"+$"+((bodyStyleCost + prefrenceCost) * 1.5).toFixed(2)}
+                </Text>
+                {/* <RadioButton.Item label="Int/Ext" value="Int/Ext" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 143,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"$"+(bodyStyleCost + (bodyStyleCost * 0.75))}
+                </Text> */}
               </View>
             </RadioButton.Group>
           </Card>
@@ -1044,7 +1156,7 @@ const user = auth.currentUser;
                 mode="contained"
                 onPress={() => {
                   hideModalBodyStyle(),
-                    setBodyStyleCost(25),
+                    setBodyStyleCost(35),
                     setBodyStyle("Sedan"),
                     setIconBodyStyle(require("../assets/Icons/Sedan.png"));
                 }}
@@ -1071,7 +1183,7 @@ const user = auth.currentUser;
                     alignSelf: "center",
                   }}
                 >
-                  $25
+                  $35
                 </Text>
 
               </Button>
@@ -1081,7 +1193,7 @@ const user = auth.currentUser;
                 mode="contained"
                 onPress={() => {
                   hideModalBodyStyle(),
-                    setBodyStyleCost(25),
+                    setBodyStyleCost(35),
                     setBodyStyle("Coupe"),
                     setIconBodyStyle(require("../assets/Icons/Coupe.png"));
                 }}
@@ -1107,7 +1219,7 @@ const user = auth.currentUser;
                     alignSelf: "center",
                   }}
                 >
-                  $25
+                  $35
                 </Text>
               </Button>
               <Button
@@ -1116,7 +1228,7 @@ const user = auth.currentUser;
                 mode="contained"
                 onPress={() => {
                   hideModalBodyStyle(),
-                    setBodyStyleCost(30),
+                    setBodyStyleCost(35),
                     setBodyStyle("Hatchback"),
                     setIconBodyStyle(require("../assets/Icons/Hatchback.png"));
                 }}
@@ -1142,7 +1254,7 @@ const user = auth.currentUser;
                     alignSelf: "center",
                   }}
                 >
-                  $30
+                  $35
                 </Text>
               </Button>
               <Button
@@ -1188,7 +1300,7 @@ const user = auth.currentUser;
                 mode="contained"
                 onPress={() => {
                   hideModalBodyStyle(),
-                    setBodyStyleCost(50),
+                    setBodyStyleCost(40),
                     setBodyStyle("SUV"),
                     setIconBodyStyle(require("../assets/Icons/SUV.png"));
                 }}
@@ -1214,7 +1326,7 @@ const user = auth.currentUser;
                     alignSelf: "center",
                   }}
                 >
-                  $50
+                  $40
                 </Text>
               </Button>
               <Button
@@ -1223,7 +1335,7 @@ const user = auth.currentUser;
                 mode="contained"
                 onPress={() => {
                   hideModalBodyStyle(),
-                    setBodyStyleCost(65),
+                    setBodyStyleCost(50),
                     setBodyStyle("MiniVan"),
                     setIconBodyStyle(require("../assets/Icons/MiniVan.png"));
                 }}
@@ -1249,7 +1361,7 @@ const user = auth.currentUser;
                     alignSelf: "center",
                   }}
                 >
-                  $65
+                  $50
                 </Text>
               </Button>
             </View>
@@ -1314,6 +1426,51 @@ const user = auth.currentUser;
 
 
         </Modal>
+      </Portal>
+      <Portal>
+        <Dialog visible={visibleDialog} onDismiss={hideDialog}>
+
+        <Dialog.Content>
+    <View style={{ padding: 16 }}>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 8 }}>
+        1. Basic Clean:
+      </Text>
+      <View style={{ marginLeft: 8 }}>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Vacuuming</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Surface wiping</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Glass and vinyl wipe</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Complete towel dry</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Rim cleaning</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Carpet mats washed</Text>
+      </View>
+
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 16, marginBottom: 8 }}>
+        2. Premium Detailing:
+      </Text>
+      <View style={{ marginLeft: 8 }}>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Vacuuming</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Carpet shampoo</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Surface wiping and polish</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Glass and vinyl wipe</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Triple coat</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Rust protection</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Tire shine</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Clear coat treatment</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Mirror and glass towel dry</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Deluxe wash</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Vinyl surface treatment</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Rim cleaning</Text>
+        <Text style={{ fontSize: 14, marginBottom: 4 }}>• Additional care as needed</Text>
+      </View>
+    </View>
+  </Dialog.Content>
+
+
+
+
+
+
+        </Dialog>
       </Portal>
     </View>
   );
@@ -1435,6 +1592,12 @@ borderRadius:15,
     justifyContent: 'center',
     alignItems: 'center',
    // gap: 25
+  },
+  infoButton: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    //padding: 8,
+   paddingRight: 25
   },
 });
 export default CarWashOrderScreen;

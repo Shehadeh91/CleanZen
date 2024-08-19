@@ -39,6 +39,7 @@ import useAppStore from "../useAppStore";
 const DryCleanOrderScreen = () => {
   const navigation = useNavigation();
   const [text, setText] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // Added state for search query
 
   const {
     clearCart,
@@ -199,7 +200,7 @@ useEffect(() => {
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: ((getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.05)).toFixed(2)),
+        Total: ((getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.025)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Dry Clean",
@@ -259,6 +260,12 @@ useEffect(() => {
       </>
     );
   };
+
+   // Filter items based on the search query
+   const filteredItems = dryCleanData.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -320,11 +327,23 @@ useEffect(() => {
             />
 
             <Card.Content>
-              {dryCleanData.map((item, index) => (
+            <TextInput
+                placeholder="Search items..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                style={{
+                  height: 40,
+                  borderColor: "gray",
+                  borderWidth: 1,
+                  marginBottom: 20,
+                  paddingHorizontal: 10,
+                }}
+              />
+              {filteredItems.map((item, index) => (
                 <Item
                   key={item.id}
                   item={item}
-                  lastItem={index === dryCleanData.length - 1}
+                  lastItem={index === filteredItems.length - 1}
                 />
               ))}
             </Card.Content>
