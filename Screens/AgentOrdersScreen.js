@@ -802,7 +802,7 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
@@ -863,7 +863,7 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -979,7 +979,7 @@ borderWidth:0.5
                   <Text
                     style={{
                       fontSize: 13,
-                    //  color: "blue",
+                      marginVertical: 5,
                       textDecorationLine: "underline",
                       paddingHorizontal: 5,
                     }}
@@ -988,9 +988,8 @@ borderWidth:0.5
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13 }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -1013,13 +1012,13 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text
                     style={{
                       fontSize: 13,
-                     // color: "blue",
+                      marginVertical: 5,
                       textDecorationLine: "underline",
                       paddingHorizontal: 5,
                     }}
@@ -1028,9 +1027,8 @@ borderWidth:0.5
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13 }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -1053,14 +1051,14 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
                   <Text
                     style={{
                       fontSize: 13,
-                     // color: "blue",
+                      marginVertical: 5,
                       textDecorationLine: "underline",
                       paddingHorizontal: 5,
                     }}
@@ -1069,9 +1067,8 @@ borderWidth:0.5
                     {serviceOrder.Address}
                   </Text>
 
-                  <Text style={{ fontSize: 13 }}>
-                    {serviceOrder.Assigned}
-                  </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
             </View>
@@ -1228,7 +1225,7 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
@@ -1289,7 +1286,7 @@ borderWidth:0.5
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -1374,7 +1371,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
-    //padding: 3,
+    padding: 3,
 
     //backgroundColor: '#b3e0ff',
     borderBottomWidth: 0,

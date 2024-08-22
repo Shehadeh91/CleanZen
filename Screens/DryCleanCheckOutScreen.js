@@ -11,6 +11,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import firebase from "firebase/compat/app";
 import { StripeProvider, useStripe } from "@stripe/stripe-react-native";
+import { FIRESTORE_Function } from "../FirebaseConfig";
+import { httpsCallable } from "firebase/functions";
 
 import {
   Card,
@@ -31,6 +33,13 @@ import useAppStore from "../useAppStore";
 import LogInScreen from "./LogInScreen";
 import useDryCleanCart from "../useDryCleanStore";
 
+
+
+
+
+
+
+
 const DryCleanCheckOutScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -48,6 +57,7 @@ const DryCleanCheckOutScreen = () => {
 
   const [loading, setLoading] = useState(false);
   //
+
 
 
   // payment handler api
@@ -70,7 +80,10 @@ const DryCleanCheckOutScreen = () => {
         allowsDelayedPaymentMethods: true,
         defaultBillingDetails: {
           name: name,
-
+          city: 'Winnipeg', // Set city
+          state: 'MB', // Set province/state (MB for Manitoba)
+         // postalCode: 'R3A 1A1', // Set postal/ZIP code
+          country: 'CA', // Set country code (CA for Canada)
 
         },
         applePay: {
@@ -99,7 +112,7 @@ const DryCleanCheckOutScreen = () => {
         }
       }
     } catch (error) {
-     // console.error('Error initializing payment sheet:', error);
+      console.error('Error initializing payment sheet:', error);
     } finally {
       setLoading(false);
       setIsLoading(false); // Show activity indicator
@@ -149,7 +162,7 @@ const DryCleanCheckOutScreen = () => {
   const handleCardPayment = async () => {
     setPaymentLoading(true);
     try {
-      const price = (getTotalPrice()+ deliveryCost + 4 + 1.5).toFixed(2);
+      const price = (getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.025)).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
      // console.error('Error initiating checkout session:', error);
@@ -237,12 +250,27 @@ const DryCleanCheckOutScreen = () => {
         await addDryCleanOrder(); // Call the function
         // Other logic after adding the car wash order
        // console.log("Dry Clean order added successfully!");
-        //
+          // Send SMS notification
+        // Send SMS notification
+        const message = "Hooray! There's a new Dry Cleaning order ready for you to fulfill!";
+        const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+
+
+        if (!response.ok) {
+          throw new Error('Failed to send SMS');
+        }
       }
     } catch (error) {
       // console.error("Error adding car wash order:", error);
     } finally {
       setIsLoading(false); // Hide activity indicator
+
     }
   };
 
@@ -498,7 +526,7 @@ const DryCleanCheckOutScreen = () => {
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" disabled={true} />
+                <RadioButton.Item label="Cash" value="Cash" disabled={isLoading} />
                 <RadioButton.Item label="Card" value="Card" disabled={isLoading} />
               </View>
             </RadioButton.Group>

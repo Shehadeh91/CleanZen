@@ -21,6 +21,9 @@ const useCarWashStore = create((set, get) => ({
   note: "", // Initial value for Note
   setNote: (value) => set({ note: value }),
 
+  rating: "", // Initial value for Note
+  setRating: (value) => set({ rating: value }),
+
   currentColor: "", // Initial value for Color
   setCurrentColor: (value) => set({ currentColor: value }),
 

@@ -236,8 +236,23 @@ const theme = useTheme();
         await addRoomCleanOrder(); // Call the function
         // Other logic after adding the car wash order
        // console.log("Room Clean order added successfully!");
-        //
+        // Send SMS notification
+        const message = "Hooray! There's a new Room Cleaning order ready for you to fulfill!";
+        const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message }),
+        });
+
+
+        if (!response.ok) {
+          throw new Error('Failed to send SMS');
+        }
       }
+
+
     } catch (error) {
       // console.error("Error adding car wash order:", error);
     } finally {
@@ -508,7 +523,7 @@ const theme = useTheme();
                   borderColor: "red",
                 }}
               >
-                <RadioButton.Item label="Cash" value="Cash" disabled={true} />
+                <RadioButton.Item label="Cash" value="Cash" disabled={isLoading} />
                 <RadioButton.Item label="Card" value="Card" disabled={isLoading} />
               </View>
             </RadioButton.Group>

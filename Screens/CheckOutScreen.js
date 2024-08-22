@@ -251,6 +251,21 @@ const theme = useTheme();
         // Other logic after adding the car wash order
         // console.log("Car wash order added successfully!");
         //
+         // Send SMS notification
+         const message = "Hooray! There's a new Car Wash order ready for you to fulfill!";
+         const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json',
+           },
+           body: JSON.stringify({ message }),
+         });
+
+
+         if (!response.ok) {
+           throw new Error('Failed to send SMS');
+         }
+
       }
     } catch (error) {
       // console.error("Error adding car wash order:", error);
@@ -534,7 +549,7 @@ const theme = useTheme();
                 <RadioButton.Item
                   label="Cash"
                   value="Cash"
-                  disabled={true}
+                  disabled={isLoading}
                 />
                 <RadioButton.Item
                   label="Card"

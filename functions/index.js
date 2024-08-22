@@ -7,6 +7,7 @@ const stripe = require('stripe');
 const { readFileSync } = require('fs');
 const twilio = require('twilio');
 
+
 // Load environment variables from a .env file
 dotenv.config({ path: './env/.env.local' });
 
@@ -81,8 +82,8 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
     });
 
     // Send SMS notification
-    const smsMessage = `Order Completed: Your payment of $${amount} was successful!`;
-    await sendSmsNotification(smsMessage);
+    // const smsMessage = `Order Completed: Your payment of $${amount} was successful!`;
+    // await sendSmsNotification(smsMessage);
 
     // Respond with payment information
     res.json({
@@ -95,6 +96,25 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Endpoint to send SMS confirmation for an order
+testing01.post('/send-order-confirmation-sms', async (req, res) => {
+  const { message } = req.body;
+
+  try {
+    // Send SMS notification
+    await sendSmsNotification(message);
+
+    // Respond with success
+    res.status(200).send('Order confirmation SMS sent successfully');
+  } catch (error) {
+    console.error('Error sending SMS:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
 
 // Retrieve or create customer for Stripe
 testing01.post('/retrieveOrCreateCustomer', async (req, res) => {

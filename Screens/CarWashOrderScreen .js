@@ -101,6 +101,8 @@ const CarWashOrderScreen = () => {
     setPaymentOption,
     date,
     setDate,
+    rating,
+    setRating
   } = useCarWashStore();
 
   const {
@@ -352,6 +354,7 @@ const user = auth.currentUser;
         Service: "Car Wash",
         EstimateTime: serviceTime,
         Date: date,
+        Rating: rating
       });
 
       await setDoc(

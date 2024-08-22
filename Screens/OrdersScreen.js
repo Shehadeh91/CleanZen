@@ -10,16 +10,17 @@ import {
 
 
 } from "react-native";
-import { Button, Icon, MD3Colors, Divider, useTheme } from "react-native-paper";
+import { Button, Icon, MD3Colors, Divider, useTheme, IconButton } from "react-native-paper";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
 import useAppStore from "../useAppStore";
-import { collection, query, getDocs, Firestore } from "firebase/firestore";
+import { collection, query, getDocs, Firestore, updateDoc } from "firebase/firestore";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { Swipeable } from "react-native-gesture-handler";
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const OrderScreen = () => {
   const navigation = useNavigation();
@@ -33,6 +34,8 @@ const OrderScreen = () => {
   const [inProgressOrders, setInProgressOrders] = useState([]);
   const [canceledOrders, setCanceledOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
+
+
 
   const swipeableRef = useRef(null);
 const theme = useTheme();
@@ -245,6 +248,38 @@ setCompletedOrders(userCompletedOrders);
     }
   };
 
+
+
+// Function to set service rating
+const markOrderRating = async (orderId, serviceType, rating) => {
+  try {
+      // Mapping service types to Firestore collection names
+      const serviceCollectionMap = {
+          "Dry Clean": "Dry-Clean",
+          "Car Wash": "Car-Wash",
+          "Room Clean": "Room-Clean"
+      };
+
+      // Get the collection name based on service type
+      const collectionName = serviceCollectionMap[serviceType];
+      if (!collectionName) {
+          console.error("Invalid service type:", serviceType);
+          return;
+      }
+
+      // Reference to the appropriate collection
+      const ordersRef = collection(FIRESTORE_DB, collectionName);
+      const orderDocRef = doc(ordersRef, orderId);
+  // Update the Rating field in the specified document
+  await updateDoc(orderDocRef, { Rating: rating });
+  console.log(`Rating "${rating}" set for order ID "${orderId}" in collection "${collectionName}".`);
+handleButtonPress("Completed");
+  } catch (error) {
+      console.error("Error setting service rating:", error);
+  }
+};
+
+
   const markOrderAsCanceled = async (orderId, serviceType) => {
     try {
       if (serviceType === "Dry Clean") {
@@ -262,6 +297,9 @@ setCompletedOrders(userCompletedOrders);
        // console.error("Invalid service type:", serviceType);
         return;
       }
+
+
+
 
 
      // console.log("Order marked as Canceled.");
@@ -566,8 +604,34 @@ setCompletedOrders(userCompletedOrders);
                 </View>
 
                 {/* Add other fields as needed */}
-              </View>
+                {/* Review Section */}
+
+
+
+   {/* Service Review Section */}
+   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+              {!['Excellent', 'Fair', 'Poor'].includes(serviceOrder.Rating) && (
+                <View style={{ flexDirection: 'row' }}>
+                  {['Excellent', 'Fair', 'Poor'].map((rating, index) => (
+                    <Button
+                      key={index}
+                      mode='text'
+                      labelStyle={{ fontSize: 15 }}
+                      onPress={() => markOrderRating(serviceOrder.id, serviceOrder.Service, rating)}
+                    >
+                      {rating}
+                    </Button>
+                  ))}
+                </View>
               )}
+            </View>
+
+
+
+
+          </View>
+        )}
                {serviceOrder.Service === 'Dry Clean' && (
                 <View style={[styles.orderItem,{ backgroundColor: theme.colors.surfaceVariant}]}>
 
@@ -584,8 +648,27 @@ setCompletedOrders(userCompletedOrders);
                         {item.title.padEnd( 37 )}{" "}
                         x{item.count}
                       </Text>
-                    ))}
 
+                    ))}
+ {/* Service Review Section */}
+ <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+ <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
+              {!['Excellent', 'Fair', 'Poor'].includes(serviceOrder.Rating) && (
+                <View style={{ flexDirection: 'row' }}>
+                  {['Excellent', 'Fair', 'Poor'].map((rating, index) => (
+                    <Button
+                      key={index}
+                      mode='text'
+                      labelStyle={{ fontSize: 15 }}
+                      onPress={() => markOrderRating(serviceOrder.id, serviceOrder.Service, rating)}
+                    >
+                      {rating}
+                    </Button>
+                  ))}
+                </View>
+              )}
+            </View>
             </View>
           )}
           {serviceOrder.Service === 'Room Clean' && (
@@ -606,6 +689,26 @@ setCompletedOrders(userCompletedOrders);
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+
+                     {/* Service Review Section */}
+   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+   <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
+              {!['Excellent', 'Fair', 'Poor'].includes(serviceOrder.Rating) && (
+                <View style={{ flexDirection: 'row' }}>
+                  {['Excellent', 'Fair', 'Poor'].map((rating, index) => (
+                    <Button
+                      key={index}
+                      mode='text'
+                      labelStyle={{ fontSize: 15 }}
+                      onPress={() => markOrderRating(serviceOrder.id, serviceOrder.Service, rating)}
+                    >
+                      {rating}
+                    </Button>
+                  ))}
+                </View>
+              )}
+            </View>
             </View>
           )}
           </View>
@@ -765,7 +868,7 @@ const styles = StyleSheet.create({
 
   },
   orderItem: {
-    //padding: 3,
+    padding: 3,
  //backgroundColor: '#4FC3F7',
     borderBottomWidth: 0,
 marginVertical: 1,

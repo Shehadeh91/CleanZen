@@ -512,7 +512,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
 
@@ -551,7 +551,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -653,6 +653,8 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                   <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
               {serviceOrder.Service === "Dry Clean" && (
@@ -671,7 +673,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text
@@ -687,6 +689,8 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                   <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
               {serviceOrder.Service === "Room Clean" && (
@@ -705,7 +709,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -722,6 +726,8 @@ const AdminOrdersScreen = () => {
                   </Text>
 
                   <Text style={{ fontSize: 13 }}> Agent: {serviceOrder.Assigned} </Text>
+                  <Text style={{ fontSize: 12, marginVertical: 5, letterSpacing: 1 }}> Service Rating: {serviceOrder.Rating}</Text>
+
                 </View>
               )}
             </View>
@@ -821,7 +827,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text
@@ -855,7 +861,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -978,7 +984,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
@@ -1019,7 +1025,7 @@ const AdminOrdersScreen = () => {
                           marginVertical: 3,
                         }}
                       >
-                        {item.title.padEnd(30)} x{item.count}
+                        {item.title.padEnd(37)} x{item.count}
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
@@ -1088,7 +1094,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
-    //padding: 3,
+    padding: 3,
 
    // backgroundColor: '#b3e0ff',
     borderBottomWidth: 0,

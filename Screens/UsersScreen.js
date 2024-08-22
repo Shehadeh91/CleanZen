@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#D8BFD8",
   },
   orderItem: {
-    //padding: 3,
+    padding: 3,
    //backgroundColor: '#b3e0ff',
     borderBottomWidth: 0,
 marginVertical: 1,
