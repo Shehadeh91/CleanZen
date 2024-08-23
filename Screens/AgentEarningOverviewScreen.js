@@ -39,6 +39,12 @@ const AgentEarningOverviewScreen = () => {
       if (agentDocSnap.exists()) {
         // Extract agent's data from the document snapshot
         const data = agentDocSnap.data();
+         // Calculate the sum of all invoice amounts
+      if (data.Invoices) {
+        data.netPay = data.Invoices.reduce((sum, invoice) => sum + invoice.amount, 0);
+       // data.TotalEarnings = netPay; // Update TotalEarnings with the sum of invoices
+      // console.log(data.netPay);
+      }
         setAgentData(data); // Call setAgentData with the new value
       } else {
         console.log("Agent document does not exist");
@@ -112,7 +118,7 @@ const theme = useTheme();
             title="Total Earnings"
             subtitleStyle={{ paddingHorizontal: 5, letterSpacing: 2 }}
             subtitle={
-              agentData ? "$" + (agentData.TotalEarnings * 0.75).toFixed(2) : ""
+              agentData ? "$" + (agentData.netPay).toFixed(2) : ""
             }
             left={(props) => (
               <Avatar.Image source={require("./GrossEarnings.png")} />

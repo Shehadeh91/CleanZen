@@ -494,11 +494,14 @@ const theme = useTheme();
         services: services,
         NumberOfServices: NumberOfServices + 1,
         TotalEarnings: TotalEarnings.toFixed(2),
-      });
+        NetPay: '',
+      },
+      { merge: true } // This ensures that the document is only updated, not overwritten
+    );
 
-    } catch (error) {
-     // console.error("Error adding Agents Doc:", error);
-    }
+  } catch (error) {
+    console.error("Error adding Agents Doc:", error);
+  }
 
       };
   const setEstimatedServiceTime = async (orderId, serviceType, setDate) => {
