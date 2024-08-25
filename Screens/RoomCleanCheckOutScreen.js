@@ -237,7 +237,7 @@ const theme = useTheme();
         // Other logic after adding the car wash order
        // console.log("Room Clean order added successfully!");
         // Send SMS notification
-        const message = "Hooray! There's a new Room Cleaning order ready for you to fulfill!";
+        const message = "Hooray! There's a new Room Cleaning order ready for you to fulfill!" + " " + paymentOption;
         const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
           method: 'POST',
           headers: {

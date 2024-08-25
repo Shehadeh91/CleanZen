@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   View,
   ScrollView,
@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
-  StatusBar
+  StatusBar,
+  FlatList
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -24,7 +25,8 @@ import {
   PaperProvider,
   Icon,
   Divider,
-  useTheme
+  useTheme,
+
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -200,7 +202,7 @@ useEffect(() => {
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
-        Total: ((getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.025)).toFixed(2)),
+        Total: ((getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.05)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Dry Clean",
@@ -223,7 +225,10 @@ useEffect(() => {
     }
   };
 
-  const Item = ({ item, lastItem }) => {
+
+
+
+  const Item = React.memo(({ item, lastItem }) => {
     const { addToCart, removeFromCart, itemCounts, getTotalPrice } =
       useDryCleanCart();
 
@@ -259,7 +264,7 @@ useEffect(() => {
         {!lastItem && <Divider />}
       </>
     );
-  };
+  });
 
    // Filter items based on the search query
    const filteredItems = dryCleanData.filter((item) =>
@@ -339,6 +344,7 @@ useEffect(() => {
                   paddingHorizontal: 10,
                 }}
               />
+<ScrollView style={{height:300}} nestedScrollEnabled = {true}>
               {filteredItems.map((item, index) => (
                 <Item
                   key={item.id}
@@ -346,6 +352,7 @@ useEffect(() => {
                   lastItem={index === filteredItems.length - 1}
                 />
               ))}
+              </ScrollView>
             </Card.Content>
           </Card>
           {/* Preference Card */}

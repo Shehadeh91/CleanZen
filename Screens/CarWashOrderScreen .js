@@ -820,7 +820,15 @@ const user = auth.currentUser;
                 navigation.navigate("checkOut", {
                   addCarWashOrder: addCarWashOrder,
                 });
-                updateTotalCost(bodyStyleCost + prefrenceCost + deliveryCost);
+                updateTotalCost(
+  bodyStyleCost +
+  prefrenceCost +
+  packageCost +
+  deliveryCost +
+  4 +
+  ((bodyStyleCost + prefrenceCost + packageCost + deliveryCost + 4) * 0.05)
+);
+
                 handleUpdateInfo();
               } else {
                 // Add code to handle the case when there's no input in the TextInput

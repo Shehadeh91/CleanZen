@@ -162,7 +162,7 @@ const DryCleanCheckOutScreen = () => {
   const handleCardPayment = async () => {
     setPaymentLoading(true);
     try {
-      const price = (getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.025)).toFixed(2);
+      const price = (getTotalPrice() + deliveryCost + 4 +((getTotalPrice()+ deliveryCost + 4) * 0.05)).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
      // console.error('Error initiating checkout session:', error);
@@ -252,7 +252,7 @@ const DryCleanCheckOutScreen = () => {
        // console.log("Dry Clean order added successfully!");
           // Send SMS notification
         // Send SMS notification
-        const message = "Hooray! There's a new Dry Cleaning order ready for you to fulfill!";
+        const message = "Hooray! There's a new Dry Cleaning order ready for you to fulfill!" + " " + paymentOption;
         const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
           method: 'POST',
           headers: {
@@ -327,7 +327,7 @@ const DryCleanCheckOutScreen = () => {
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 5 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.025)).toFixed(2)}
+          title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
           style={{ position: "absolute", left: 215 }}
           titleStyle={{ fontSize: 20 }}
         />
@@ -487,10 +487,10 @@ const DryCleanCheckOutScreen = () => {
                 <View style={{ alignItems: "flex-start", left: 10 }}>
                   <Text> ${(getTotalPrice() + deliveryCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
-                  <Text> ${((getTotalPrice() + deliveryCost + 4) * 0.025).toFixed(2)}</Text>
+                  <Text> ${((getTotalPrice() + deliveryCost + 4) * 0.05).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
                     {" "}
-                    ${(getTotalPrice() + deliveryCost  + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.025)).toFixed(2)}
+                    ${(getTotalPrice() + deliveryCost  + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
                   </Text>
                 </View>
               </View>

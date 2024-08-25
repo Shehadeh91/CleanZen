@@ -233,6 +233,8 @@ const theme = useTheme();
     setVisible(false);
   }, []); // Empty dependency array to run the effect once on mount
 
+
+
   const handleConfirmOrder = async () => {
     setIsLoading(true); // Show activity indicator
     try {
@@ -252,7 +254,7 @@ const theme = useTheme();
         // console.log("Car wash order added successfully!");
         //
          // Send SMS notification
-         const message = "Hooray! There's a new Car Wash order ready for you to fulfill!";
+         const message = "Hooray! There's a new Car Wash order ready for you to fulfill!" + " " + paymentOption;
          const response = await fetch(`${API_URL}/send-order-confirmation-sms`, {
            method: 'POST',
            headers: {
