@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
-  FlatList
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  Image
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
 import {
@@ -24,7 +27,8 @@ import {
   PaperProvider,
   Icon,
   Dialog,
-  useTheme
+  useTheme,
+  
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -184,6 +188,16 @@ setUserID,
     SUV: require("../assets/Icons/SUV.png"),
     MiniVan: require("../assets/Icons/MiniVan.png"),
   };
+
+  // Define the bodyStyles array
+const bodyStyles = [
+  { name: "Sedan", icon: require("../assets/Icons/Sedan.png"), cost: 35 },
+  { name: "Coupe", icon: require("../assets/Icons/Coupe.png"), cost: 35 },
+  { name: "Hatchback", icon: require("../assets/Icons/Hatchback.png"), cost: 35 },
+  { name: "PickupTruck", icon: require("../assets/Icons/PickupTruck.png"), cost: 40 },
+  { name: "SUV", icon: require("../assets/Icons/SUV.png"), cost: 40 },
+  { name: "MiniVan", icon: require("../assets/Icons/MiniVan.png"), cost: 50 },
+];
 
   const bodyStyleCosts = {
     Sedan: 35,
@@ -425,13 +439,13 @@ const user = auth.currentUser;
 
   return (
     <View style={{ flex: 1}}>
-      <Appbar.Header style={{ height: 50, top: 5 }}>
+      <Appbar.Header style={{ height: 50, top: 10 }}>
         <Appbar.Content
           title={
             "Subtotal: $" +
             (bodyStyleCost + prefrenceCost + packageCost + deliveryCost).toFixed(2)
           }
-          style={{ position: "absolute", left: 215 }}
+          style={{ position: "absolute", alignItems: 'flex-end', right: 30 }}
           titleStyle={{ fontSize: 15 }}
         />
       </Appbar.Header>
@@ -666,6 +680,7 @@ const user = auth.currentUser;
               </View>
             </RadioButton.Group>
           </Card>
+         
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
                title="Add Additional Note"
@@ -692,6 +707,7 @@ const user = auth.currentUser;
               />
             </Card.Content>
           </Card>
+          
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
@@ -1132,270 +1148,96 @@ const user = auth.currentUser;
         </Modal>
       </Portal>
       <Portal>
-        <Modal
-          visible={visibleBodyStyle}
-          onDismiss={hideModalBodyStyle}
-          contentContainerStyle={{
-            //flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-           // backgroundColor: "white",
-           backgroundColor: theme.colors.surfaceVariant,
-           borderColor: theme.colors.onBackground,
-            // margin: 0,
-            borderRadius: 15,
-            height: "50%",
-            borderWidth: 1,
-            margin: 25,
+      <Modal
+  visible={visibleBodyStyle}
+  onDismiss={hideModalBodyStyle}
+  contentContainerStyle={{
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors.surfaceVariant,
+    borderColor: theme.colors.onBackground,
+    borderRadius: 15,
+    height: "80%",
+    borderWidth: 1,
+    margin: 20,
+    padding: 10,
+  }}
+>
+  <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <Text style={styles.modalHeader}>Choose Your Car Body Style</Text>
+    <View
+      style={{
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-around",
+        alignItems: "center",
+        gap: 10,
+      }}
+    >
+      {bodyStyles.map((style, index) => (
+        <View
+          key={index}
+          style={{
+            marginVertical: 10,
+            width: 150, // Width to fit the content
+            alignItems: "center", // Center-align contents
           }}
         >
-          <ScrollView>
-            <Text style={styles.modalHeader}>Choose Your Car Body Style</Text>
+          <Button
+            //icon={style.icon}
+            mode="containe"
+            onPress={() => {
+              hideModalBodyStyle();
+              setBodyStyleCost(style.cost);
+              setBodyStyle(style.name);
+              setIconBodyStyle(style.icon);
+            }}
+            style={{
+              width: "100%", // Make button width fill container
+              height: 75, // Height to fit icon and price
+              justifyContent: "center",
+              alignItems: "center", // Center the icon and text
+              backgroundColor: theme.colors.primary,
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
-                justifyContent: "space-around",
                 alignItems: "center",
-                flexWrap: "wrap",
-                paddingTop: 0,
-                gap: 10
-              }}
-            >
-              <Button
-                icon={require("../assets/Icons/Sedan.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(35),
-                    setBodyStyle("Sedan"),
-                    setIconBodyStyle(require("../assets/Icons/Sedan.png"));
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  backgroundColor: theme.colors.primary
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $35
-                </Text>
-
-              </Button>
-              <Button
-                icon={require("../assets/Icons/Coupe.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(35),
-                    setBodyStyle("Coupe"),
-                    setIconBodyStyle(require("../assets/Icons/Coupe.png"));
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $35
-                </Text>
-              </Button>
-              <Button
-                icon={require("../assets/Icons/Hatchback.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(35),
-                    setBodyStyle("Hatchback"),
-                    setIconBodyStyle(require("../assets/Icons/Hatchback.png"));
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $35
-                </Text>
-              </Button>
-              <Button
-                icon={require("../assets/Icons/PickupTruck.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(40),
-                    setBodyStyle("PickupTruck"),
-                    setIconBodyStyle(
-                      require("../assets/Icons/PickupTruck.png")
-                    );
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $40
-                </Text>
-              </Button>
-              <Button
-                icon={require("../assets/Icons/SUV.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(40),
-                    setBodyStyle("SUV"),
-                    setIconBodyStyle(require("../assets/Icons/SUV.png"));
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $40
-                </Text>
-              </Button>
-              <Button
-                icon={require("../assets/Icons/MiniVan.png")}
-                labelStyle={{ fontSize: 75 }}
-                mode="contained"
-                onPress={() => {
-                  hideModalBodyStyle(),
-                    setBodyStyleCost(50),
-                    setBodyStyle("MiniVan"),
-                    setIconBodyStyle(require("../assets/Icons/MiniVan.png"));
-                }}
-                style={{
-                  marginVertical: 15,
-                  width: 130,
-                  height: 50,
-                  justifyContent: "center",
-                  // alignItems: "center",
-                  //paddingLeft: 15,
-                  //borderWidth: 1,
-                  // borderColor: 'red'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    textAlign: "center",
-                   // color: "white",
-                   color: theme.colors.background,
-                    alignContent: "center",
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  $50
-                </Text>
-              </Button>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
                 justifyContent: "space-between",
-                bottom: 225,
+                width: "100%",
               }}
             >
-              <View style={styles.column}>
-                <Text style={styles.text}>Sedan</Text>
-                <Text style={styles.text}>Hatchback</Text>
-                <Text style={styles.text}>SUV</Text>
-              </View>
-              <View style={styles.column}>
-                <Text style={styles.text}>Coupe</Text>
-                <Text style={styles.text}>Pickup Truck</Text>
-                <Text style={styles.text}>Mini-Van</Text>
-              </View>
+              <Image
+                source={style.icon}
+                style={{ width: 60, height: 60 }} // Adjust size as needed
+              />
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: theme.colors.onPrimary,
+                }}
+              >
+                ${style.cost}
+              </Text>
             </View>
-          </ScrollView>
-        </Modal>
+          </Button>
+          <Text
+            style={{
+              fontSize: 18,
+              textAlign: "center",
+              color: theme.colors.onSurfaceVariant,
+              marginTop: 10, // Space between button and text
+            }}
+          >
+            {style.name}
+          </Text>
+        </View>
+      ))}
+    </View>
+    
+  </ScrollView>
+</Modal>
       </Portal>
       <Portal>
         <Modal

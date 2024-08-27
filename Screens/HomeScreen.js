@@ -124,13 +124,13 @@ top: -35
     fontSize: 30,
     fontWeight: "bold",
 
-    marginTop: 0,
-    paddingLeft: 10,
+    marginTop: 10,
+    paddingLeft: 25,
   },
   subTitle: {
     fontSize: 20,
 
-    paddingLeft: 10,
+    paddingLeft: 25,
     letterSpacing: 4,
   },
   logo: {

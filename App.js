@@ -35,7 +35,7 @@ import ChangePasswordScreen from "./Screens/ChangePasswordScreen";
 import ForgetPasswordScreen from "./Screens/ForgetPasswordScreen";
 import { Button, PaperProvider, useTheme } from 'react-native-paper';
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { useColorScheme, StatusBar, View, StyleSheet, Platform, ActivityIndicator} from "react-native";
+import { useColorScheme, StatusBar, View, StyleSheet, Platform, ActivityIndicator, KeyboardAvoidingView} from "react-native";
 
 import { FIREBASE_AUTH, FIRESTORE_DB } from "./FirebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
@@ -106,18 +106,19 @@ export default function App() {
     );
   }
   return (
-<SafeAreaView  style={styles.container}>
+<SafeAreaView  style={[styles.container, {backgroundColor: theme.colors.background}]}>
+  <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
     <PaperProvider theme={theme}>
     <StripeProvider publishableKey="pk_live_51PIuTYRwhciiEfEmcWuiDdwy9ZvSGPAGX9MjMLYM4VLTpJcqBkoYX3dxZUGoSUOAgrjKOSzESViCOABqLD831TXH00m6iVILkh"
     urlScheme="your-url-scheme" >
 
           <StatusBar
-            barStyle="dark-content"
-            backgroundColor="transparent"
-            translucent={true}
+            barStyle={theme.dark ? 'light-content' : 'dark-content'}
+            backgroundColor={theme.colors.background}
+            translucent={false}
           />
           <NavigationContainer>
-        <Stack.Navigator  initialRouteName={initialRoute}  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid}}>
+        <Stack.Navigator  initialRouteName={initialRoute}  screenOptions={{ ...TransitionPresets.FadeFromBottomAndroid, headerTitleAlign: 'left'}}>
           <Stack.Screen
             name="home"
             component={HomeScreen}
@@ -410,12 +411,13 @@ export default function App() {
 
       </StripeProvider>
     </PaperProvider>
+    </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'ios' ? 50 : 5
   },
 });

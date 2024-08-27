@@ -325,10 +325,10 @@ const DryCleanCheckOutScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <Appbar.Header style={{ height: 50, top: 5 }}>
+      <Appbar.Header style={{ height: 50, top: 10 }}>
         <Appbar.Content
           title={"Total: $" + (getTotalPrice() + deliveryCost + 4 + ((getTotalPrice()+ deliveryCost  + 4) * 0.05)).toFixed(2)}
-          style={{ position: "absolute", left: 215 }}
+          style={{ position: "absolute", alignItems: 'flex-end', right: 30 }}
           titleStyle={{ fontSize: 20 }}
         />
       </Appbar.Header>

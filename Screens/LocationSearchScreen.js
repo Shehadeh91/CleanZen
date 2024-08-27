@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import MapView , { Marker }from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import IonIcons from "react-native-vector-icons/Ionicons";
@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import Geolocation from 'react-native-geolocation-service';
 import useAppStore from "../useAppStore";
 import { ThemeProvider, useTheme } from 'react-native-paper';
-import { PROVIDER_GOOGLE } from 'react-native-maps';
+import { PROVIDER_GOOGLE , PROVIDER_DEFAULT} from 'react-native-maps';
 import { updateDoc, doc } from "firebase/firestore";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
@@ -112,7 +112,7 @@ top:15
         }}
       />
       <MapView
-      provider= {PROVIDER_GOOGLE}
+      provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
         showsUserLocation={true}
         style={[styles.map, {backgroundColor: theme.colors.background}]}
         region={location}
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
   map: {
     flex: 1,
     margin: 5,
-    marginTop: 0
+    marginTop: 0,
+    marginBottom: 10
 
   },
   absoluteBox: {
@@ -172,9 +173,12 @@ const styles = StyleSheet.create({
     //width: "100%",
   // marginTop: 600, // This marginTop may need adjustment based on your layout
    // padding:-50
+   alignContent: 'center',
+   alignSelf: 'center',
 borderRadius:25,
-width:'auto',
-height: 'auto'
+width:'75%',
+height: 'auto',
+marginBottom: 25
   },
 
   buttonText: {

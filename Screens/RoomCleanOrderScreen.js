@@ -278,10 +278,10 @@ useEffect(() => {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <Appbar.Header style={{  height: Platform.OS === 'ios' ? 44 : 56,  paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0, top: Platform.OS === 'ios' ? 0 : 5 }}>
+      <Appbar.Header style={{height: 50, top: 10}}>
         <Appbar.Content
           title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
-          style={{ position: "absolute", left: 215 }}
+          style={{ position: "absolute", alignItems: 'flex-end', right: 30 }}
           titleStyle={{ fontSize: 15, textAlign: 'center' }}
         />
       </Appbar.Header>
