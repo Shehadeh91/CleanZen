@@ -555,6 +555,7 @@ const AdminOrdersScreen = () => {
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
                     {serviceOrder.Note}
                   </Text>
@@ -713,6 +714,7 @@ const AdminOrdersScreen = () => {
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
                   <Text
                     style={{
                       fontSize: 13,
@@ -865,6 +867,7 @@ const AdminOrdersScreen = () => {
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
                   <Text
                     style={{
                       fontSize: 13,
@@ -1029,6 +1032,7 @@ const AdminOrdersScreen = () => {
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
                   <Text style={{ fontSize: 13, fontStyle: "italic" }}>
                     {serviceOrder.Note}
                   </Text>

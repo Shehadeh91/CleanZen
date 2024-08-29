@@ -62,6 +62,8 @@ const RoomCleanCheckOutScreen = () => {
     getTotalPrice,
     supplyCost,
     supplyOption,
+    packageOption,
+    packageCost,
     setSupplyCost,
     setSupplyOption,
     deliveryCost,
@@ -197,7 +199,7 @@ const theme = useTheme();
   const handleCardPayment = async () => {
     setPaymentLoading(true);
     try {
-      const price = (getTotalPrice()+ deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05) ).toFixed(2);
+      const price = (getTotalPrice()+ deliveryCost + supplyCost + packageCost + 4 + ((getTotalPrice()+ deliveryCost + packageCost + supplyCost + 4) * 0.05) ).toFixed(2);
       await initializePaymentSheet(price);
     } catch (error) {
       console.error('Error initiating checkout session:', error);
@@ -306,7 +308,7 @@ const theme = useTheme();
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{ height: 50, top: 10 }}>
         <Appbar.Content
-          title={"Total: $" + (getTotalPrice()+ deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)}
+          title={"Total: $" + (getTotalPrice()+ deliveryCost + supplyCost + packageCost + 4 + ((getTotalPrice()+ deliveryCost + packageCost + supplyCost + 4) * 0.05)).toFixed(2)}
           style={{ position: "absolute", alignItems: 'flex-end', right: 30 }}
           titleStyle={{ fontSize: 20 }}
         />
@@ -364,7 +366,7 @@ const theme = useTheme();
 
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
-              title={"Cleaning"}
+              title={packageOption + " " + "Cleaning"}
               titleStyle={{ fontSize: 18 }}
               left={(props) => (
                 <Avatar.Icon
@@ -482,12 +484,12 @@ const theme = useTheme();
                   <Text style={{fontWeight: "bold"}}>Total</Text>
                 </View>
                 <View style={{ alignItems: "flex-start", left: 10 }}>
-                  <Text> ${(getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}</Text>
+                  <Text> ${(getTotalPrice() + deliveryCost + supplyCost + packageCost).toFixed(2)}</Text>
                   <Text> $4.00</Text>
-                  <Text> ${((getTotalPrice() + deliveryCost + supplyCost + 4) * 0.05).toFixed(2)}</Text>
+                  <Text> ${((getTotalPrice() + deliveryCost + packageCost + supplyCost + 4) * 0.05).toFixed(2)}</Text>
                   <Text style={{fontWeight: "bold"}}>
                     {" "}
-                    ${(getTotalPrice() + deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)}
+                    ${(getTotalPrice() + deliveryCost + supplyCost + packageCost + 4 + ((getTotalPrice()+ deliveryCost + packageCost + supplyCost + 4) * 0.05)).toFixed(2)}
                   </Text>
                 </View>
               </View>

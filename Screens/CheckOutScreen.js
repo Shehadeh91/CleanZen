@@ -431,6 +431,7 @@ const theme = useTheme();
                   fontWeight: "bold",
                   alignSelf: "center",
                   borderStyle: "dashed",
+                 borderColor: theme.colors.onBackground
                 }}
               >
                 {carPlate}

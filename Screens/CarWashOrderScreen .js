@@ -28,7 +28,7 @@ import {
   Icon,
   Dialog,
   useTheme,
-  
+
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
@@ -641,7 +641,7 @@ const user = auth.currentUser;
               value={packageOption}
             >
               <View style={styles.radioContainer}>
-                <RadioButton.Item label="Basic Clean" value="Basic" />
+                <RadioButton.Item label="Basic Cleaning" value="Basic" />
                 <Text
                   style={{
                     fontSize: 13,
@@ -680,7 +680,7 @@ const user = auth.currentUser;
               </View>
             </RadioButton.Group>
           </Card>
-         
+
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
                title="Add Additional Note"
@@ -707,7 +707,7 @@ const user = auth.currentUser;
               />
             </Card.Content>
           </Card>
-          
+
           <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
             <Card.Title
               title="Service Time"
@@ -1172,6 +1172,7 @@ const user = auth.currentUser;
         justifyContent: "space-around",
         alignItems: "center",
         gap: 10,
+
       }}
     >
       {bodyStyles.map((style, index) => (
@@ -1181,11 +1182,12 @@ const user = auth.currentUser;
             marginVertical: 10,
             width: 150, // Width to fit the content
             alignItems: "center", // Center-align contents
+            // borderWidth: 0.5,
+            // borderRadius: 15
           }}
         >
           <Button
-            //icon={style.icon}
-            mode="containe"
+            mode='text'
             onPress={() => {
               hideModalBodyStyle();
               setBodyStyleCost(style.cost);
@@ -1194,40 +1196,37 @@ const user = auth.currentUser;
             }}
             style={{
               width: "100%", // Make button width fill container
-              height: 75, // Height to fit icon and price
+              height: 50, // Height to fit icon and price
               justifyContent: "center",
               alignItems: "center", // Center the icon and text
-              backgroundColor: theme.colors.primary,
+             // backgroundColor: theme.colors.primary,
+
             }}
+            //contentStyle={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}
           >
-            <View
+            <Image
+              source={style.icon}
+              style={{ width: 60, height: 60 }} // Adjust size as needed
+              resizeMode="contain"
+            />
+            <Text
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                width: "100%",
+                fontSize: 18,
+                color: 'green',
+
+
               }}
             >
-              <Image
-                source={style.icon}
-                style={{ width: 60, height: 60 }} // Adjust size as needed
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  color: theme.colors.onPrimary,
-                }}
-              >
-                ${style.cost}
-              </Text>
-            </View>
+              {} ${style.cost}
+            </Text>
           </Button>
           <Text
             style={{
               fontSize: 18,
               textAlign: "center",
               color: theme.colors.onSurfaceVariant,
-              marginTop: 10, // Space between button and text
+              marginRight: 25, // Space between button and text
+             // borderWidth: 1
             }}
           >
             {style.name}
@@ -1235,8 +1234,8 @@ const user = auth.currentUser;
         </View>
       ))}
     </View>
-    
-  </ScrollView>
+</ScrollView>
+
 </Modal>
       </Portal>
       <Portal>
@@ -1286,7 +1285,7 @@ const user = auth.currentUser;
         <Dialog.Content>
     <View style={{ padding: 16 }}>
       <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 8 }}>
-        1. Basic Clean:
+        1. Basic Cleaning:
       </Text>
       <View style={{ marginLeft: 8 }}>
         <Text style={{ fontSize: 14, marginBottom: 4 }}>• Vacuuming</Text>

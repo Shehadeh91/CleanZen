@@ -52,6 +52,10 @@ const RoomCleanOrderScreen = () => {
     setDeliveryCost,
     setSupplyCost,
     setDeliveryOption,
+    packageCost,
+    setPackageCost,
+    packageOption,
+    setPackageOption,
     setSupplyOption,
     itemCounts,
     paymentOption,
@@ -209,12 +213,12 @@ useEffect(() => {
         Address: address,
 
         Items: getItemCountsWithTitles(),
-
+Package: packageOption,
         Payment: paymentOption,
         Note: note,
         Delivery: deliveryOption,
         Supply: supplyOption,
-        Total: ((getTotalPrice() + deliveryCost + supplyCost + 4 + ((getTotalPrice()+ deliveryCost + supplyCost + 4) * 0.05)).toFixed(2)),
+        Total: ((getTotalPrice() + deliveryCost + supplyCost + packageCost + 4 + ((getTotalPrice()+ deliveryCost + packageCost + supplyCost + 4) * 0.05)).toFixed(2)),
         Status: "InProgress",
         Assigned: "No One",
         Service: "Room Clean",
@@ -253,7 +257,7 @@ useEffect(() => {
         >
           <View style={{ flex: 1, bottom: -7 }}>
             <Text>{item?.title}</Text>
-            <Text style={{ color: "green" }}>${(getTotalPrice())}</Text>
+            <Text style={{ color: "green" }}>${item?.price}</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -276,11 +280,28 @@ useEffect(() => {
     );
   };
 
+
+  const handlePackageChange = (newValue) => {
+    setPackageOption(newValue);
+    updatePackageCost(newValue, getTotalPrice());
+  };
+  const updatePackageCost = (packageOption, getTotalPrice) => {
+    let updatedPackageCost;
+
+    if (packageOption === "Basic") {
+      updatedPackageCost = 0;
+    } else if (packageOption === "Deep") {
+      updatedPackageCost = ((( getTotalPrice) * 1.75) - getTotalPrice) ;
+    }
+
+    setPackageCost(updatedPackageCost);
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <Appbar.Header style={{height: 50, top: 10}}>
         <Appbar.Content
-          title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost).toFixed(2)}
+          title={"Subtotal: $" + (getTotalPrice() + deliveryCost + supplyCost + packageCost).toFixed(2)}
           style={{ position: "absolute", alignItems: 'flex-end', right: 30 }}
           titleStyle={{ fontSize: 15, textAlign: 'center' }}
         />
@@ -425,6 +446,84 @@ useEffect(() => {
 
 
 
+              </View>
+            </RadioButton.Group>
+              {/* Package Card */}
+
+          </Card>
+          <Card style={[styles.card, {borderColor: theme.colors.onBackground}]}>
+            <Card.Title
+              title="Select Your Package"
+              titleStyle={{ fontSize: 20, marginTop: 10 }}
+              left={(props) => (
+                <Avatar.Icon {...props} icon="package" size={40} />
+              )}
+          //     right={() => (
+          //   <TouchableOpacity
+          //     style={styles.infoButton}
+          //     onPressIn={showDialog}
+          //     onPressOut={hideDialog}
+          //   >
+          //     <Avatar.Icon icon="information-variant" size={30} />
+          //   </TouchableOpacity>
+          // )}
+            />
+            {/* <Text style={{fontSize: 20, left: 275, bottom: 50, color: 'green' }}>  $24</Text> */}
+
+            <RadioButton.Group
+              onValueChange={(newValue) => {
+                setPackageOption(newValue);
+
+                handlePackageChange(newValue);
+              }}
+              value={packageOption}
+            >
+               <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  //alignItems: "center",
+                  bottom: 13,
+                  marginBottom: 8,
+                  marginLeft: 10,
+                }}
+              >
+                <RadioButton.Item label="Basic Cleaning" value="Basic" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 37,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"+$"+0}
+                </Text>
+                <RadioButton.Item label="Deep Cleaning" value="Deep" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 90,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                 {"+$"+(((getTotalPrice()) * 1.75) - getTotalPrice()).toFixed(2)}
+                </Text>
+                {/* <RadioButton.Item label="Int/Ext" value="Int/Ext" />
+                <Text
+                  style={{
+                    fontSize: 13,
+                    left: 17,
+                    top: 143,
+                    color: "green",
+                    position: "absolute",
+                  }}
+                >
+                  {"$"+(bodyStyleCost + (bodyStyleCost * 0.75))}
+                </Text> */}
               </View>
             </RadioButton.Group>
           </Card>

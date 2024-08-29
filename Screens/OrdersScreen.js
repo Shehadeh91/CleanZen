@@ -526,6 +526,7 @@ handleButtonPress("Completed");
                     ))}
 
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
           <Text style={{marginTop: 5, fontSize: 12, fontStyle: 'italic', letterSpacing: 1}}> Scheduled at: {serviceOrder.Date}</Text>
         </View>
 
@@ -689,6 +690,7 @@ handleButtonPress("Completed");
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
 
                      {/* Service Review Section */}
    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -818,6 +820,7 @@ handleButtonPress("Completed");
                       </Text>
                     ))}
                     <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Cleaning Supply: {serviceOrder.Supply}</Text>
+                    <Text style={{marginTop: 5, fontSize: 12, letterSpacing: 1}}> Package: {serviceOrder.Package} Cleaning</Text>
             </View>
           )}
           </View>

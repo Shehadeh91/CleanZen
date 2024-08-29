@@ -39,7 +39,7 @@ const useCarWashStore = create((set, get) => ({
   prefrenceOption: "Exterior", // Initial value for prefrenceOption
   setPrefrenceOption: (value) => set({ prefrenceOption: value }),
 
-  packageOption: "Basic", // Initial value for prefrenceOption
+  packageOption: "Basic", // Initial value for
   setPackageOption: (value) => set({ packageOption: value }),
 
   deliveryCost: 0, // Initial value for deliveryCost

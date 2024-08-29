@@ -19,8 +19,15 @@ const useRoomCleanCart = create((set, get) => ({
   supplyOption: "Yes, I have",
   setSupplyOption: (supply) => set({ supplyOption: supply }),
 
+  packageOption: "Basic", // Initial value for
+  setPackageOption: (value) => set({ packageOption: value }),
+
+packageCost: 0, // Initial value for prefrenceCost
+  setPackageCost: (value) => set({ packageCost: value }),
+
   date: '', // Initial value for deliveryOption
   setDate: (value) => set({ date: value }),
+
 
   note: "", // Initial value for Note
   setNote: (value) => set({ note: value }),
