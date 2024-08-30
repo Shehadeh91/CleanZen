@@ -2,7 +2,7 @@
   "expo": {
     "name": "PureCare Tech",
     "slug": "CleanZen",
-    "version": "1.0.15",
+    "version": "1.0.17",
     "orientation": "portrait",
     "icon": "./Screens/PureCareBG.png",
     "userInterfaceStyle": "automatic",
@@ -38,7 +38,7 @@
       },
       "userInterfaceStyle": "automatic",
       "package": "com.muhannad37.CleanZen",
-      "versionCode": 15,
+      "versionCode": 17,
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION"
