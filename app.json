@@ -2,7 +2,11 @@
   "expo": {
     "name": "PureCare Tech",
     "slug": "CleanZen",
+<<<<<<< Updated upstream
     "version": "1.0.17",
+=======
+    "version": "1.0.15",
+>>>>>>> Stashed changes
     "orientation": "portrait",
     "icon": "./Screens/PureCareBG.png",
     "userInterfaceStyle": "automatic",
@@ -17,20 +21,8 @@
         {
           "enableGooglePay": true
         }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
       ]
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.muhannad37.CleanZen"
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -52,7 +44,26 @@
       "eas": {
         "projectId": "e2c578f4-8f3b-4d8b-80ba-4fd36961e135"
       },
-      "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk"
+      "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk",
+      "firebaseConfig": {
+        "apiKey": "AIzaSyDM-N18S7vjn4xmj9QAfQ2lMwcVf4Q_lqk",
+        "authDomain": "purecare-2a506.firebaseapp.com",
+        "projectId": "purecare-2a506",
+        "storageBucket": "purecare-2a506.appspot.com",
+        "messagingSenderId": "458703941149",
+        "appId": "1:458703941149:web:2320b58b1fe052c70ca0f4",
+        "measurementId": "G-PNR85X9X41"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.muhannad37.CleanZen",
+      "googleServicesFile": "./ios/GoogleService-Info.plist",
+      "buildNumber": "3",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app needs access to the camera to allow users to upload photos.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to your location to provide location-based services.",
+        "NSLocationWhenInUseUsageDescription": "This app needs access to your location to provide location-based services."
+      }
     }
   }
 }
