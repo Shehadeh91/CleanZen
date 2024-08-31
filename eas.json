@@ -13,6 +13,13 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "admin@purecaretech.com",
+        "ascAppId": "6670299353",
+        "appleTeamId": "JT3WACTB7H"
+
+      }
+    }
   }
 }
