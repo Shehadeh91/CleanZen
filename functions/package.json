@@ -11,16 +11,11 @@
   "engines": {
     "node": "18"
   },
-  "main": "index.js",
+  "main": "App.js",
   "dependencies": {
-    "@babel/cli": "^7.23.4",
-    "@babel/core": "^7.23.7",
-    "@babel/node": "^7.22.19",
-    "@babel/preset-env": "^7.23.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.0",
     "express": "^4.18.2",
-    "firebase": "^10.7.2",
     "firebase-admin": "^12.0.0",
     "firebase-functions": "^4.3.1",
     "stripe": "^14.13.0",

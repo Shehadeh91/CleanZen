@@ -1,12 +1,3 @@
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require('@react-native/metro-config');
 
-const config = getDefaultConfig(__dirname);
-
-
-
-config.resolver.assetExts.push(
-  // Adds support for `.db` files for SQLite databases
-  'db'
-);
-
-module.exports = config;
+module.exports = getDefaultConfig(__dirname);

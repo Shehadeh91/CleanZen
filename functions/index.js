@@ -7,7 +7,6 @@ const stripe = require('stripe');
 const { readFileSync } = require('fs');
 const twilio = require('twilio');
 
-
 // Load environment variables from a .env file
 dotenv.config({ path: './env/.env.local' });
 
@@ -32,11 +31,11 @@ admin.initializeApp({
 const db = admin.firestore();
 
 // Create Express application
-const testing01 = express();
+const app = express();
 
 // Middleware
-testing01.use(cors());
-testing01.use(express.json());
+app.use(cors());
+app.use(express.json());
 
 // Function to send SMS notifications to multiple phones
 const sendSmsNotification = async (message) => {
@@ -62,7 +61,7 @@ const sendSmsNotification = async (message) => {
 };
 
 // React Native API for one-time payment event
-testing01.post('/payment-sheet-onetime', async (req, res) => {
+app.post('/payment-sheet-onetime', async (req, res) => {
   const { amount, customerId } = req.body;
 
   try {
@@ -81,10 +80,6 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
       payment_method_types: ['card'],
     });
 
-    // Send SMS notification
-    // const smsMessage = `Order Completed: Your payment of $${amount} was successful!`;
-    // await sendSmsNotification(smsMessage);
-
     // Respond with payment information
     res.json({
       paymentIntent: paymentIntent.client_secret,
@@ -98,7 +93,7 @@ testing01.post('/payment-sheet-onetime', async (req, res) => {
 });
 
 // Endpoint to send SMS confirmation for an order
-testing01.post('/send-order-confirmation-sms', async (req, res) => {
+app.post('/send-order-confirmation-sms', async (req, res) => {
   const { message } = req.body;
 
   try {
@@ -113,11 +108,8 @@ testing01.post('/send-order-confirmation-sms', async (req, res) => {
   }
 });
 
-
-
-
 // Retrieve or create customer for Stripe
-testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
+app.post('/retrieveOrCreateCustomer', async (req, res) => {
   const { email } = req.body;
 
   try {
@@ -132,15 +124,15 @@ testing01.post('/retrieveOrCreateCustomer', async (req, res) => {
       res.json({ customerId: customer.id });
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error retrieving or creating customer:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
 // Health check endpoint
-testing01.get('/', (req, res) => {
-  res.send({ message: 'server is running' });
+app.get('/', (req, res) => {
+  res.send({ message: 'Server is running' });
 });
 
 // Export the Express app as a Firebase Cloud Function
-exports.stripeApiEndPoint = functions.onRequest(testing01);
+exports.stripeApiEndPoint = functions.onRequest(app);

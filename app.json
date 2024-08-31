@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "expo": {
     "name": "PureCare Tech",
     "slug": "CleanZen",
@@ -64,6 +65,25 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to your location to provide location-based services.",
         "NSLocationWhenInUseUsageDescription": "This app needs access to your location to provide location-based services."
       }
+=======
+  "name": "PureCare Tech",
+  "version": "1.0.19",
+  "ios": {
+    "bundleIdentifier": "com.muhannad37.CleanZen",
+    "buildNumber": "5",
+    "infoPlist": {
+      "NSCameraUsageDescription": "This app needs access to the camera to allow users to upload photos.",
+      "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to your location to provide location-based services.",
+      "NSLocationWhenInUseUsageDescription": "This app needs access to your location to provide location-based services."
+>>>>>>> Stashed changes
     }
+  },
+  "android": {
+    "package": "com.muhannad37.CleanZen",
+    "versionCode": 17,
+    "permissions": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_COARSE_LOCATION"
+    ]
   }
 }
