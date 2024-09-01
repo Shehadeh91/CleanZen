@@ -11,7 +11,7 @@ import CarWashOrderScreen from "./Screens/CarWashOrderScreen ";
 import OrderCompleteScreen from "./Screens/OrderCompleteScreen";
 import DryCleanOrderScreen from "./Screens/DryCleanOrderScreen";
 import BottomNavagationComponent from "./Components/BottomNavagationComponent";
-// good stuff
+
 //import { SafeAreaView } from "react-native";
 import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { lightTheme, darkTheme } from "./Components/Themes";
