@@ -16,11 +16,11 @@ import { FIREBASE_AUTH, FIREBASE_APP } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
 import useAppStore from "../useAppStore";
-import { collection, query, getDocs, Firestore, Timestamp } from "firebase/firestore";
+import { collection, query, getDocs, Firestore, Timestamp } from "@react-native-firebase/firestore";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { Swipeable } from "react-native-gesture-handler";
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "@react-native-firebase/firestore";
 
 
 

@@ -3,7 +3,7 @@ import { View, StyleSheet, BackHandler, ScrollView, Text } from "react-native";
 import { List, Divider, Button, useTheme } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDocs, setDoc, collection } from "firebase/firestore";
+import { doc, getDocs, setDoc, collection } from "@react-native-firebase/firestore";
 import useAppStore from "../useAppStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LogInScreen from "./LogInScreen";

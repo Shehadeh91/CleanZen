@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { updatePassword, reauthenticateWithCredential, getAuth, EmailAuthProvider } from "firebase/auth";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc } from "@react-native-firebase/firestore";
 
 const ChangePasswordScreen = ({  }) => {
   const [currentPassword, setCurrentPassword] = useState("");

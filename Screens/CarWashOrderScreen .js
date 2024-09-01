@@ -33,7 +33,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "@react-native-firebase/firestore";
 import { LogBox } from "react-native";
 import useCarWashStore from "../useCarWashStore";
 import BottomSheet from "@gorhom/bottom-sheet";

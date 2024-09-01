@@ -1,12 +1,13 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "firebase/app";
+import { initializeApp } from '@react-native-firebase/app'
 
-import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
+import { getAuth, initializeAuth, getReactNativePersistence } from '@react-native-firebase/auth';
 
-import { getFirestore } from "firebase/firestore";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "@react-native-firebase/firestore";
+import { getFunctions, httpsCallable } from "@react-native-firebase/functions";
+import { getAnalytics } from "@react-native-firebase/analytics";
+import { getCrashlytics } from "@react-native-firebase/crashlytics";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -35,6 +36,7 @@ export const FIREBASE_AUTH = initializeAuth(FIREBASE_APP, {
 export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
 export const FIRESTORE_Function = getFunctions(FIREBASE_APP)
 export const FIREBASE_ANALYTICS = getAnalytics(FIREBASE_APP)
+export const FIRESTORE_crashlytics =getCrashlytics(FIREBASE_APP)
 
 
 

@@ -15,11 +15,11 @@ import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import LogInScreen from "./LogInScreen";
 import useAppStore from "../useAppStore";
-import { collection, query, getDocs, Firestore, updateDoc } from "firebase/firestore";
+import { collection, query, getDocs, Firestore, updateDoc } from "@react-native-firebase/firestore";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 import { Swipeable } from "react-native-gesture-handler";
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "@react-native-firebase/firestore";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const OrderScreen = () => {
