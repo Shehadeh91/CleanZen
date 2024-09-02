@@ -10,11 +10,11 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react"; // Import useEffect
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { collection, addDoc } from "@react-native-firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { ActivityIndicator, Button, useTheme, IconButton } from "react-native-paper";
 
 import { FIRESTORE_DB } from "../FirebaseConfig";
-import { doc, getDoc, setDoc } from "@react-native-firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import useAppStore from "../useAppStore";

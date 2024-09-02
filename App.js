@@ -38,7 +38,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import { useColorScheme, StatusBar, View, StyleSheet, Platform, ActivityIndicator, KeyboardAvoidingView} from "react-native";
 
 import { FIREBASE_AUTH, FIRESTORE_DB } from "./FirebaseConfig";
-import { getDoc, doc } from "@react-native-firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import useAppStore from "./useAppStore";
 import { onAuthStateChanged } from "firebase/auth";
 

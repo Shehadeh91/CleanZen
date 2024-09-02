@@ -11,7 +11,7 @@ import {
   setDoc,
   collection,
   updateDoc,
-} from "@react-native-firebase/firestore";
+} from "firebase/firestore";
 import useAppStore from "../useAppStore";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import LogInScreen from "./LogInScreen";

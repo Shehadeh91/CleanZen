@@ -16,6 +16,7 @@
 		1EF59BB42C80DE2000CA1E65 /* RCTAnimation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF59BB32C80DE2000CA1E65 /* RCTAnimation.framework */; };
 		1EF59BB82C80DE3600CA1E65 /* RCTText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF59BB72C80DE3600CA1E65 /* RCTText.framework */; };
 		1EF59BBA2C80DE5000CA1E65 /* RCTNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EF59BB92C80DE5000CA1E65 /* RCTNetwork.framework */; };
+		1EF59BBE2C80FBDF00CA1E65 /* FirebaseConfig.js in Resources */ = {isa = PBXBuildFile; fileRef = 1EF59BBD2C80FBDF00CA1E65 /* FirebaseConfig.js */; };
 		39773FAD85A73B842640F867 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7C3E31725124CCE91363FBA6 /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		E3F158331AF5DD7FE2EE031A /* Pods_PureCareTech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D97EE392ED43163E0FD177 /* Pods_PureCareTech.framework */; };
@@ -232,6 +233,7 @@
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				1EBF1EBD2C8165E8003ED9FF /* GoogleService-Info.plist in Resources */,
 				39773FAD85A73B842640F867 /* PrivacyInfo.xcprivacy in Resources */,
+				1EF59BBE2C80FBDF00CA1E65 /* FirebaseConfig.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

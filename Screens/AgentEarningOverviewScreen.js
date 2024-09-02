@@ -19,7 +19,7 @@ import {
   query,
   where,
   getDocs,
-} from "@react-native-firebase/firestore";
+} from "firebase/firestore";
 
 const AgentEarningOverviewScreen = () => {
   const [agentData, setAgentData] = useState(null);

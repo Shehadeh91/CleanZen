@@ -9,8 +9,13 @@ dist/
 web-build/
 
 # Native
+<<<<<<< HEAD
 
 
+=======
+android/
+ios/
+>>>>>>> parent of d044146 (Not sure if this is a good version)
 *.orig.*
 *.jks
 *.p8

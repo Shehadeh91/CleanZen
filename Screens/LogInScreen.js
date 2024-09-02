@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { signInWithEmailAndPassword, getAuth} from "firebase/auth"; // Corrected import
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../FirebaseConfig";
-import { getFirestore, doc, getDoc } from "@react-native-firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import useAppStore from "../useAppStore";
 
 

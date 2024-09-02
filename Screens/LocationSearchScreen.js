@@ -8,7 +8,7 @@ import Geolocation from 'react-native-geolocation-service';
 import useAppStore from "../useAppStore";
 import { ThemeProvider, useTheme } from 'react-native-paper';
 import { PROVIDER_GOOGLE , PROVIDER_DEFAULT} from 'react-native-maps';
-import { updateDoc, doc } from "@react-native-firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 import { FIRESTORE_DB } from "../FirebaseConfig";
 
